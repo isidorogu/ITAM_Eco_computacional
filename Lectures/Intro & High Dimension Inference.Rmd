@@ -3,7 +3,13 @@ title: 'Lec1: Intro & High Dimension Inference'
 author: "Isidoro Garcia"
 date: "12/25/2020"
 output: beamer_presentation
-logo: logo-ITAM.png
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
 ---
 
 ```{r setup, include=FALSE}
