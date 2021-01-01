@@ -220,7 +220,7 @@ Ya tienes el repo local y remoto configurados. Ahora que?
 * Haz `git add`, `git commit` y `git push`
 
 
-### Lista de comandos 
+### Lista de comandos básicos
 Veamos la lista de comandos básicos 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -244,19 +244,170 @@ kable(comandos)
 
 ### `git status`
 
-Te muestra el estado de tu repo local vs el remoto 
+Te muestra el estado de tu repo local vs el remoto. En que `branch` estás, que archivos están `stage` y cuáles no. 
 
 Hay cambios que no hiciste `git add`
+
 \begin{center}
 \includegraphics[width = 5.5cm]{git_status.png}
 \end{center}
 
-Ya que hiciste `git add`, te dice que falta que hagas `git commit`. De cualquier manera, te muestra lo que cambio. Muy bueno para llevar control! 
+
+### `git add`
+
+Guarda los cambios o los pone en stage. Esto significa que `Git` ahora sigue los cambios de los archivos add (stage).
 
 \begin{center}
 \includegraphics[width = 5.5cm]{git_status_2.png}
 \end{center}
 
-### `git add`
 
+### `git commit`
+
+Esto significa que te 'comprometes' a los cambios que añadiste con `git add`. `Git` guarda cada `commit` como una versión del repositorio.
+
+\begin{center}
+\includegraphics[width = 5.5cm]{git_commit.png}
+\end{center}
+
+La opcion `-m` es el mensaje del commit individual en cuestión. La idea es que este nombre sea corto y ayude a identificar esos cambios (i.e. 'primera estimacion', 'data cleaning', etc).
+
+### `git remote`
+
+Te deja crear, ver y borrar conexiones entre tu repositorio local y algún repositorio remoto. 
+
+La sintaxis es `git remote [add| rm | rename | -v]`
+
+\begin{center}
+\includegraphics[width = 5.5cm]{git_remote2.png}
+\end{center}
+
+
+### `git push`
+
+Manda los cambios de `git commit` al repositorio remoto configurado. 
+
+La sintaxis es `git push -u <remoto> <local branch>`. La `-u` sólo se usa la primera vez cuando defines que el repo remoto esta conectado al local. 
+
+\begin{center}
+\includegraphics[width = 3.5cm]{git_push.png}
+\end{center}
+
+La opcion `<local branch>` es opcional. Si estas en el branch adecuado no necesitas poner la parte de `<local branch>`.
+
+### `git branch`
+
+Cuando tienes un proyecto grande, quieres guardar una versión del código que funcione. Si quieres desarrollar una mejora o cambio, no quieres alterar ese código "maestro" (`master`!) y arruinar todo. Por eso creas un `branch`. 
+
+La `branch` (le pones un nombre autocontenido) de deja trabajar libremente sin alterar el código maestro. 
+
+\begin{center}
+\includegraphics[width = 5.5cm]{git_branch.png}
+\end{center}
+
+### `git branch` (2)
+
+La sintaxis es:
+
+`git branch nombre_branch`: Crea una nueva branch
+
+`git branch`: Lista todas las branches. 
+
+`git branch -d`: Soft delete de la branch. La borra si es que no hay cambios unmerge. 
+
+`git branch -D`: Hard delete de la branch. 
+
+`git branch -m <>`: Renombra la branch `<>`,
+
+`git branch -a`: Lista todas las branches en el remoto.
+
+
+### `git checkout` 
+
+Te mueve a la branch local existente (master, branch_x, branch_y) donde quieras trabajar. 
+
+La sintaxis es `git checkout branch_x` para ir a la `branch_x`. 
+
+Adicionalmente, puedes hacer checkout a una branch remota (i.e. una donde ha estado trabajando tu compañerx de equipo) con:
+
+`git fetch --all ` y despues `git checkout branch_remota`
+
+### `git fetch`
+
+[Descarga](https://stackoverflow.com/questions/44473483/what-does-git-fetch-exactly-do) los commits y archivos que se hicieron al repo remoto al repo local y lo guarda en `remote-repo(origin)/main`. 
+
+\begin{center}
+\includegraphics[width = 5cm]{git_fetch_pull.png}
+\end{center}
+
+
+La sintaxis es: 
+
+`git fetch` : Descarga todo del remoto
+
+`git fetch <remote> <branch>`: Sólo descarga una branch en específico
+
+**Nota**: Esto sólo baja los commits remotos. No los junta con tu repo local (porque puedes cambios propios). Para **juntar** ambos (cambios remotos y locales) hay dos opciones: `git fetch + git merge` o `git fetch + git rebase`. 
+
+### `git merge`
+
+Junta dos secuencias de `commits` en uno sólo y crea u commit de la union de ambas secuencias. `git merge` es **ideal** para la colaboración en equipo. 
+
+La sintaxis es: `git merge <branch_a_merge>`. Es importante hacer `git checkout` antes a la branch que quieres que reciba el `merge`. 
+
+\begin{center}
+\includegraphics[width = 5.5cm]{git_merge1.png}
+\end{center}
+
+`git merge` es muy poderoso. Une 'magicamente' dos historias de cambios de manera automática. `Git` se fija si ambas historias son compatibles o divergentes. En este último, `Git` te indica exactamente en donde hay divergencia para que decidas cuál historia quedarse ahí. 
+
+### `git rebase`
+
+Te ayuda a mantener una historia lineal de tu `branch` respecto a `master`. 
+
+La sintaxis es: `git rebase <branch_a_rebase>`. Es importante hacer `git checkout` antes a la branch que quieres que reciba el `rebase`. 
+\begin{center}
+\includegraphics[width = 4cm]{git_rebase.png}
+\end{center}
+
+Imaginen que están trabajando en un proyecto. Uno trabaja en la estimación y otro en la validación de un modelo. Se encuentra en bug en la estimación mientras ya estaban trabajando en la validación. `git rebase` te ayuda a incorporar ese cambio para que parezca que la validación empezó con la última versión de la estimación. 
+
+### `git pull`
+
+Es como `git pull = git fetch` + `git merge` en un comando. También existe `git pull = git fetch + git rebase`. 
+
+La sintaxis es: `git pull` para la opcion `merge` o `git pull --rebase` para `fetch`. 
+
+\begin{center}
+\includegraphics[width = 5cm]{git_fetch_pull.png}
+\end{center}
+
+Puedes checar si tu git tiene como default `merge` o `rebase` con `git config --list`. Para cambiar la configuracion corre: `git config --global pull.rebase true`.
+
+### Pull requests 
+
+Los pull requests son peticiones para incorporar cambios al código maestro por algún miembro del equipo. Los otros miembros revisan el código y aprueban o piden cambios del autor. Una vez aprobado, se hace un merge a master. Además, uno puede configurar cuántas revisiones se necesitan para que un código se apruebe. 
+
+\begin{center}
+\includegraphics[width = 5cm]{centralized.png}
+\end{center}
+
+
+### Pull requests 2 
+
+\begin{center}
+\includegraphics[width = 7cm]{pull_request.png}
+\end{center}
+
+
+### Pull requests 3 
+
+\begin{center}
+\includegraphics[width = 7cm]{pull_request1.png}
+\end{center}
+
+
+### Cómo vamos a `Git` y `Github` en Eco-Computacional
+
+Yo subiré las tareas. Ustedes deben hacer `git pull` a su computadora para obtener los archivos. Crear su branch (nombre = tarea_#_clave_unica). Despues hacer push del branch al repo. Yo podré revisar el codigo en `Github`. 
 

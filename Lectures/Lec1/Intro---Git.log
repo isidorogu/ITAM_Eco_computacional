@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  31 DEC 2020 15:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  1 JAN 2021 15:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1263,26 +1263,223 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 578.
 <git_status.png, id=179, 352.31625pt x 144.54pt>
 File: git_status.png Graphic file (type png)
 <use git_status.png>
-Package pdftex.def Info: git_status.png  used on input line 9.
+Package pdftex.def Info: git_status.png  used on input line 10.
 (pdftex.def)             Requested size: 156.49014pt x 64.19989pt.
-<git_status_2.png, id=180, 344.28625pt x 147.55125pt>
-File: git_status_2.png Graphic file (type png)
-<use git_status_2.png>
-Package pdftex.def Info: git_status_2.png  used on input line 17.
-(pdftex.def)             Requested size: 156.49014pt x 67.06612pt.
 )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 599.
+Package pdftex.def Info: logo-ITAM.png  used on input line 592.
 (pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
 [24
 
- <./git_status.png> <./git_status_2.png>]
+ <./git_status.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_status_2.png, id=188, 344.28625pt x 147.55125pt>
+File: git_status_2.png Graphic file (type png)
+<use git_status_2.png>
+Package pdftex.def Info: git_status_2.png  used on input line 8.
+(pdftex.def)             Requested size: 156.49014pt x 67.06612pt.
+)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
 Package pdftex.def Info: logo-ITAM.png  used on input line 604.
 (pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
 [25
+
+ <./git_status_2.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_commit.png, id=197, 576.1525pt x 116.435pt>
+File: git_commit.png Graphic file (type png)
+<use git_commit.png>
+Package pdftex.def Info: git_commit.png  used on input line 9.
+(pdftex.def)             Requested size: 156.49014pt x 31.6244pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 621.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[26
+
+ <./git_commit.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_remote2.png, id=205, 539.01375pt x 486.31688pt>
+File: git_remote2.png Graphic file (type png)
+<use git_remote2.png>
+Package pdftex.def Info: git_remote2.png  used on input line 11.
+(pdftex.def)             Requested size: 156.49014pt x 141.19153pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 636.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[27
+
+ <./git_remote2.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_push.png, id=213, 550.55687pt x 625.83812pt>
+File: git_push.png Graphic file (type png)
+<use git_push.png>
+Package pdftex.def Info: git_push.png  used on input line 13.
+(pdftex.def)             Requested size: 99.58464pt x 113.19986pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 657.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[28
+
+ <./git_push.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_branch.png, id=221, 927.96687pt x 567.11874pt>
+File: git_branch.png Graphic file (type png)
+<use git_branch.png>
+Package pdftex.def Info: git_branch.png  used on input line 13.
+(pdftex.def)             Requested size: 156.49014pt x 95.63875pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 674.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[29
+
+ <./git_branch.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 695.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[30
+
+]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 712.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[31
+
+]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_fetch_pull.png, id=243, 602.25pt x 281.05pt>
+File: git_fetch_pull.png Graphic file (type png)
+<use git_fetch_pull.png>
+Package pdftex.def Info: git_fetch_pull.png  used on input line 9.
+(pdftex.def)             Requested size: 142.26378pt x 66.38983pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 738.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[32
+
+ <./git_fetch_pull.png (PNG copy)>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_merge1.png, id=250, 767.86874pt x 427.5975pt>
+File: git_merge1.png Graphic file (type png)
+<use git_merge1.png>
+Package pdftex.def Info: git_merge1.png  used on input line 14.
+(pdftex.def)             Requested size: 156.49014pt x 87.14261pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 762.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[33
+
+ <./git_merge1.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+<git_rebase.png, id=258, 699.11188pt x 570.13pt>
+File: git_rebase.png Graphic file (type png)
+<use git_rebase.png>
+Package pdftex.def Info: git_rebase.png  used on input line 13.
+(pdftex.def)             Requested size: 113.81102pt x 92.80597pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 785.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[34
+
+ <./git_rebase.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb
+File: git_fetch_pull.png Graphic file (type png)
+<use git_fetch_pull.png>
+Package pdftex.def Info: git_fetch_pull.png  used on input line 12.
+(pdftex.def)             Requested size: 142.26378pt x 66.38983pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 806.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[35
+
+]
+<centralized.png, id=272, 897.3525pt x 737.25438pt>
+File: centralized.png Graphic file (type png)
+<use centralized.png>
+Package pdftex.def Info: centralized.png  used on input line 821.
+(pdftex.def)             Requested size: 142.26378pt x 116.8719pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 821.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[36
+
+ <./centralized.png>]
+<pull_request.png, id=280, 1798.72pt x 1124.2pt>
+File: pull_request.png Graphic file (type png)
+<use pull_request.png>
+Package pdftex.def Info: pull_request.png  used on input line 830.
+(pdftex.def)             Requested size: 199.16928pt x 124.46861pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 830.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[37
+
+ <./pull_request.png>]
+<pull_request1.png, id=289, 1798.72pt x 1124.2pt>
+File: pull_request1.png Graphic file (type png)
+<use pull_request1.png>
+Package pdftex.def Info: pull_request1.png  used on input line 839.
+(pdftex.def)             Requested size: 199.16928pt x 124.46861pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 839.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[38
+
+ <./pull_request1.png>]
+\openout4 = `Intro---Git.vrb'.
+
+(./Intro---Git.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 850.
+(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+[39
 
 ]
 \tf@nav=\write6
@@ -1294,18 +1491,18 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 604.
 \tf@snm=\write8
 \openout8 = `Intro---Git.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 606.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 606.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 852.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 852.
 (./Intro---Git.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 606.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 606.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 852.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 852.
  ) 
 Here is how much of TeX's memory you used:
- 24186 strings out of 480608
- 437397 string characters out of 5903631
- 701250 words of memory out of 5000000
- 39389 multiletter control sequences out of 15000+600000
- 598470 words of font info for 97 fonts, out of 8000000 for 9000
+ 24350 strings out of 480608
+ 439672 string characters out of 5903631
+ 701754 words of memory out of 5000000
+ 39467 multiletter control sequences out of 15000+600000
+ 598975 words of font info for 102 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  58i,15n,67p,799b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
@@ -1323,10 +1520,10 @@ fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type
 m/lmtt12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmtti10.
 pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msa
 m10.pfb>
-Output written on Intro---Git.pdf (25 pages, 4260348 bytes).
+Output written on Intro---Git.pdf (39 pages, 6552465 bytes).
 PDF statistics:
- 260 PDF objects out of 1000 (max. 8388607)
- 196 compressed objects within 2 object streams
- 68 named destinations out of 1000 (max. 500000)
- 18515 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 378 PDF objects out of 1000 (max. 8388607)
+ 280 compressed objects within 3 object streams
+ 110 named destinations out of 1000 (max. 500000)
+ 18565 words of extra memory for PDF output out of 20736 (max. 10000000)
 
