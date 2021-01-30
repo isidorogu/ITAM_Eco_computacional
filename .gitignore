@@ -38,3 +38,11 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# La lista de clases 
+Lista/
+
+# .DS_Store files 
+.DS_Store
+Lectures/.DS_Store
+
