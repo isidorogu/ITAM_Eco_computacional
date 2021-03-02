@@ -1,0 +1,502 @@
+---
+title: 'Lec5: Clasificacion'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+ 1. Teoría de clasificación 
+ 
+ - Clasificación Binaria, Múltiple, Multi variada
+
+ - Matriz de confusión 
+ 
+ - Métricas de éxito (Accurracy, Sensibility, Specificity, AUC ROC)
+
+ - Rebalanceo de clases
+ 
+ 2. Algoritmos de Clasificación
+
+ - Logit (Multinomial Logit) (LASSO!)
+ 
+ - Distributed Multinomial Regression 
+ 
+ - K-nearest neighboors 
+ 
+ - Otros (Trees, Forests, XGBoosting, Support Vector Machines)
+ 
+### Clasificación 
+
+Los modelos de clasificación son parte del Aprendizaje Estadístico Supervisado. La diferencia es que en los problemas de regresión $y_i$ es una variable continua y en los modelos de clasificación $y_i$ es **categórica**. $y_i \in \{1,2,...,m \}$ (M categorias).
+
+Al igual que en los problemas de regresión, buscamos *poder de predicción fuera de la muestra (OOS)*. Es decir:
+
+- Dividimos la muestra en entrenamiento y validación; 
+
+- Entrenamos el modelo (usamos CV o no..) y 
+
+- Validamos las predicciones en la muestra de validación. 
+
+El problema es: 
+
+\begin{center}
+Dado $X_{ij}^{Validación}$, cual es la clase predecida de $\hat{y}$?
+\end{center}
+
+Donde el error de predicción ($\hat{y_i} \neq y_i$)
+
+
+### Tipos de clasificación 
+
+Hay tres tipos de clasificación: 
+
+1. **Binaria**: $Y$ sólo toma dos clases (i.e. $\{0,1 \}$. Los ejemplos de esto son muchos: La persona acusada es culpable o inocente? Esta transacción es un fraude?)
+
+2. **Múltiple**: $Y$ toma $k$ clases que son mutuamente excluyentes.
+
+3. **Multi-variada**: $Y$ toma $b$ clases que no son mutuamente excluyentes
+
+Es importante resaltar que en todos estos casos las categorias son **unordered**. Es decir, no hay algo como (no en esta clase) de 'Ordered Random Forest'. 
+
+### Clasificación Binaria
+
+En la clásificación binaria podemos utilizar los modelos **Logit** y **LASSO Logit** y *K-nearest neighbors (No paramétrico)*. 
+
+En general *LASSO Logit > LASSO* 
+
+Hoy veremos *K-nearest neighbors* para poder hacer la comparativa entre esos dos algoritmos. 
+
+Nota: Existen otros algoritmos para hacer clasificación (y regresión) como los Random Forests, XGBoostings y Support Vector Machines. Los veremos de manera directa en otras clases. 
+
+### Desempeño OOS de un modelo de clasificación 
+
+La forma más directa de evaluar el poder predictivo de un modelo de clasificación es la **Matriz de Confusión**:
+
+\begin{center}
+\includegraphics[width = 10cm]{matriz_confusion.png}
+\end{center}
+
+A partir de ahí, hay varias métricas de éxito: 
+
+- **Sensibilidad** ($\frac{D}{C+D}$): De los $1's$ reales, cuál es la probabilidad de que los encontremos
+
+- **Especificidad** ($\frac{A}{A+B}$): De los $0's$ reales, que tan probable es que los encuentre 
+
+### Desempeño OOS de un modelo de clasificación 
+
+- **Positivos Acertados** ($\frac{B}{B+D}$): Que porcentaje de mis $1's$ predecidos son aciertos
+
+- **Negativos Acertados** ($\frac{A}{A+C}$): Qué porcentaje de mis $0's$ predecidos son aciertos
+
+- **Accuracy** ($\frac{A+D}{A+B+C+D}$):
+
+La sensibilidad nos dice que tan bueno es nuestro algoritmo detectando $1's$. 
+
+La especificidad nos dice que tan bueno es nuestro algoritmo detectando $0's$. 
+
+Estos parecen muchas métricas de éxito. Más aún, Los mayoría de los algoritmo predicen $P(y_i = 1|X)$ y no un valor $\{0,1 \}$. Necesitamos una mejor métrica.
+
+### Receiving Operating Characteristic (ROC)
+
+La Curva ROC define la habilidad predictiva de un modelo de clasificación binaria ante *un punto de corte* de clasificación variante. 
+
+- Se dibuja en el espacio $\{ 1-especificidad, sensibilidad\}$. 
+
+- Se interpreta como la probabilidad de que nuestro algoritmo obtenga la clasificación correcta **balanceando** el error tipo I y error tipo II. (Ojo! diferencias vs Accuracy?)
+
+Pasos: 
+
+1. Estimas la probabilidad estimada $\hat{p} \in [0,1]$ 
+
+2. Eliges un punto de corte $p^*$ tal que $\tilde p=1 \{\hat p \geq p^* \}$
+
+3. Calculas la matriz de confusión, la sensibilidad y la especificidad
+
+4. Graficas en el espacio de la curva ROC.
+
+5. Repite el ejercicio para $p^* \in [0,1]$
+
+### Curva ROC 
+
+Al final de este procedimiento tendras una curva que se verá (ojalá) así: 
+
+\begin{center}
+\includegraphics[width = 10cm]{ROCs.png}
+\end{center}
+
+### Curva ROC 
+
+\begin{center}
+\includegraphics[width = 10cm]{ROC_performance.png}
+\end{center}
+
+### AUC ROC  
+
+Una vez con la curva dibujada, que sigue? Calcular el Area under the Curve (AUC) ROC (Noten que el área de todo el cuadrado es 1): 
+
+- Si $AUC=0.5$, nuestro modelo no supera a la aleatoriedad
+
+- Si $AUC=1$, nuestro modelo es perfecto 
+
+Típicamente se espera un modelo con AUC (obvio OOS) $AUC \geq 0.75$ para ser bueno. Un modelo excelente es $AUC \geq 0.85$ y un gran modelo es $AUC \geq 0.90$. 
+
+Finalmente, debemos elegir un punto de corte $p^*$ para hacer la clasificación cuando pongamos el modelo a producción. 
+
+### Balanceo de errores 
+
+Noten como la Curva ROC hace explícito el trade off entre falsos positivos y falsos negativos. 
+
+Si elegimos un punto de corte muy bajo, vamos a clasificar muchas observaciones como $1's$. Con esto es muy probable que todos los $1's$ sean clasificados correctamente (modelo muy sensible). 
+
+Sin embargo, va a haber muchas observaciones que sean $0's$ que clasifiquemos como $1's$. Nuestro modelo sería entonces muy poco específico. 
+
+La Curva ROC nos ayuda a balancear ambos errores según creamos conveniente. Esto es, dependiendo del problema, que tipo de error es más grave? 
+
+Finalmente, noten como AUC ROC es mucho mejor indicador que el accuracy. Si tenemos una base donde alguna de las clases es muy común (i.e. 95% $0's$ y 5% $1's$), el accuracy puede dar una señal falsa de un buen modelo. 
+
+### Balanceo de errores 
+
+Por ejemplo, ante (i.e. 95% $0's$ y 5% $1's$) un modelo podría decir 'Todos son 0'. Esto haría que 95% de las veces el modelo sea correcto!!!!!
+
+- Este modelo sería muy especifico (hasta un mono sería en este caso...), pero muy poco sensible. 
+
+- La curva ROC ayudaría a entender el desempeño del modelo de una manea mucho más balanceada. 
+
+- No obstante, aún tenemos que ver cómo entrenar modelo que no 'tomen' la decisión descrita en el primer párrafo de esta slide. 
+
+### Desbalance en las clases 
+
+Los modelos de Machine Learning buscan patrones en los datos para minimizar el error (deviance) de predicción. 
+
+- Esto es, predecir correctamente la mayor cantidad de veces fuera de la muestra. 
+
+Con esto, **cualquier** algoritmo va a priorizar aprender los patrones de la clase más común y nada de la clase menos común. Así, es importante asegurarnos de crear las condiciones en la base de entrenamiento que **obliguen** al algoritmo a aprender patrones para ambas clases. 
+
+Existen dos formas de corregir el desbalance de clases: 
+
+1. Rebalanceo de clases mediante muestreo
+
+2. Introducción de funciones de costos de error tipo I y tipo II: No lo veremos en esta clase. Pocos algoritmos tienen forma de incluir esto. 
+
+### Rebalance de clases mediante muestreo 
+
+El rebalanceo de clase es consiste en conseguir que las dos clases **sean igual de comunes**. Con esto el algoritmo se verá obligado a aprender qué patrones en los datos generan cada clase. 
+
+Esto se puede lograr de dos maneras: 
+
+- Reducir las observaciones de la clase más común
+
+- Incrementar las observaciones de la clase menos común
+
+### Reducción de la clase más común 
+
+Imaginemos que tenemos dos clases $\{ 0,1 \}$. La clase $0$ sucede 95% de las veces. Cómo balancearían las clases disminuyendo la clase más común? 
+
+- Podemos tomar una muestra de ese 95% de la base para que quede sólo el 5% de la base menos común. 
+
+- Como muestrear? Lo mejor es intentar estratificar por las variables más importantes de la base para no perder información valiosa. 
+
+  - Ejemplo: Construyes un PCA; te quedas con los k componenetes que expliquen mucho de la varianza; estratificas en forma de cascada por estos compenentes. 
+  
+  - Así, aseguras que la muestra resultante incluye todas las señales de la base completa
+  
+- Pros: El modelo va a aprender de manera balanceada; la base más pequeña puede hacer más estimable el algoritmo. 
+
+- Cons: Se pierden muchas observaciones. Si tenemos una base total pequeña, podemos llegar a una base inservible. 
+
+### Incrementar las obs de la clase menos común 
+
+La otra opción es incrementar las observaciones de la clase menos común. Usemos el mismo ejemplo: 
+
+- Como generamos observaciones nuevas? Oversampling! 
+
+- Hacemos un oversampling equivalente al que hicimos en undersampling? No! Esto haría muchas observaciones repetidas y reduciría la varianza de la base. 
+
+El método más común es Synthetic Minority Over-sampling Technique (SMOTE).
+
+1. Tomamos una la base de la clase menos común
+
+2. Construímos un algoritmo K-Nearest Neighbors 
+
+3. Tomamos una muestra $i$. Encontramos la otra 'fila' que es muy similar (el vecino más cercano)
+
+4. Creamos una observación sintética entre ambas con una $\lambda \in [0,1]$
+
+### SMOTE 
+
+\begin{center}
+\includegraphics[width = 6cm]{smote.png}
+\end{center}
+
+### Oversampling vs Undersampling
+
+La decisión de cual usar (Over vs Under sampling) es básicamente el tamaño de la base. 
+
+En general, si se logra tener suficiente información con Under sampling, es preferible.
+
+- No generas información sintética 
+
+Si la base queda muy pequeña, entonces hay que optar por Over-sampling. 
+
+
+### Logit LASSO 
+
+Combinemos un poco de lo que hemos visto hasta ahora y apliquemoslo a clasificación. Construyamos un Logit LASSO: 
+
+- Es paramétrico (Interpretable!)
+
+- Muy estable
+
+- Podemos hacer selección variables 
+
+- En `R` esto sería con: `gamlr::gamlr(X=X, Y=Y, family = 'binomial')`
+
+### Logit LASSO: Compra de cripto
+
+Veamos un ejemplo de probabilidad de compra de cripto-monedas. 
+
+```{r matrices, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+##################################################
+# CV.LASSO
+# k=5
+##################################################
+library(tidyverse)
+library(tidymodels)
+library(parallel)
+library(gamlr)
+
+# La Matriz de los covariates
+Xs<-data %>% select(-id, -y)
+
+# Quitamos el intercepto, lo incluye gamlr 
+Xs<-sparse.model.matrix(~. + 0, data = Xs)
+
+
+```
+
+### Logit LASSO: Compra de cripto
+
+```{r lasso, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+# Y
+y<-data$y
+
+# Clusters for parallelization
+detectCores()
+cl<-makeCluster(12)
+cl
+
+lasso<-cv.gamlr(x = x, y = y, verb = T, cl = cl, family = 'binomial')
+stopCluster(cl)
+
+save(lasso, file = 'Modelos/cv_lasso.Rdata')
+
+plot(lasso)
+
+```
+
+
+### Logit LASSO 
+
+El modelo seleccionó 80 variables para minimizar el binomial deviance.
+
+\begin{center}
+\includegraphics[width = 6cm]{buy_dai.png}
+\end{center}
+
+
+### Logit LASSO
+
+```{r pred_lasso, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+#############
+# Predictions 
+# base con la verdad vs predecida
+#############
+# prediction vectors 
+pred<-drop(predict(lasso$gamlr, 
+                   X_validation , 
+                  type = 'response', 
+                  select = x$seg.min))
+
+eval<-bind_cols(data_validation$y, pred)
+
+
+# ROC Curve
+roc_curve(data = eval, truth = truth, "1")
+
+
+```
+
+
+### Logit LASSO: ROC
+```{r ROC, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+ggplot(roc_curve, aes(x = specificity, y = sensitivity))+
+        geom_abline(slope = -1, intercept = 1, linetype = 'dashed')+
+        geom_path()+theme_bw()
+      
+ggsave(height = 6, width = 5.5, filename = 'Graficas/roc.png')
+roc_auc(eval, truth, "1")
+```
+
+\begin{center}
+\includegraphics[width = 4cm]{roc_dai_IS.png}
+\end{center}
+
+
+### Clasificación Multiclase 
+
+- Multiclass models: Modelos con multiples categorías que son mutuamente excluyentes. 
+  
+  - Para estos modelos, existen casi todos los algoritmos requeridos. En el caso de los modelos lineales, existe el multinominal logit y el distributed multinomial regression . 
+
+- Multi label classifications: 
+  - Las categorías no son mutuamente excluyentes 
+
+
+### Clasificación Multiclase 
+
+Hay tres maneras de solucionar esto: 
+
+- Transformation approach
+
+ 1. Binary relevance: Un modelo para cada categoria en la forma 1 vs all. 
+
+ 2. Pairwise: Una base para cada combinación de las categorías. Un modelo para cada escenario. 
+
+ 3. Powerset: Transformas las categorías en una sola categoría con todas las combinaciones.
+
+-	Adaption approach: Adaptar los modelos a un multi-label output (multivariados). Sólo las redes neuronales pueden hacer esto a día de hoy  
+
+
+### K-Nearest Neighbors
+
+La idea es estimar $P(y=j|x^{validation})$ por vecindades, dado las etiquetas que asignamos en la base de entrenamiento. 
+
+\begin{center}
+KNN: Cuál es la clase más común alrededor de X?
+\end{center}
+
+1. Escoges K
+
+2. Dado un punto $x_f$, encuentra los K vecinos cercanos de la base:
+
+$$d(x_i, x_f)=[\Sigma_{j=1}^p(x_{ij}-x_f)^2]^{0.5}$$
+
+3. Estima la probabilidad para cada clase en estos K vecinos
+
+4. Escoge la clase con la mayor probabilidad 
+
+### Ejemplo KNN 
+
+K-NN es un algoritmo de votación. Cada vecino vota. 
+
+En la gráfica, la vecindad está representada por el círculo.
+
+\begin{center}
+\includegraphics[width = 4cm]{KNN.png}
+\end{center}
+
+Noten como para 3-nn los puntos negros son $2/3$. Para 4-nn, serían $2/4$. La el algoritmo es sensible a K.
+
+
+### KNN
+
+Pros: 
+
+- Es un algoritmo muy sencillo
+
+- Maneja de manera muy natural las clasificaciones multiclase. 
+
+- Puede ser mejor que los modelos lineales cuando $f(X)$ es compleja 
+
+Cons:
+
+- Again, no paramétrico puede ser costoso computacionalmente. 
+
+- No podemos elegir variables. 
+
+- K es díficil de escoger. Nuestro mejor shot es Cross-Validation
+
+
+### Multinomial Logit LASSO 
+
+El Logit Multinomial puede ajustar las probabilidades para $y$ multiclase. Para cada categoria:
+
+$$P(y=1|X)$$
+$$P(y=2|X)$$
+$$...$$
+$$P(y=M|X)$$
+
+Tenemos que estimar el vector $\beta_k$ para cada categoria... 
+
+### Multinomial regression 
+
+$$P(y_i = M | x_i) = \frac{e^{x_i'\beta_M}}{\Sigma_{j=1}^Me^{x'_i\beta_j}}$$
+$$Dev(B) = 2\Sigma_i\Sigma_k y_{ik}log(p_{ik})$$
+
+### Multinomial regression 
+
+Usando `glmnet` con `family=multinomial`, podemos correr un multinomial LASSO
+\begin{center}
+\includegraphics[width = 8cm]{glmnet.png}
+\end{center}
+
+Cons: El multinomial logit puede ser muy lento, pues estas estimando parámetros para k categorias...
+
+### Distribute Multinomial Regression 
+
+Finalmente, existe una alternativa más veloz a Multinomial LASSO que se llama Distributed Multinomial regression. 
+
+La idea es genial. Resultad que la regresión multnomial es muy parecida a una transformación independiente donde cada categoria $y_k \sim Poisson(e^{x_i'\beta_k})$. 
+
+Así, cada clase se puede correr de manera independiente... Esto hace que no tengamos que estimar tantos parámetros y podamos agilizar el proceso. 
+
+La syntaxis en `R` es `dmr(covars,counts,cl)`
+
+
+Lo más interesante es que también hace selección de variables tipo LASSO y puedes usar `parallel` para tener resultados más rápidos. 
+
+### Resumen 
+
+Clasificación:
+
+- Beware de los desbalances de clases! 
+
+- Usa la curva ROC para entender la sensibilidad y especificidad del modelo para distintos cortes
+
+- Decide consciensudamente el punto de corte 
+
+Clasificación Binaria: 
+
+- K-NN o LASSO Logit (depende de $f(x)$). Aunque el LASSO Logit es más fácil de estimar 
+
+- Existen otros como XGB o Random Forest o Support Vector Machine 
+
+Clasificicación Multi clase:
+
+- Si son mutuamente excluyentes: K-NN o DMR. 
+
+- Si no son mutuamente excluyentes: Decide entre hacer one vs all o one vs one. 
+
+
+
+
+
+

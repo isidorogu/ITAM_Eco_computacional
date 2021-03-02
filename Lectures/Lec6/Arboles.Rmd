@@ -1,0 +1,374 @@
+---
+title: 'Lec5: Árboles de Decisión'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+- Árboles de Clasificación 
+
+- Árboles de Regresión
+
+- Recursive binary splitting: Decision split for each case
+
+- Tree Pruning 
+
+- Linear vs Trees 
+
+- Boostrapping & Bagging 
+
+
+### Qué es un arbol de decisión
+
+Los árboles de decisión son sistemas lógicos que mapean características $X_i$ a predicciones $Y_i$. 
+
+- Esto es una secuencia de decisiones binarias para llegar a una conclusión. 
+
+- Son jerarquicos. Siempre empiezan por el mismo lado. 
+
+- La predicción final es un nodo terminal
+
+
+### Ejemplo 
+
+\begin{center}
+\includegraphics[width = 10cm]{arbol.png}
+\end{center}
+
+### Elementos de un Árbol de decisión
+
+Los árboles se componen de: 
+
+ - Un nodo inicial/raíz
+ 
+ - Nodos internos, cuya separación se marca por alguna $X_i$
+ 
+ - Nodos terminales/ Leafs
+ 
+Las predicciones se marcan por algún estadístico (i.e. la media) de las observaciones de algún nodo terminal. 
+
+### Ejemplo II
+
+\begin{center}
+\includegraphics[width = 11cm]{arbol2.png}
+\end{center}
+
+### Arbol graficamente
+
+En realidad, los árboles son un método de predicción **no paramétrico**. La predicción sucede mediante la estratificación del espacio de covariables 
+
+\begin{center}
+\includegraphics[width = 11cm]{arbol3.png}
+\end{center}
+
+
+### Funciones objetivo para árboles
+
+Como siempre, queremos disminuir el error de predicción fuera de la muestra. En el caso de los árboles, estas son las funciones a minimizar: 
+
+Para $R$ particiones del espacio de covariables. Donde hay $j$ particiones.
+
+- **Regresión**: $RSS = \Sigma_{j=1}^J\Sigma_{R_j}(y_i - \hat y_i)^2$. Esta es la misma desviación promedio que hemos visto para los modelos lineales. 
+
+- **Clasificación**: Para $k$ clases
+
+  - Entropía: $-\Sigma_{}\hat p_{k}log(\hat p_{k})$
+ 
+  - Gini: $\Sigma_k=\hat p_k(1-\hat p_k)$
+
+Noten como para ambas medidas estamos buscando **pureza**. Cuando $\hat p_k$ es cero o uno, Gini y Entropía se hacen más pequeños. En estos score predecidos, significaría que la mayoría de las observaciones en el *leaf* son de una sola clase. 
+
+### Árboles de Regresión
+
+En los árboles de regresión, $y_i$ es continua. La gran mayoría de las veces, $\hat{y_{iR}}$ va a ser la media de $y_i$ en el nodo terminal $R$. 
+
+Veamos como los árboles de regresión son como modelos de regresión piece-wise: 
+
+$$D_{iR}= 1 \{i \in R \}$$
+
+Se sigue que: 
+
+$$\hat{y_i}=\Sigma_{r=1}^R\hat\beta_RD_{iR}+\epsilon_i$$
+Donde $\hat{\beta_R}=\frac{1}{N_r}\Sigma_{i \in r}y_{i}$
+
+### Árboles de Regresión
+
+Noten como los árboles detectan las no-linealidades (interacciones en los modelos de regresión) de $f(.)$ de manera automática. Incluso algunas de alto valor polinómico. 
+
+\begin{center}
+\includegraphics[width = 8cm]{regression_tree.png}
+\end{center}
+
+### Árboles de Clasificación
+
+Los árboles de clasificación son muy similares a los árboles de regresión. Las diferencias son: 
+
+1. $y_i \in \{ 1,2,3,...K\}$
+
+2. La decisión de split es Gini o Entropy (vs RSS)
+
+3. Las predicciones NO son medias. 
+
+Como son las predicciones entonces? Los árboles de clasificación te arrojan dos tipos: 
+
+a. Predicción categórica: El árbol predice la clase $k$ más común en $r \in R$
+
+b. Predicción continua: El árbol te da las probabilidades o scores como la proporción de casos en $r \in R$
+
+### Estimación de árboles 
+
+Cómo hacer las particiones? Otra vez estamos enfrentados al problema de dimensionalidad. Es casi imposible estimar cada árbol. 
+
+Sin tomar en cuenta esto, los árboles típicamente se estiman **top-down** y de forma **greedy**. Esto se llama **CART: Classfication and Regression Tree** algorithm de Brieman (1984): 
+
+1. Empiezas en el nodo inicial
+
+2. Escoges la $x_i$ que disminuye más el error de predicción
+
+3. Divides la muestra en los nodos determinados en (2). 
+
+4. Repites 2 y 3 iterativamente 
+
+### Estimación de árboles 
+
+Esto es, para una $X_k$ y un punto de corte $s$ definimos dos espacios $R_l$ y $R_r$: 
+
+$$R_l(k,s): \{i:x_{ik}<s\} \ \ \ \ R_r(k,s): \{i:x_{ik}\geq s\}$$
+
+El RSS resultante es ahora: 
+
+$$RSS^1 = \Sigma_{i \in R_l}(y_i - \hat y_i)^2+\Sigma_{i \in R_r}(y_i - \hat y_i)^2$$
+
+Donde $RSS^1<RSS (modelo \ anterior)$
+
+El proceso sigue hasta que se llega a un criterio de finalización. 
+
+
+### Hasta donde estimar el árbol
+
+El algoritmo descrito en las láminas anteriores tiene mucha propensión a caer en overfitting. Por ende, necesita reglas para detener el crecimiento del árbol. 
+
+Las dos más comunes son: 
+
+- Min node size/ `min cut`: Estima el árbol hasta que haya z o más observaciones en cada nodo terminal (típicamente 10). 
+
+- Minimum loss improvement / `min dev`: Estima el árbol hasta que la disminución de cada split llegue a un corte de disminución. 
+
+Ambas, especialmente la segunda estrategia tienen un problema de miopía: Un split mediocre puede ser el preludio de un split mucho mejor. 
+
+### Árboles en R 
+
+La librería para estimar árboles es `tree`. Los otros dos argumentos relevantes son: `mincut`: observaciones mínimas en los nodos terminales y `mindev`: es la ganancia en deviance mínima (en proporción) para que haga un split. 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(MASS)
+library(tidyverse)
+library(tree)
+library(broom)
+data(cpus, package = 'MASS')
+
+cpus.ltr <- tree(log10(perf) ~ syct+mmin+mmax+cach
+                 +chmin+chmax, cpus)
+
+```
+
+### Árboles en R 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+summary(cpus.ltr)
+
+```
+### Árboles en R 
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+plot(cpus.ltr);  text(cpus.ltr)
+```
+
+### Tree pruning 
+
+Hasta ahora vimos que estimamos el árbol hasta que `mincut` o `min dev` lo marquen. Esto genera dos problemas: Es díficil no caer en overfitting y no consideramos la posibilidad de split mediocres seguidos de grandes splits. 
+
+Por lo anterior, es mejor estrategia estimar un árbol grande y despuer podarlo (prune!). Como? .... Cross-Validation! 
+
+- Estimemos varios árboles y, usando validación cruzada (k-fold) escojamos el mejor modelo. 
+
+Preguntas: 
+
+- Por qué no podemos usar criterios de información aquí como AICc? 
+
+- Por qué no tenemos un buen estimado de los grados de libertad (No paramétrico!)
+
+- Cuales son las posibilidades de árboles a estimar? 
+
+- Aquí es más díficil reducir el problema de **modelos candidatos** vs LASSO. 
+
+### Cost complexity pruning 
+
+Cost complexity pruning (Weakest link pruning) es la manera más común de reducir el número de modelos candidatos y aplicar k-fold CV. 
+
+El proceso funciona así: 
+
+1. Estima árbol de manera greedy hasta llegar a `min obs`. 
+
+2. Aplica un parámetro de complejidad $\alpha$ que castigue la complejidad del árbol. Esto te dará una secuencia de subárboles como función de $\alpha$.
+
+3. Aplica k-fold CV para escoger $\alpha$ 
+
+### Cost complexity pruning 
+
+
+Veamos la formula de coxt complexity pruning:
+
+$$\Sigma_{j=1}^J\Sigma_{R_j}(y_i - \hat y_i)^2 + \alpha|T|$$
+Donde $T$ es el número de nodos terminales. Se ve familiar? 
+
+Resulta que si un $\alpha$ muy grande, tendremos un árbol con $T_0 \subset T$. Mientras $\alpha$ tiende a cero $T_0 \rightarrow T$. 
+
+$\alpha$ nos ayuda a tener un set de candidatos de modelo estimable vía K-fold CV!!
+
+
+### Grafica de desempeño de CV tree
+
+Noten como el CV es un buen estimador del desempeño fuera de la muestra (3 nodos terminales). Adicionalmente, noten como en el training set, el árbol siempre parece que va a estimar mejor mientras más grande haga los árboles.
+
+\begin{center}
+\includegraphics[width = 8cm]{cv_tree.png}
+\end{center}
+
+
+### Ejemplo de CV tree 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+(cv_tree<-cv.tree(cpus.ltr, K= 5))
+
+```
+
+### Ejemplo de CV tree 
+
+El resultado `size` es el numero de nodos terminales; `dev` corresponde al deviance CV; `k` = $\alpha$. 
+
+Vemos que con 10 nodos terminales, logramos la menor deviance.
+
+### Ejemplo de CV tree 
+
+```{r echo=FALSE, fig.width=7, fig.height=4 , message=FALSE, warning=FALSE}
+base_grafica<-
+   tibble(size = cv_tree$size, 
+          deviance = cv_tree$dev, 
+          alpha = cv_tree$k)
+
+ggplot(base_grafica, aes(size, deviance))+
+   geom_line()+geom_point()+theme_bw()
+
+```
+
+### Ejemplo de CV tree 
+
+```{r echo=FALSE, fig.width=7, fig.height=4 , message=FALSE, warning=FALSE}
+ggplot(base_grafica, aes(alpha, deviance))+
+   geom_line()+geom_point()+theme_bw()
+
+```
+
+### Árboles vs métodos lineales 
+
+Qué es mejor? Métodos lineales o árboles? Depende del problema. 
+
+Si el problema tiene altas no-linealidades, los árboles son mucho mejores. Esto es porque detectan las mismas de manera automática. 
+
+Si el problema es más aproximable de manera lineal, los algoritmos lineales lo harán mejor. 
+
+Pros árboles: 
+
+- Muy intuitivos. Esto los hace muy fáciles de explicar. 
+
+- Parecen ser más intuitivos porque se asemejan más al razonamiento humano (ifelse nodes). 
+
+- Los árboles pueden manejar fácilmente variables categóricas sin necesidad de crear dummys. 
+
+### Árboles vs métodos lineales 
+
+Cons: 
+
+- Al ser un método no paramétrico. Tienden a no ser estimadores muy estables antes nuevos datos. 
+
+- Incluso con CV, es díficil no caer en overfitting. 
+
+
+### Boostrapping 
+
+Llegamos al segundo método de **remuestreo** (El primero fue CV)! 
+
+El boostrapping es muy útil para conseguir errores estandares e intervalos de confianza cuando la distribución de algún estimador es desconocida, tenemos pocas observaciones o es muy díficil de estimar. 
+
+Por ejemplo, en el caso de la econometría, podemos inferir la distribución de nuestro estimador $\hat \beta$ al remuestrear la base con reemplazo y estimar $\beta$ con cada muestra.  
+
+Lo bonito del Boostrapping es que tiene otras aplicaciones además de la generación de errores estandár. Se puede aplicar a mejorar el poder predictivo de nuestros modelos estadísticos.
+
+### Boostrapping 
+
+Pasos: 
+
+Dada una base de datos $\{ z_i\}_{i=1}^n$, para $b \in \{1,2,3...,B \}$ muestras: 
+
+1. Tomas una muestra **con reemplazo** $\{ z_i^b\}_{i=1}^n$
+
+2. Estimas $\beta_b$ usando la base de (1)
+
+Luego, $\{ \beta_b\}_{b=1}^B$ es una aproximación de la distribución de $\hat\beta$
+
+El vector de tamaño $B$ $\{ \beta_b\}_{b=1}^B$ puede ser usado como la distribución teorica que aprendimos en la clase 2 (inferencia!) que usaba el Teorema del Límite Central. 
+
+$$\beta \in \hat \beta \pm 2sd(\hat \beta_b) $$
+$$se(\hat \beta) \simeq sd(\beta_b)=\sqrt{\frac{1}{B}\Sigma_b(\hat \beta_b - \hat \beta)}$$
+Donde $\hat \beta$ es el estimador original usando toda la base de datos. 
+
+
+
+### Resumen Trees
+
+- Los árboles de decisión (Regresión y Clasificación) son algoritmos no paramétricos
+
+- Son fáciles de interpretar! 
+
+- Detectan no linealidades de manera automática
+
+- Se estiman de manera **greedy**, donde se buscan splits que maximicen la varianza entre nodos (inter-varianza) y se minimice la varianze dentro de cada nodo (intra-varianza)
+
+- Hay dos maneras de parar la estimación de los arboles: observaciones mínimas en los nodos terminales o disminución en el deviance mínima. 
+
+- El greediness es miope. Esto es, un split malo puede seguirle un gran split. 
+
+- Es díficil evitar el overfitting en los árboles. 
+
+### Resumen Tree
+
+- Para ayudar al overfitting, podemos hacer Tree pruning con Cross Validation 
+
+- Esto hara que estimemos greedy y luego tengamos un set de árboles candidatos dependiendo de cuánto castigamos la complejidad de los mismos.
+
+- Los prune.trees son más poderosos (predicción) que los árboles normales. Por ende, preferibles. 
+
+- Aún así, los árboles son estimadores de alta varianza. Esto es, varían mucho dependiendo de la muestra en la que nos encontremos (no paramétrico). Por ende, necesitamos alguna manera de estabilizar las predicciones de los árboles para lograr mejor poder predictivo OOS. 
+
+- Los Random Forests y los Gradient Boosting Machines usan Boostrapping y otros métodos para lograr esto! (Próxima clase!)
+
+
+

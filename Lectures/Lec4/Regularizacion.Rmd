@@ -1,0 +1,457 @@
+---
+title: 'Lec4: Regularización'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+ - In sample (IS) vs Out of Sample (OOS)
+ 
+ - Trade-off Sesgo Varianza
+ 
+ - Criterios de Información (AIC, BIC)
+ 
+ - Error cuadrático medio
+
+ - Binomial Deviance
+ 
+ - Least Absolute Selection and Shrinkage Operator (LASSO)
+ 
+ - Elastic Nets
+ 
+### Estadística moderna
+
+La clase pasada vimos que la Regresión lineal es BLUE bajo las condiciones Gauss-Markov. Esto significa que la regresión es el estimador con menor Error Cuadrático Medio **dentro de los estimadores insesgados**. 
+
+$$ECM=E[(y_i - \hat{y)}^2]=var(\hat{y})+sesgo^2(\hat{y})$$
+Más aún, vimos que FDR nos puede permitir seleccionar que variables son las más relevantes (señales).
+
+En la estadística moderna se reconocen 2 variaciones a la mirada clásica de BLUE: 
+
+- Las predicciones importantes son **fuera de la muestra**. Esto genera la necesidad de encontrar algoritmos de re-muestreo para simular el comportamiento del modelo con datos no vistos.
+
+- Podemos sacrificar un poco de riesgo por (ojalá) poca varianza. Así terminaremos con un mejor estimador.
+
+### Bias Variance Tradeoff
+
+EL Error Cuadrático Medio (y) normalmente tiene una relación de U vs la sencillez del modelo. 
+
+\begin{center}
+\includegraphics[width = 8cm]{MSE.png}
+\end{center}
+
+El eje de las abcisas es la **sencillez** del modelo
+
+### Bias Variance Tradeoff
+
+Resulta que este $MSE$ es producto de $var(\hat{y})$ y del $sesgo^2(\hat{y})$ 
+
+\begin{center}
+\includegraphics[width = 8cm, height = 5cm]{bias_variance.png}
+\end{center}
+
+Rosa: $var(\hat{y})$, azul: $sesgo^2(\hat{y})$ 
+
+### Bias Variance Tradeoff
+
+Podemos sacrificar un poco de sesgo para disminuir el error de predicción.
+
+\begin{center}
+\includegraphics[width = 8cm]{MSE2.png}
+\end{center}
+
+
+### Métricas del desempeño del modelo 
+
+Hasta ahora hemos hablado del $ECM$ de una manera algo informal. En realidad, el $ECM$ se inserta en una variedad de estadísticos de prueba dependiendo del problema a resolver:
+
+La variable a predecir es **continua**
+
+- Error Cuadrático Medio: $ECM=\frac{1}{N}\Sigma_{i=1}^N(y_i - \hat{y})^2$
+
+- Deviance $dev(\hat{y})=\Sigma_{i=1}^N(y_i - \hat{y})^2$. 
+
+Noten como minimizar deviance es equivalente a Maximizar la Máxima Verosimilitud: 
+
+Verosimilitud: $\max \Sigma_{i=1}^{N} ln(f(x_i|\beta) \iff \min dev(\hat\beta)=-2\Sigma_{i=1}^{N} ln(f(x_i|\beta)$
+
+Noten como en el caso de una regresión, $R^2 = 1-\frac{dev(\hat{y})}{dev(\beta=0)}$. 
+
+Como dijimos, sólo nos va a importar el $R^2, dev(\hat{y}), ECM(\hat{y)}$ FUERA de la muestra (OOS). 
+
+### Métricas de desempeño del modelo
+
+Cuando el problema es de **clasificación** o $y$ es categórica:
+
+- Binomial Deviance: $\Sigma_{i=1}^N-2[y_iln(\hat{p_i}+(1-y_i)ln(1-\hat{p_i}))]$
+
+- Matriz de confusion: En la siguiente clase! 
+
+- Área bajo la curva ROC (AUC): En la siguiente clase! 
+
+### Selección del modelo adecuado
+
+Hasta ahora vimos que la regresión lineal puede servir mucho para hacer predicciones. No obstante, seleccionar al modelo adecuado es complicado: 
+
+1. Y si usamos FDR como seleccionador de variables? 
+
+### Ejemplo Libro Taddy: Semiconductores 
+
+Veamos un ejemplo de la manufactura de semiconductores. Queremos predecir si el semiconductor va a fallar. El problema es complicado porque un semiconductor fallido puede generar problemas en toda una planta. 
+
+Tenemos una base de $x_i$ de 200 columnas y una $y_i$ binaria de $(pass,fail)$. En la base de datos hay 100/1477 casos de semiconductores fallidos.
+
+La regresión logística de la falla es: 
+
+$$p_i=P(fail_i|x)=\frac{e^{\beta_0+x_i'\beta}}{1+e^{\beta_0+x_i'\beta}}$$
+
+### Semiconductores, FDR control
+
+Si incluios las 200 columnas en el modelo, nos da una $R^2=0.56$. Asi se ven los p-values de las 200 variables: 
+
+\begin{center}
+\includegraphics[width = 8cm]{fdr_semiconductor.png}
+\end{center}
+
+Si corremos FDR al $q=0.1$, nos arroja $\alpha=0.0122$ de punto de corte. Esto genera 25 variables significativas, de las cuales 22-23 son verdaderas señales y 2-3 son ruido. 
+
+### Semiconductores, FDR control
+
+La $R^2_{FDR, cut}=0.18$ vs $R^2=0.56$. Ambas *In-sample*. Como se ven en $OOS$?
+
+\begin{center}
+\includegraphics[width = 8cm]{r_oos.png}
+\end{center}
+
+Para el modelo $FDR,cut$ la $R^2_{OOS}=0.09$. La mitad de lo que observamos *In-sample*. Vean la $R^2_{OOS}$!! Qué significa que sea negativa?
+
+### FDR como seleccionador
+
+En general, es mejor usar FDR que no usar nada de control de falsos positivos. Sin embargo para la selección de modelos puede tener algunas limitantes: 
+
+- FDR asume independencia entre las pruebas. 
+
+- Si teneos más columnas que filas $p>n$, FDR ni siquiera es posible de correr. 
+
+Necesitamos otros algoritmos para seleccionar variables. 
+
+
+### Training y Validation (Test) Sets
+
+Antes de entrar a estos algortimos hablemos un poco algunos tips prácticos de la división de las bases: 
+
+1. Dividimos los datos **aleatoriamente** entre training y validation sets. En algunos modelos (Neural Networks), se requiere un tercer set llamado test set. Esto esta fuera del scope de esta clase. 
+
+2. Estimamos el modelo en el training set. 
+
+3. Validamos en el validation set. 
+
+Pero, que porcentajes utilizamos? DEPENDE. 
+
+\begin{center}
+\includegraphics[width = 8cm]{training_validation.png}
+\end{center}
+
+### Training y Validation (Test) Sets
+
+Típicamente queremos tener la mayoría de los datos en el training set. Esto hará que la varianza de nuestros estimadores sea baja. Por otro lado, un validation set muy pequeño puede generar tests muy ruidosos. Les dejo unas reglas prácticas de dedo: 
+
+>- Empieza por (70/75/80 training, 30/25/20 validation). 
+
+>- Si tienes pocas observaciones, sube el número de observaciones en el training set. Esto hará que los estimadores converjan. 
+
+>- Toma en cuenta que tan intensivo en poder de cómputo es tu algoritmo. Uno muy pesado (i.e. un Random Forest) te puede invitar a bajar un poco el tamaño del training set. 
+
+
+### Resampling methods
+
+Hoy vamos a ver *Cross Validation* como primer método de prueba. 
+
+La idea es la siguiente: 
+
+ - Divide los datos en muestra de entrenamiento y validación. 
+ 
+ - Hay alguna forma de utilizar mi muestra de entrenamiento varias veces para escoger el mejor modelo antes de ir a la validación? si! 
+ 
+\begin{center}
+\includegraphics[width = 8cm]{cross_validation.png}
+\end{center}
+
+
+### Cross Validation
+
+Cross-validation te dejan repetir para cada candidato a modelo la estimación para elegir al mejor. Existen dos tipos formas de hacer Cross-Validation:
+
+
+- **Leave One out Cross Validation**: Estimas el modelo en todas las observaciones de entrenamiento excepto una. Validas en la observación restante. Repites el ejercicio $n$ veces. 
+
+- **K-fold cross validation**: Divides la muestra de k-partes (usualmente 5). Estimas el modelo en $k-1$ partes, validas en la parte restante. Repites el ejercicio $k$ veces.
+
+- **K-Cross Fitting**: Fundamento de causal machine learning! 
+
+### LOOCV 
+
+\begin{center}
+\includegraphics[width = 8cm]{loocv.png}
+\end{center}
+
+
+- Ventaja: Es un método muy general. Se puede utilizar en cualquier modelo predictivo. 
+
+- Desventaja: Puede ser computacionalmente muy complicado, ya que estimas un modelo $n$ veces. 
+
+
+$$CV_{(n)}=\Sigma_{i=1}^{n}error \ rate$$
+
+### K-fold Cross Validation 
+
+\begin{center}
+\includegraphics[width = 8cm]{kfolds.png}
+\end{center}
+
+$$CV_{(k)}=\Sigma_{i=1}^{k}error \ rate$$
+
+### K-fold vs LOOCV
+
+En la práctica, K-fold con $k=5,10$ ha mostrado ser muy bueno identificando en **que** flexibilidad del modelo se minimiza el error rate $(ECM, binomial \ \ deviance,etc)$ igual de bien que $LOOCV$ pero siendo mucho más fácil de estimar computacionalmente. Esto es, el $k-fold$ CV logra balancear bien el bias-variance trade-off
+
+\begin{center}
+\includegraphics[width = 8cm]{cv_comparison.png}
+\end{center}
+
+### Regularización 
+
+Al fin llegamos a regularización! La idea general es: 
+
+- Imponer **restricciones pertinentes** a las $\hat\beta$ para hacerlos *estables* y *significantes*:
+
+A qué nos referimos con restricciones pertinentes? 
+
+- Que $\hat\beta$ sea menos variable
+
+- Que $\hat\beta$ ayude a arrojar mejores predicciones de $y_i$
+
+- Que $\hat\beta$ tenga $\hat\beta=0$ donde las variables sean ruido
+
+En todos los métodos se intenta minimizar una función asi: 
+
+$$\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^pc(\beta_k)$$
+Noten como esta función es parecida a la de mínimos cuadrados, sólo que hay un término nuevo. A qué se parece? 
+
+### Regularización 
+
+Existen 3 métodos de regularización principales: 
+
+1. **Ridge**:  $\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^p\beta_k^2$
+
+2. **Least Absolute Selector and Shrinkage Operator (LASSO)**: $\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^p|\beta_k|$
+
+3. **Elastic Nets**: $\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^p(\alpha\beta_k^2+|\beta_k|)$
+
+Cada una tiene una función de penalización de inclusión de variables distinta. $\lambda$ es el `tuning parameter`. Esto es lo primero que es machine learning. Hay un parámetro que no se encuentra en la estimación. Tenemos que tunearlo con alguna técnica de re-muestreo. 
+
+### Funciones de penalización
+
+Graficamente asi se ven estas funciones de penalización:
+
+\begin{center}
+\includegraphics[width = 10cm]{lamda_f.png}
+\end{center}
+
+
+### Escala importa
+
+En todos los algoritmos de regularización la escala importa mucho. Es por ello que en todas las aplicacioens de `R` hay una opción `standarize=TRUE` que iguala las escalas para todas las variables. 
+
+$$x'=\frac{x-\bar{x}}{sd(x)}$$
+
+### Ridge Regression 
+
+$$\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^p\beta_k^2$$
+
+Noten como si $\lambda=0$ estamos en OLS. Al incluir más variables (algunas ruido), los estimadores ganan más varianza. 
+
+En el escenario donde $\lambda>0$ tenemos una penalidad por el *tamaño* de los coeficientes a estimar. Esto es, el algoritmo debe balancear entre minimizar los residuales y el costo de incluir variables. 
+
+Por qué esto es relevante? Por que Ridge cambia el tamaño de los estimadores (aumentando el sesgo) en pro de mejorar el $ECM$ total. Así el Ridge regression ayuda a mejorar el poder predictivo de OLS. 
+
+### Ridge Regression 
+
+Esto es el el Ridge path. Vean como mientras más sube $\lambda$, o castigamos la complejidad del modelo, los coeficientes tienden a cero. 
+
+\begin{center}
+\includegraphics[width = 10cm]{ridge.png}
+\end{center}
+
+### Ridge Regression 
+
+Pero, ridge te hace los coeficientes exactamente cero (Selección de variables)? No! Es costo marginal de incluir una variable cuando tenemos que $\beta=0$ es $\frac{\partial}{\partial\beta_k}\Sigma_{j=1}^p\beta_k^2=2\lambda\beta_k$. Es decir, no hay costo de incluir variables. Simplemente las regulariza! 
+
+### LASSO 
+
+$$\min \Sigma_{i=1}^{n}(y_i-\beta_0-\Sigma_{j=1}^p\beta_jx_{ij})^2+\lambda \Sigma_{j=1}^p|\beta_k|$$
+
+El LASSO es cualitativamente distinto al Ridge. Al penalizar de manera lineal la inclusion de los paráetros, el costo marginal de incluir una variable a $\beta=0$ es $\lambda$. Esto significa que LASSO **si selecciona variables. Las fija a cero**. 
+
+El hecho de que LASSO haga selección de variables lo convierte en el favorito de los métodos de regularización. Es muy interpretable y poderoso. Siempre empiecen por LASSO antes de ir a Ridge. 
+
+### LASSO 
+
+Esto es el el LASSO path. Vean como mientras más sube $\lambda$, o castigamos la complejidad del modelo, los coeficientes se van a cero. 
+
+\begin{center}
+\includegraphics[width = 10cm]{lasso.png}
+\end{center}
+
+### Selección de $\lambda$
+
+Hay dos maneras de escoger el hiper parámetro $\lambda$: 
+
+- Cross-validation
+
+- LASSO Path con criterios de información
+
+### CV LASSO 
+
+Pasos: 
+
+1. Escoges un vector $\lambda=(\lambda_1, \lambda_2, ..., \lambda_L)$
+
+2. Divides la base en k-partes de manera aleatoria
+
+3. Para cada $\lambda_l \in \lambda$: 
+
+- Entrenas el modelo usando toda la base menos un fold k
+
+- Predices en la parte k restante
+
+- Calculas el error de predicción: $CV_{(k)}=\Sigma_{i=1}^{k}error \ rate$
+
+4. Escoges la $\lambda_l$ que te dio mejor error de predicción CV
+
+5. Finalmente, reestimas el modelo con $\lambda_l^*$ para toda la base de entrenamiento 
+
+### Opciones en el CV LASSO 
+
+\begin{center}
+\includegraphics[width = 10cm]{cv_lasso.png}
+\end{center}
+
+`min` selecciona el que minimiza el error de predicción. `1se` es parecido. Elige un modelo más sencillo con un error de predicción que no difiere en más de una desviación estandar. 
+
+### Problemas con CV LASSO
+
+- El cross validation puede ser muy tardado de estimar. 
+
+- Puede ser algo inestable si tenemos muestras no tan grandes. Esto es porque las k-partes no tendrán suficiente información. 
+
+
+### LASSO Path: Information Criterion 
+
+Information criteria: Son estadísticos que aproximan cuanta información se pierde al correr nuestro modelo. Es como un estimador del error de predicción OOS. Queremos minimizar los criterios de información. Existen varios: 
+
+- **Akaike Information Criterion (AIC)**: $deviance+2df$. Donde $df$ es el número de $\beta's$ incluidas en el modelo. 
+
+El AIC es muy buen estimador de OOS error rate si $n/df$ es grande. Si (Big Data!) $n \simeq df$, el AIC es un pobre estimador y tiene a overfitting. 
+
+- **AICc**: El AIC pero corregido. $deviance + 2df\frac{n}{n-df-1}$. Siempre usar este, ya que incluso si  $n \simeq df$ es un buen estimador de el error de predicción. 
+
+- **Bayesian Information Criterion (BIC)**: $deviance+log(n)df$. Este criterio busca que encontrar al modelo 'real'. En la práctica, es más conservador. Por ende tiene a elegir modelos más simples
+
+### LASSO Path: Information Criterion 
+
+Usando AICc, podemos correr un LASSO path. Pasos: 
+
+1. Escogemos una secuencia de $\lambda$: $\lambda_1<\lambda_2<...<\lambda_{T=100}$
+
+2. Empieza con una $\lambda_T \simeq \infty$ (no incluyes mas que el intercepto)
+
+3. Ve con una $\lambda_{T-1}$ más pequeña.
+
+...
+
+4. Termina en una en una lamba muy pequeña (donde incluyes casi todo). 
+
+5. Escoge la estimación que arroje el menor AICc
+
+Qué facil!!! En el mundo de machine learning, es muy común esta forma de prueba-error. Uno construye *grids* de los hiper parámetros a tunear que cubran mucho del espacio posible (ninguna variable, todas) y partir de ahí prueba todo. Es parecido a una optimización númerica. 
+
+
+### Comparativa entre ICs
+
+El AICc se parece mucho a el `seg.min` de CV; BIC se parece un poco a `seg.1se` de CV (ojo! a veces demasiado a la izquierda o underfitting). El AIC tiende al overfitting. 
+ 
+\begin{center}
+\includegraphics[width = 10cm]{ic_comparison.png}
+\end{center}
+
+
+
+### Ejemplo de correr LASSO en R 
+
+Las librerias más comunes son `glmnet` y `gamlr`. La diferencia es que `glmnet` puede estimar elastic nets. Para el resto, son equivalentes. A mi me gusta más `gamlr` porque aprendí en ella. 
+
+En ambas, los datos deben ser cargados en una `sparse.matrix`. Para esto, se carga la libreria `Matrix`.  
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
+library(gamlr)
+library(fastDummies)
+
+# Creamos los vectores y y la matriz de X's
+y<-data$churn
+
+# La base debe tener puras numericas
+X<-sparse.model.matrix(~.+0, data = products)
+
+# LASSO Path
+lasso<-gamlr(x = X, y = Y, family = 'binomial')
+
+```
+
+### Ejemplo LASSO en R 
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
+
+# LASSO Path
+lasso<-gamlr(x = X, y = Y, family = 'binomial')
+
+# Prediciendo 
+y_pred<-predict(lasso1, newdata = X1, type = 'response')
+y_pred<-as.numeric(y_pred)
+
+# Lasso path graph
+plot(lasso)
+
+# coeficientes 
+lasso_summary<-summary(lasso)
+
+```
+
+### Ejemplo LASSO en R 
+
+\begin{center}
+\includegraphics[width = 10cm]{lasso_command.png}
+\end{center}
+
+### Ejemplo LASSO en R 
+
+\begin{center}
+\includegraphics[width = 10cm]{cv_lasso_command.png}
+\end{center}
