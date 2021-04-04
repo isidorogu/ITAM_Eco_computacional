@@ -1,0 +1,293 @@
+---
+title: 'Lec8: Unsupervised Learning I'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+- Aprendizaje No Supervisado 
+
+- Clustering
+
+- K-means 
+
+- Hierarchical Clustering
+
+
+### Aprendizaje Estadístico 
+
+El aprendizaje estadístico concierne dos tipos: 
+
+1) **Aprendizaje Supervisado**: Existe una variable endógena que gobierna el aprendizaje. Esto genera la siguiente función a estimar: 
+
+$$Y = f(X) + \epsilon$$
+
+Donde $X: X_1,...,X_p$ son todas las variables explicativas que se nos ocurran, $Y$ es la variable supervisora y $\epsilon$ es un error aleatorio. 
+
+2) **Aprendizaje No Supervisado**: No existe una variable objectivo. Tenemos $X$ y queremos entender como se relacionan entre ellas. Típicamente relacionado a método de reducción de dimensionalidad. 
+
+### Aprendizaje No supervisado
+
+Existen dos tipos de objetivos en el aprendizaje no supervisado: 
+
+1. **Clustering**: Se trata de dividir a las observaciones en grupos (clusteres) tal que los observaciones dentro de cada grupo sean muy similares y disimilares a observaciones en otros grupos. 
+
+2. **Factor Models**: Se trata de *reducir dimensionalidad* a partir de una $X$ para entender los factores principales. 
+
+En ambos, estamos buscando simplificar cómo vemos el conjunto de las $X_s$. A pesar de que no buscamos predicción, buscamos modelos *estables* a nuevas observaciones. 
+
+
+### Clustering 
+
+Por qué hacer clustering? 
+
+- Un resumen: Mostrar representaciones de los datos interesantes que reflejen la varianza de toda la base. 
+
+- Descubrimiento: Encontrar sub grupos interesantes dentro de todo el set de observaciones. 
+
+
+En las técnicas de clustering, buscamos encontrar las membresías a unos subgrupos **desconocidos** a partir de algoritmos. 
+
+Noten como esto hace que el unsupervised learning sea un reto y con algunos toques más artísticos. La razón es porque no tenemos una $y$ que corrobore que hicimos un buen o mal trabajo. 
+
+### Clustering Ejemplos prácticos
+
+- Un buscador o plataforma quiere encontrar grupos de  productos similares (Para ofrecerlos a los usuarios): Netflix haciendo recomendaciones de películas similares a las que ya viste. 
+
+- Sentimiento de las personas en Twitter u otra red social: Tenemos una base de $X$ de palabras, tweets y queremos resumir esta información en un score de sentimiento. 
+
+- Encontrar los temas de los que habla un documento de manera automatizada. 
+
+
+- User personas (Arquetipos): Encontrar grupos de usuarios similares que ayuden a generar entendimiento más profundo de los usuarios. 
+
+
+### Tipos de Clustering 
+
+1. **Métodos basados en modelos mixture (Mixture models)**: Se asume que cada $x_{ip}$ viene de 1 de los K mixture components. Donde definimos la probabilidad de pertenecer a este grupo como $p_k(x)$ para $k \in \{1,..,K \}$. 
+
+2. **Métodos basados en heurísticas**: Son modelos agnosticos a K, se construyen modelos jerárquicos que dividan mejor a las observaciones. 
+
+
+Empecemos con 1) K-means 
+
+### K-means 
+
+K-mean es un método de clusterización no paramétrico que, dandole el número de grupos $K$ deseado, asigna a cada observación a **un** grupo en particular. El algoritmo crea grupos mutuamente excluyentes: 
+
+1. $k_1 \cup \ \ k_2  \ \ \cup ...\cup \ \ k_k=\{1,...,n\}$
+
+2. $k_k \cap \ \ k_k' = \emptyset$ para $k_k \neq k'_k$
+
+Sea la base $x_{ip}$ y $k$ grupos $k \in \{1,..,K \}$. Para cada $k$ buscamos $p(k)$: 
+
+$$p(k)=\pi_1p_1(x)+...+\pi_kp_k(x)$$
+Donde $\pi_k$ es la probabilidad incondicional de pertenecer al grupo $k$. Es decir, estamos buscando la probabilidad de que una observación pertenezca a $k$ condicional en sus características $x$
+
+### K-means 
+
+Adicionalmente, definimos la media de cada grupo $k$ como $\mu_{k_j}=E[x_i |k_j]$.
+
+Así, para cada nueva x con pertenencia a los grupos k desconocida calculamos: 
+
+$$E[x]=p_1(x)\mu_1+...+p_k(x)\mu_k$$
+
+### Función objetivo
+
+Hasta ahora dijimos que queremos estimar probabilidad de pertenecer a cada grupo $k$ **desconocido** condicional en las características $x$. Con eso, podemos calcular la media de cada grupo con $\mu_k$ (centroides). 
+
+Pero, que buscamos? Partir los datos en $k$ clusters tal que la intravarianza, sumada para todos los clusteres, sea mínima: 
+
+$$\min_{\{ k_1, ...k_k \}} \ \ \frac{1}{N_k} \Sigma_{i \in k}\Sigma_{j=1}^p(x_{ij}-\hat\mu_k)^2$$
+
+Eso no parece tan díficil. El problema es que aún tenemos que encontrar $k$. Para una base de tamaño $n$, tenemos $K^n$ formas de partir los datos!!! 
+
+
+### Ejemplo 
+
+\begin{center}
+\includegraphics[width = 8cm]{density.png}
+\end{center}
+
+
+### Ejemplo
+
+\begin{center}
+\includegraphics[width = 8cm]{density2.png}
+\end{center}
+
+### K-means algoritmo 
+
+Pasos: 
+
+1. Asigna aleatoriamente cada observación 
+
+2. Calcula los centroides $\hat\mu_k$ para las $p$ variables en la base
+
+3. Asigna a cada observación al centroide al que este más cercano. 
+
+4. Repite hasta que la asignación de cada observación deje de cambiar. 
+
+
+Problema: La solución depende de la iniciación aleatoria. Es decir, el algoritmo encuentra un óptimo local en lugar de un óptimo global. Por ello, es mejor estimar K-means varias veces con inicios aleatorios distintos. 
+
+
+### Ejemplo 
+
+\begin{center}
+\includegraphics[width = 11cm]{k_means.png}
+\end{center}
+
+### Ejemplo II
+
+Acá vemos para distintos intentos. El segundo da mejor separación.
+
+\begin{center}
+\includegraphics[width = 10cm]{k_means2.png}
+\end{center}
+
+### K-means en `R` 
+
+La función `kmeans(x,centers,nstart)` se utiliza para estimar K-means. Donde `x` es una `data.frame` **númerico**, `centers` = $K$ y `nstart` es el número de inicios aleatorios. 
+
+
+\begin{center}
+\includegraphics[width = 10cm]{kmeans_R.png}
+\end{center}
+
+`grp$cluster` guarda la pertenencia de cada observación a los clusteres $k$
+
+### K-means en `R`
+
+\begin{center}
+\includegraphics[width = 11cm]{kmeans_R2.png}
+\end{center}
+
+
+### Cómo escoger $K$
+
+La selección de K es altamente subjetiva. Por ello es importante seguir algo de intuición en la decisión de $K$.
+
+No obstante, podemos hacer un algoritmo parecido a los modelos predictivos: 
+
+1. Elige un set de K candidatas $K_1<K_2<...<K_m$
+
+2. Utiliza AICc/BIC para decidir el mejor approach. 
+
+En el caso de K-means. Los parámetros estimados son $K \times p$. Dado que el BIC no asume distribuciones, es normalmente preferido. No obstante, no son una regla fija para elegir $K$.
+
+
+### Hierarchical Clustering
+
+Una ventaja y desventaja de K-means es que estima **exactamente** los K grupos que le pedimos. 
+
+  - Si elegimos bien $K$ o es lo que necesita el caso de negocio/policy, es ventaja. 
+  
+  - Si no tenemos un prior de $K$ puede ser problemático.
+  
+**Hierarchical Clustering** es una alternativa que no requiere un modelado previo ni una $K$. 
+
+- Produce tree-based representaciones de los datos. 
+
+- Esto genera clusteres anidados (grandes clusteres, pequeños clusteres dentro de esos)
+
+- Observaciones similares igualmente terminarán en los mismos clusteres. 
+
+### Hierarchical Clustering
+
+Algo muy importante es que Hierarchical Clustering es un método **aglomerativo** (bottom-up).
+
+- Aglomerativo: 
+ 
+ - Todas las observaciones empiezan siendo un cluster (tienes $n$ clusteres).
+ 
+ - Fusiones a los dos grupos más similares de manera iterativa hasta que terminas con un sólo grupo.
+ 
+- Divisivo (top-down):
+
+ - Empiezas con un cluster para $n$ observaciones
+ 
+ - Separas en dos grupos maximizando la inter-varianza y minimizando la intravarianza (Ojo! aquí no tenemos $y$ para eso). 
+ 
+Los métodos aglomerativos son más sencillos. Empecemos ahí. 
+
+### Hierarchical Clustering
+
+\begin{center}
+\includegraphics[width = 11cm]{aglomerativo.png}
+\end{center}
+
+### Hierarchical Clustering 
+
+Esto se puede representar como un árbol constuído de abajo hacía arriba: 
+
+\begin{center}
+\includegraphics[width = 11cm]{dendogram.png}
+\end{center}
+
+### Donde cortamos el árbol
+
+Noten como cada nodo terminal de este dendograma es una observación. Por ende, tenemos que decidir en donde cortarlo para encontrar los números de clusteres $K$. Una ventaja de esto es que una corrida te puede  
+dar todas las opciones de K posibles. 
+
+\begin{center}
+\includegraphics[width = 10cm]{dendogram_cut.png}
+\end{center}
+
+### Algoritmo Hierarchical Clustering
+
+Formalicemos el algoritmo. Pasos:
+
+1. Escoges una medida de similitud (i.e. Distancia Euclideana). 
+
+2. Empiezas con todas las observaciones en su cluster ($n$ clusteres).
+
+3. Calculas $n \choose 2$ métricas de distancia. 
+
+4. Encuentra el par más similar y fusionalo en un cluster. La métrica de similitud es la altura de corte del dendograma
+
+5. Repite 3 y 4 con los $i-1$ clusteres restantes. 
+
+Retos: Cómo defines la distancia entre 2 clusteres cuándo uno o ambos tienen más de una observación? Definimos *linkage*
+
+### Linkage
+
+\begin{center}
+\includegraphics[width = 10cm]{linkage.png}
+\end{center}
+
+En general $Average = Complete > Single>Centroid$
+
+### Linkage: Impacto en el dendograma
+
+\begin{center}
+\includegraphics[width = 11cm]{linkage2.png}
+\end{center}
+
+### Hierarchical Cluster en `R`
+
+La función `hclust` genera Hierarchical Clustering. `dist(X)` para distancia euclideana. Despues se utiliza `cuttree(h,x)` para cortar al nivel del dendograma. 
+
+\begin{center}
+\includegraphics[width = 9cm]{hierarchical.png}
+\end{center}
+
+
+
