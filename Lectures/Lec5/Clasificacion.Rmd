@@ -464,7 +464,7 @@ Cons: El multinomial logit puede ser muy lento, pues estas estimando parámetros
 
 Finalmente, existe una alternativa más veloz a Multinomial LASSO que se llama Distributed Multinomial regression. 
 
-La idea es genial. Resultad que la regresión multnomial es muy parecida a una transformación independiente donde cada categoria $y_k \sim Poisson(e^{x_i'\beta_k})$. 
+La idea es genial. Resulta que la regresión multnomial es muy parecida a una transformación independiente donde cada categoria $y_k \sim Poisson(e^{x_i'\beta_k})$. 
 
 Así, cada clase se puede correr de manera independiente... Esto hace que no tengamos que estimar tantos parámetros y podamos agilizar el proceso. 
 
