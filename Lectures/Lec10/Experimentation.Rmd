@@ -1,0 +1,579 @@
+---
+title: 'Lec10: Causal Inference: Experiments'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+Inferencia Causal
+
+- Experimentación: Gold standard en inferencia causal
+
+Diseño de experimentos 
+
+- Estratificación
+
+- Nivel de aleatorización
+
+- Pruebas de Poder 
+
+- Balance 
+
+Evaluación de impacto
+ 
+- ITT 
+
+- Non compliance 
+
+- Efectos heterogeneos 
+
+- Aplicaciones 
+
+### Introducción a la inferencia causal 
+
+Causalidad se refiere al cambio ocasionado por un evento $d$ **Ceteris Paribus**. Esto es, como cambió mi métrica de interes $y$ cuándo el evento $d$ sucedió?
+
+Usemos el modelo de potential outcomes de Rubin para formalizar la idea:
+
+$$Y_i^{obs}=d_i*Y_i(d=1)+(1-d_i)*Y_i(d=0)$$
+Donde: 
+
+- $Y$ es la métrica que nos interesa 
+
+- $d_i \in \{0,1\}$ es el evento sobre el que nos interesa conocer su impacto. 
+
+- $Y_i(d=\{0,1 \})$ Es el valor de la métrica en cada escenario
+
+
+Noten como, por construcción, **sólo observamos** un escenario de $d$. Esto genera el problema fundamental de la inferencia causal: **La falta de contrafactual**. 
+
+
+### No observamos el contrafactual
+
+Con el modelo de outcomes potenciales podemos definir el impacto del evento (tratamiento):
+
+$$\tau_i \equiv Y_i(1)-Y_i(0)$$
+
+El impacto del tratamiento es como estoy en el caso de que recibiera el tratamiento menos cómo **hubiera** estado en el escenario en que no hubiera recibido el tratamiento. 
+
+Noten como este es el impacto de tratamiento a nivel individual. Típicamente intentamos estimar el **impacto promedio de tratamiento (ATE)**:
+
+$$ATE \equiv  E[Y_i(1)]-E[Y_i(0)]=E[\tau]$$
+
+Seguimos ante el problema de como estimar el contrafactual
+
+### Estimador Naive 
+
+Supongamos que tenemos una población donde algunas personas fueron expuestas al tratamiento $d=1$ y algunas $d=0$. Uno se puede tentar a estimar $ATE$ con:
+
+$$E[\tau_{naive}]=E[Y_i(1)|d=1]-E[Y_i(0)|d=0]$$
+
+Es decir, simplemente promediar el valor de los que recibieron el tratamiento y restarle el promedio de los que no recibieron el tratamiento. 
+
+El problema es que esto asume que $E[Y_i(1)]=E[Y_i(1)|d=1]$ y que $E[Y_i(0)]=E[Y_i(0)|d=0]$. 
+
+Es decir, el estimador naive ignora el **sesgo de selección**. La asignación a los grupos importa y mucho! 
+
+### Correlación no es causalidad ! 
+
+\begin{center}
+\includegraphics[width = 10cm]{meme2.jpeg}
+\end{center}
+
+### Sesgo de selección 
+
+El sesgo de selección significa que los grupos que recibieron el tratamiento y los que no (el grupo control) **son diferentes**. Esto hace que la comparativa entre los grupos sea injusta. No podemos atribuirle las diferencias al tratamiento porque los grupos ya eran distintos.
+
+Hay dos tipos de sesgo de selección: 
+
+- **Selección en observables**: Los grupos son distintos en variables que observamos en los datos 
+
+- **Selección en no observables**: Los grupos de tratamiento son distintos en variables que no observamos. 
+
+Esto es $E[Y_i(0)] \neq E[Y_i(0)|d=0]$ y $E[Y_i(1)] \neq E[Y_i(1)|d=1]$.
+
+- Noten como esto es $Y(0,1) \not \perp d$. Es decir, la asignación de tratamiento no es ortogonal a los potential outcomes. 
+
+Por ende, **lo más importante en la inferencia causal es el mecanismo de asignación de tratamientos.**
+
+
+### Mecanismos de asignación 
+
+Estamos ante la búsqueda de una asignación de tratamientos que nos permita encontrar el impacto.
+
+ - Esto es, que nos deje usar al grupo que recibe el tratamiento como proxy de cómo se verían los individuos y al grupo que no lo recibió como el contrafactual. 
+ 
+ - Matemáticamente esto es: $Y(0,1) \perp d \rightarrow E[Y_i(0)]=E[Y_i(0)|d=0]$
+
+Formalmente, los mecanismos de asignación de tratamientos son una función que, con base en tus características, te asigna a un grupo de tratamiento(s). Esta debe cumplir con 3 requisitos: 
+
+1. **Asignación Individual**: El grupo al que pertenece un individuo no afecta al grupo/métricas a las que pertenece otro. 
+
+2. **Asignación Probabilística**: Cada individuo tiene una probabilidad positiva de pertenecer a cada grupo de tratamiento. 
+
+3. **Unconfoundness**: La asignación genera que $Y(0,1) \perp d$
+
+
+### Métodos en Inferencia Causal con base en la asignación
+
+La inferencia causal se basa en intentar estimar el contrafactual con base en el mecanismo de asignación presente: 
+
+1. **Asignación aleatoria (experimentación)**: Esta es la única que cumple con 1,2 y 3. El investigador conoce la función de asignación 
+
+2. **Asignación no aleatorio (métodos cuasi experimentales)**: Buscamos, entendiendo la función de asignación que no controlamos, estimar el contrafactual. 
+
+En esta clase vamos a hablar de 1. Los métodos cuasiexperimentales los cubriremos en la siguiente clase. 
+
+### Experimentos de Control Aleatorio (RCTs)
+
+Los experimentos de control aleatorio son el resultado de una función de asignación de tratamientos: 
+
+1. **Asignación individual (SUTVA):** Stable Unit Treatment Value Assumptions (SUTVA). Esto significa no contaminación entre grupos (non-interference)
+
+2. **Asignación Probabilística (Overlap):** Cada individuo tiene una probabilidad de pertenecer a los grupos de tratamiento conocida y $\in (0,1)$
+
+3. **Unconfoundness (Excludability):** La asignación aleatoria es por definición independiente a las características de los usuarios.
+
+Son el **Gold Standard** para estimar contrafactuales en medicina, criminología, negocios, etc. 
+
+### SUTVA 
+
+SUTVA puede resumirse como contaminación entre grupos o que las personas cambian su potential outcome dependiendo de a qué grupo pertenezcan. 
+
+\begin{center}
+\includegraphics[width = 10cm]{SUTVA.png}
+\end{center}
+
+
+### Overlap 
+
+La probabilidad de pertenecer a algún grupo siempre está entre cero y uno (sin incluirlos). De otra forma, tus características ($P(treat|x)=\{0,1\}$) te *seleccionaron* para estar en algún grupo.
+
+\begin{center}
+\includegraphics[width = 6cm]{overlap.png}
+\end{center}
+
+
+### Unconfoundness
+
+La asignación aleatoria es independiente a las características **observables y no observables** de los individuos. Esto es equivalente a grupos balanceados.
+
+\begin{center}
+\includegraphics[width = 6cm]{unconfoundness.png}
+\end{center}
+
+### Un poco de historia 
+
+La primera noción experimental nació por James Lind en una expedición naval británica. De 2,000 marineros que partieron hacía tierras españolas, 1,300 se contagiaron de escorbuto. 
+
+Típicamente les daban malta, ácido sulfúrico con alcohol, limones y naranjas, entre otros. Nadie tenía idea de lo que realmente funcionaba. 
+
+Lind tomó un grupo de 12 enfermos y los dividió en 6 pares, uno para cada tratamiento:
+
+1. Sidra. 
+
+2. Ácido sulfúrico con alcohol
+
+3. Agua de mar 
+
+4. Mostaza con ajo y alfalfa
+
+5. Vinagre
+
+6. 2 naranjas y un limón al día
+
+### James Lind 
+
+En menos de una semana, Lind observó que los tratados con cítricos (treat 6) ya estaban lo suficientemente bien para incluso cuidar a los otros enfermos. 
+
+A partir de sus descubrimientos, publicó "Treatise of Scurvy", donde documentaba que podían acabar con la enfermedad mortal muy común entre marineros. 
+
+A la marina inglesa le tomó 42 años!!!! hacer caso a los aprendizajes de su experimento y ordenar que cargaran de limones cada barco. Los experimentos siempre sufrieron push back! 
+
+
+### Lady Tasting Tea 
+
+Por esta historia, Ronald Fisher inventó el concepto de pruebas de hipótesis/p-values. También nació la *prueba exacta de Fisher*.
+
+Muriel Bristol (parlamentaría) se quejó cuando le trajeron su té negro con leche. Argumentó que le pusieron la leche antes del té y que eso era incorrecto. Los otros parlamentarios la retaron a probar que podía distinguir el orden de los ingredientes a probar. 
+
+Como diseñarían el experimento? 
+
+- Cuantas tazas?
+
+- Cuantas de cada tipo?
+
+- A partir de cuántas buenas declaras que Muriel podía identificar la diferencia?
+
+### Lady Tasting Tea 
+
+Fisher decidió diseñar el primer experimento así: 
+
+- 8 tazas de te (4 primero leche, 4 primero tea).
+
+- Se le comunicó a Muriel Bristol el diseño. 
+
+- La hipótesis nula es que **ella no distingue la diferencia**
+
+- Ella tenía que dividir las 8 tazas en dos grupos.
+
+Fisher fijó la hipótesis: A Bristol tiene que irle mejor que la suerte. Esto se hace con $8 \choose{4}$=$\frac{8!}{4!(8-4)!}=70$ formas de ordenar 8 tazas en grupos de 4.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+matriz<-tibble(exito = seq(0,4,1),
+               selecciones_posibles = c("oooo", 
+                                 str_c(c("ooox",'ooxo','oxoo','xooo'), collapse = ", "),
+                                 str_c(c("ooxx",'oxox','oxxo','xoxo','xxoo','xoox'), collapse = ", "),
+                                 str_c(c("oxxx",'xoxx','xxox','xxxo'), collapse = ", "),
+                                 "xxxx"),
+               combinaciones = c("1x1=1","4x4=16","6x6=36","4x4=16","1x1=1")) 
+
+
+kable(matriz)
+```
+
+
+
+### Lady tasting tea 
+
+La región crítica que definió Fisher fue: 
+
+- La probabilidad de que Bristol distinga las 4 tazas te-leche es 1/70 = 1.4 %
+
+- La probabilidad de que Bristol distinga 3+ de 4 tazas te-leche es (16+1)/70 = 24%
+
+- La probabilidad de que Bristol distinga 2+ de 4 tazas te-leche es (1+16+36)/70 = 76%
+
+- La probabilidad de que Bristol distinga 1+ de 4 tazas te-leche es (1+16+36+16)/70 = 99%
+
+Entonces tiene que elegir todas bien para que tengamos un p-value = 1.4% < 5% (la probabilidad de seleccionar todas by chance con 6 (3 y 3) tazas.
+
+### Diseño Experimental 
+
+Existen 4 tipos de diseños experimentales:
+
+1. Aleatorización simple: Es como el que ven en microeconometría
+
+2. Asignación en bloques/estratificada: Dentro de cada sub-grupos, realizas un mini experimento. 
+
+3. Asignación por matching de Pares: Se ha probado que tiene problemas de poder serios en muchos contextos.
+
+4. Diseño Factorial: Se busca entender las interacciones de los tratamientos
+
+5. Diseños clusterizados
+
+En general, el lema es 'Control for what you can, Randomize what you cannot'
+
+### Aleatorización simple 
+
+\begin{center}
+\includegraphics[width = 10cm]{simple.png}
+\end{center}
+
+### Qué puede salir mal con la aleatorización simple?
+
+
+\begin{center}
+\includegraphics[width = 10cm]{simple2.png}
+\end{center}
+
+### Asignación estratificada 
+
+\begin{center}
+\includegraphics[width = 10cm]{block.png}
+\end{center}
+
+
+### Asignación estratificada 
+
+\begin{center}
+\includegraphics[width = 10cm]{block2.png}
+\end{center}
+
+### Con que estratificamos? 
+
+La idea es construir bloques de variables categóricas. Con ellas se crean los estratos a partir de las combinaciones de cada categoria.
+
+Ej: Estratifico por genero y si el paciente fuma o no. 
+
+Bloques:
+
+1. Mujer, fuma
+
+2. Mujer, no fuma
+
+3. Hombre, fuma
+
+4. Hombre, no fuma
+
+Posteriormente, aleatorizas dentro de cada bloque (con los mismos tratamientos y probabilidades). 
+
+Se debe eligir las variables **que están más correlacionadas con el impacto de tratamiento $\tau$**. El problema es que no observamos el impacto de tratamiento a priori. Dependemos de la intuición.
+
+### Cosas a considerar
+
+- Hasta donde estratificar: Si elegimos demasiadas variables, pulverizamos mucho las observaciones en cada estrato. Esto genera que se pierda el overlap
+
+Debemos estratificar por las variables más correlacionadas al impacto/que nos interese observar efectos heterogeneos **jerarquizando**, sujeto a un mínimo de observaciones por estrato (i.e. $n_{strata}>grupos$)
+
+- Misfits: Estas son observaciones que no son asignables porque:
+
+1. El tamaño del estrato es menor a los grupos a asignar
+
+2. El residual de las divisiones por grupo (i.e. dividir 10 observaciones en 3 grupos (1/3,1/3,1/3)).
+
+Debemos escoges fracciones de tratamiento que sean, de preferencia, números racionales. 
+
+Posteriormente, debemos asignar los misfits de 3 maneras (global, strata, NA)
+
+### Misfits
+
+Hay tres maneras de asignar los misfits:
+
+1. Global: Juntar todos los misfits en un sólo grupo y asignar de manera aleatoria a cada grupo (siguiendo las mismas probabilidad de tratamiento). Esto genera que las probabilidades agregadas por grupo sean exactas.
+
+2. Por Estrato: En cada estrato, asignar al grupo de misfits a algún grupo de tratamiento. Se favorece mejor el balance pero no sale la probabilidad por grupo exacta.
+
+3. NA: Simplemente descartar a los misfits del experimento. 
+
+
+### Diseño de Experimentos en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{treatment_assign.png}
+\end{center}
+
+### Diseños factoriales
+
+En este diseño se busca la interacción entre los distintos tratamientos. Noten como el diseño estratificado cabe en los diseños factoriales. 
+
+\begin{center}
+\includegraphics[width = 10cm]{factorial.png}
+\end{center}
+
+### Nivel de aleatorización: Diseño en cluster
+
+Los diseños en cluster se crearon cuando es fácil violar SUTVA si asignamos a nivel individuo. Por ende, se asigna a nivel cluster para asegurar la no contaminación.
+
+El ejemplo más común de este tipo de diseños son los experimentos escolares:
+
+- Si aleatorizamos a nivel alumno, el alumno de alado puede tener otro grupo de tratamiento (i.e. un propedeutico) vs su vecino. 
+
+- El vecino puede recibir parte del tratamiento si platican entre los alumnos.
+
+- Por ende, se aleatoriza a nivel escuela para distintas escuelas.
+
+Que implicaciones tiene esto sobre el unconfoundness? (Matching Design!)
+
+### Pruebas de poder 
+
+Para las pruebas de poder tenemos dos dimensiones que considerar: 
+
+1. Dado el tamaño de la muestra ($N$), cuál es mi efecto mínimo detectable? 
+
+1.1 Dado un efecto de tratamiento que nos interesa detectar, de que tamaño debe ser mi experimento?
+
+2. Con que probabilidades asigno cada grupo de tratamiento? 
+
+Para 1, mostremos un poco de algebra. El estadístico T se distribuye asi: 
+
+$$T = \frac{\bar Y_1 - \bar Y_0 - \tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})} } \sim N(0,1)$$
+
+
+### Poder I
+
+La distribución es:
+
+$$T = \mathcal{N}(\frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}, 1)$$
+
+Ahora, la probabilidad de rechazar $H_0$ a un nivel de significancia $\alpha$ es: 
+
+$$Pr(|T| > \Phi^{-1}(1-\frac{\alpha}{2})) = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}})$$
+
+Queremos que la probabilidad de rechazar la $H_0: \tau=0$ cuando es falsa sea igual a $\beta$ (poder!).
+
+$$\beta = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}})$$
+
+### Poder II
+
+Aplicando $\Phi^{-1}$ en ambos lados:
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}$$
+
+Multiplicando por $\frac{\sqrt N}{\sqrt N}$
+
+Finalmente, $share control = \frac{N_c}{N}$ y $1-sharecontrol = \frac{N_T}{N}$: 
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt N}{\sqrt{ \sigma^2(\frac{1}{1-sharecontrol}+\frac{1}{sharecontrol})}}$$
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt{ N*sharecontrol(1-sharecontrol)}}{ \sigma}$$
+
+### Poder III
+
+Efecto mínimo detectable:
+
+$$\tau = \frac {[\Phi^{-1}(\beta) + \Phi^{-1}(1-\frac{\alpha}{2})]\sigma}{\sqrt{ N* sharecontrol(1-sharecontrol)}}$$
+
+Población mínima:
+
+$$N = \frac {[\Phi^{-1}(\beta) + \Phi^{-1}(1-\frac{\alpha}{2})]^2\sigma^2}{ \tau^2* sharecontrol(1-sharecontrol)}$$
+
+### Población mínima en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{N_min.png}
+\end{center}
+
+
+### Efecto mínimo detectable en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{tau_min.png}
+\end{center}
+
+
+### Balance 
+
+El balance se realiza para evaluar (3) Unconfoundness/Excludability. Al menos para las variables observables. Esto es:
+
+$$Y(0,1) \perp d \rightarrow E[Y_i(0)]=E[Y_i(0)|d=0]$$
+
+
+$$X(0,1) \perp d \rightarrow E[X_i(0)]=E[X_i(0)|d=0]$$
+
+
+Existen dos pruebas que deben correr: 
+
+- Pruebas de balance individuales: Realizar pruebas T por variable entre grupos de tratamiento.
+
+Cuando el número de columnas crece mucho, es muy fácil caer en falsos positivos (Bonferroni!)
+
+- Pruebas conjuntas F: Correr un modelo de probabilidad lineal de pertenecer a cada tratamiento vs el grupoc control. 
+
+### Balance tests: F-test
+
+Cuando el número de variables a evaluar son iguales, entramos en un problema de multiple hypothesis testing (i.e. Bonferroni adjustments). 
+
+La manera más sencilla de solucionar esto es hacer una prueba única conjunta:
+
+$H_0: \beta_1=\beta_2=...\beta_k = 0$         
+
+$H_a:\beta_1=\beta_2=...\beta_k != 0$
+
+### Balance tests: F-test II
+
+Si tenemos $i$ grupos de tratamiento, corremos lo siguiente: 
+
+$$treat_i = {0,1,2,3, ..., n}$$
+
+For $i = 1$ to $i=n$  
+
+$$eachtreat = treat = i>0 \ | \ treat = 0$$
+
+$$Pr(eachtreat) = X'\beta +\epsilon$$ 
+
+Finalmente, revisamos si el modelo (con todas las variables) explica la probabilidad de pertenecer al tratamiento mejor que el modelo nulo (i.e. la media de probabilidad)
+
+### Balance en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{balance_table.png}
+\end{center}
+
+
+### Balance conjunto en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{balance_regression.png}
+\end{center}
+
+
+### Ejemplo final: Poder 
+
+\begin{center}
+\includegraphics[width = 10cm]{power.png}
+\end{center}
+
+### Estratos
+
+\begin{center}
+\includegraphics[width = 10cm]{strata.png}
+\end{center}
+
+### Balance T
+
+\begin{center}
+\includegraphics[width = 10cm]{balance_t.png}
+\end{center}
+
+### Balance F
+
+\begin{center}
+\includegraphics[width = 10cm]{balance_f.png}
+\end{center}
+
+### Medición de impacto
+
+La medición de impacto tiene las siguientes directices:
+
+- Se puede hacer comparación de medias.
+
+- SIEMPRE deben incluir en la medición el diseño. Esto es, incluir efectos fijos por estrato del diseño. 
+
+Esto genera que los estimadores pierdan varianza. Adicionalmente, genera que sea más sencillo correr una regresión para medir los impactos.
+
+- Cuando la variable $y$ métrica de interés es dicotómica, se debe correr un **Modelo de Probabilidad Lineal** y no un logit. La razón es no debemos imponer formas funcionales que generen sesgo. Más aún, es muy poco probable que nos encontremos con $P>1, P<0$.
+
+- Podemos agregar controles en la medición. Esto no es necesario pero puede ayudar a la eficiencia. Se recomienda agregar variables que salieron desbalanceadas (para rebalancear).
+
+- Finalmente, podemos usar Dif in Dif si el experimento corrió varios periodos y tenemos los datos pre-tratamiento. 
+
+
+### Ejemplo: HTE (1 sola interacción)
+
+\begin{center}
+\includegraphics[width = 10cm]{transacted_itt.png}
+\end{center}
+
+
+### Ejemplo: HTE (doble interaccion)
+
+\begin{center}
+\includegraphics[width = 10cm]{net_deposits_by_curp.png}
+\end{center}
+
+### Medición de impacto II: Dif in Dif 
+
+En general, el dif in dif no debería de generar cambios en el estimador de impacto (en principio). Su principal ganancia es la disminución de la varianza de los estimadores:
+
+\begin{center}
+\includegraphics[width = 10cm]{dif_dif.png}
+\end{center}
+
+### Otros temas 
+
+Finalmente, nos faltó cubrir algunos otros temas importantes:
+
+- Non-compliance: One sided y two sided. Se debe usar la asignación como variable instrumental del tratamiento efectivo. 
+
+- Medición de efectos heterogeneos: Siempre debemos reportar los impactos heterógeneos para las variables que utlizamos para crear bloques y NO otras (en principio). Esto refleja cierta honestidad intelectual del experimentador.
+
