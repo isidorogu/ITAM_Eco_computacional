@@ -153,6 +153,8 @@ Los experimentos de control aleatorio son el resultado de una función de asigna
 
 Son el **Gold Standard** para estimar contrafactuales en medicina, criminología, negocios, etc. 
 
+Experimento: Conjuntos de grupos de tratamiento y probailidades de pertenecer a cada uno. 
+
 ### SUTVA 
 
 SUTVA puede resumirse como contaminación entre grupos o que las personas cambian su potential outcome dependiendo de a qué grupo pertenezcan. 
@@ -265,21 +267,21 @@ La región crítica que definió Fisher fue:
 
 - La probabilidad de que Bristol distinga 1+ de 4 tazas te-leche es (1+16+36+16)/70 = 99%
 
-Entonces tiene que elegir todas bien para que tengamos un p-value = 1.4% < 5% (la probabilidad de seleccionar todas by chance con 6 (3 y 3) tazas.
+Entonces tiene que elegir todas bien para que tengamos un p-value = 1.4% < 5% (la probabilidad de seleccionar todas by chance con 6 (3 y 3) tazas).
 
 ### Diseño Experimental 
 
 Existen 4 tipos de diseños experimentales:
 
-1. Aleatorización simple: Es como el que ven en microeconometría
+1. **Aleatorización simple:** Es como el que ven en microeconometría
 
-2. Asignación en bloques/estratificada: Dentro de cada sub-grupos, realizas un mini experimento. 
+2. **Asignación en bloques/estratificada:** Dentro de cada sub-grupos, realizas un mini experimento. 
 
-3. Asignación por matching de Pares: Se ha probado que tiene problemas de poder serios en muchos contextos.
+3. **Asignación por matching de pares:** Se ha probado que tiene problemas de poder serios en muchos contextos
 
-4. Diseño Factorial: Se busca entender las interacciones de los tratamientos
+4. **Diseño Factorial:** Se busca entender las interacciones de los tratamientos
 
-5. Diseños clusterizados
+5. **Diseños clusterizados**: El nivel de aleatorización cambia
 
 En general, el lema es 'Control for what you can, Randomize what you cannot'
 
@@ -309,9 +311,18 @@ En general, el lema es 'Control for what you can, Randomize what you cannot'
 \includegraphics[width = 10cm]{block2.png}
 \end{center}
 
-### Con que estratificamos? 
+### Con que variables estratificamos? 
 
-La idea es construir bloques de variables categóricas. Con ellas se crean los estratos a partir de las combinaciones de cada categoria.
+Debemos elegir las variables sobre las cuales estratificar con base en dos criteros: 
+
+1. Variables que creemos están muy **correlacionadas con el impacto de tratamiento $\tau$**
+
+2. Variables sobre las que tengamos interés en conocer efectos heterógeneos. 
+
+
+### Mecánica de variables estratificadoras
+
+La idea es construir bloques con **variables categóricas**. Con ellas se crean los estratos a partir de las combinaciones de cada categoria.
 
 Ej: Estratifico por genero y si el paciente fuma o no. 
 
@@ -325,25 +336,37 @@ Bloques:
 
 4. Hombre, no fuma
 
-Posteriormente, aleatorizas dentro de cada bloque (con los mismos tratamientos y probabilidades). 
+Posteriormente, aleatorizas dentro de cada bloque (con los mismos tratamientos y probabilidades).
 
-Se debe eligir las variables **que están más correlacionadas con el impacto de tratamiento $\tau$**. El problema es que no observamos el impacto de tratamiento a priori. Dependemos de la intuición.
+Si las variables que nos interesa estratificar son continuas, debemos categorizarlas de alguna manera (i.e. deciles, cuartiles, etc).
+
+
+### Impacto de la estratificación sobre la medición de impacto 
+
+En general, si elegimos variables que están correlacionadas con el impacto de tratamiento, vamos a ganar mucha eficiencia en los estimadores (menos varianza)
+
+Si elegimos variables no correlacionadas, no hay daño. Simplemente el estimador se parece más al estimador de un experimento de aleatorización simple
+
+\begin{center}
+\includegraphics[width = 8cm]{block_impact.png}
+\end{center}
+
 
 ### Cosas a considerar
 
-- Hasta donde estratificar: Si elegimos demasiadas variables, pulverizamos mucho las observaciones en cada estrato. Esto genera que se pierda el overlap
+Hasta donde estratificar: Si elegimos demasiadas variables, pulverizamos mucho las observaciones en cada estrato. Esto genera que se pierda el overlap
 
-Debemos estratificar por las variables más correlacionadas al impacto/que nos interese observar efectos heterogeneos **jerarquizando**, sujeto a un mínimo de observaciones por estrato (i.e. $n_{strata}>grupos$)
+- Debemos estratificar por las variables más correlacionadas al impacto/que nos interese observar efectos heterogeneos **jerarquizando**, sujeto a un mínimo de observaciones por estrato (i.e. $n_{strata}>grupos$)
 
-- Misfits: Estas son observaciones que no son asignables porque:
+Misfits: Estas son observaciones que no son asignables porque:
 
 1. El tamaño del estrato es menor a los grupos a asignar
 
 2. El residual de las divisiones por grupo (i.e. dividir 10 observaciones en 3 grupos (1/3,1/3,1/3)).
 
-Debemos escoges fracciones de tratamiento que sean, de preferencia, números racionales. 
+- Debemos escoges fracciones de tratamiento que sean, de preferencia, números racionales. 
 
-Posteriormente, debemos asignar los misfits de 3 maneras (global, strata, NA)
+- Debemos asignar los misfits de 3 maneras (global, strata, NA)
 
 ### Misfits
 
