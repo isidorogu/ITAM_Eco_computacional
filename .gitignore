@@ -4,6 +4,19 @@
 
 # Session Data files
 .RData
+.csv
+.xlsx
+.Rdata
+*.csv
+*.Rdata
+*.xls
+*.xlsx
+Lectures/*.csv
+Lectures/.csv
+Lectures/*.Rdata
+Lectures/.Rdata
+
+
 
 # User-specific files
 .Ruserdata
@@ -45,4 +58,6 @@ Lista/
 # .DS_Store files 
 .DS_Store
 Lectures/.DS_Store
+
+
 

@@ -1,0 +1,515 @@
+---
+title: 'Lec11: Causal Inference: Experiments & Obs Studies'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+Experimentación
+ 
+- Experimentos de bajo poder: P-values exactos de Fisher
+
+- Diferencias en Diferencias
+
+- Non-compliance (Variables Instrumentales)
+
+Estudios observacionales
+
+- Event Studies
+
+- Regresión Discontinua
+
+
+
+### Medición de Experimentos 
+
+Vamos a cubrir con mejor detalle la medición de los experimentos de control aleatorio. 
+
+>- De donde viene la aleatoriedad en los experimentos?
+
+>- Viene del sampling como en las regresiones?
+
+>- No! viene del set de posibilidades de aleatorización. 
+
+>- Veamos primero los errores exactos que vienen de la aleatorización
+
+### Distribuciones de la asignación de tratamiento 
+
+Imaginen que tenemos un experimento donde: 
+
+- $N$=20: Tamaño total de la muestra
+
+- $N_t$ = 10: Tamaño del grupo de tratamiento
+
+- $N_c$ = 10: Tamaño del grupo de tratamiento
+
+Vamos a hacer una asignación aleatoria. De cuantas maneras la podemos hacer? 
+
+$${N \choose N_t}=\frac{N!}{N_t(N_c)}=\frac{20!}{10!10!}=184,756$$
+Había 184,756 maneras de asignar el experimento. Al medir el mismo, el investigador debería hacer pruebas de hipótesis comparado el estadístico observado vs los 184,755 casos restantes. 
+
+### Distribución de la asignación de tratamiento
+
+Qué pasa si estratificamos el experimento en 2 bloques (Género): 10 mujeres y 10 hombres: 
+
+$${N_b \choose N_{tb}}{N_b \choose N_{tb}}=\frac{10!}{N_t(N_c)}=\frac{10!}{5!5!}\frac{10!}{5!5!}=63,504$$
+
+- Lesson de diseño: Miren como si estraficamos perdemos variabilidad (que luego se traduce en menos varianza en los estimadores!). 
+
+- Lesson 2: Si sobre estratificamos, podemos perder tantas posibilidades de asignaciones aleatorias que deja de ser aleatorio (poder!)
+
+- Lesson 3: Bajo una hipótesis de no impacto ($\tau=0$) podemos sacar todas los posibles $\hat\tau$ para medir nuestro experimento.
+
+### P-values exactos de Fisher 
+
+Para hacer una medición con p-values exactos se tiene que hacer lo siguiente: 
+
+1. Formular tu hipótesis nula (Típicamente $H_0:\tau=0$)
+
+2. Estimar todos los posibles escenarios de asignación
+
+3. Con la hipótesis, "rellenar" los datos contrafactuales a nivel $i$
+
+4. Calcular el estadístico de prueba 
+
+5. Ver qué tan probable es que el estadístico observado se observe en la distribución bajo la hipótesis nula.
+
+
+### Ejemplo 
+
+Tomemos un ejemplo de un experimento de 6 personas que les asignaron tomar una medicina como tratamiento
+
+\begin{center}
+\includegraphics[width = 8cm]{fisher.png}
+\end{center}
+
+Si nuestra es hipótesis es que no hay impacto $H_0:Y_i(0)=Y_i(1) \ \ i=1,...,6$
+
+Estadístico: $T(T_i,Y_{obs})=|\bar Y_t-\bar Y_c|$
+
+Estadístico observado: $T_{obs}=|8/3-5/3|=1$
+
+
+### Ejemplo (2)
+
+Si ahora vemos los ${6 \choose 3}=20$ formas de asignar el experimento
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=4, fig.height=2}
+library(tidyverse)
+dist_t<-tibble(t = c(-1.-3.67,-1,-1.67,-0.33,2.33,1.67,-0.33,-1,1.67,-1.67,1,0.33,-1.67,-2.33,0.33,1.67,1,3.67,1))
+
+ggplot(dist_t, aes(t))+geom_density()+theme_bw()+
+   geom_vline(xintercept = 1, linetype = 'dashed')
+
+```
+
+
+16 de 20 casos el estadístico es, en valor absoluto, mayor a 1. Es decir, 80 % de las veces hubieramos observado un valor mayor a 1 bajo la hipótesis nula. No podemos rechazarla con este valor. 
+
+
+### Porque no usamos p-values de Fisher siempre? 
+
+Uno se podría preguntar por qué no usamos estos errores siempre. 
+
+- Ventajas: Noten como no hago ningún supuesto de normalidad de $Y$. Además estos son los errores exactos.
+
+- Desventajas: Si el número de $N$ crece, el número de posibles asignaciones crece de manera dramática. Esto hace que sea casi imposible calcular cada estadístico posible para comparar. 
+
+- En general, cuando $N$ es muy grande, la regresión (con sus supuestos de sampling) arroja errores estándar muy similares a los Exactos de Fisher. 
+
+- Los errores de Fisher siguen siendo muy útiles cuando te enfrentas a un experimento con muy pocas observaciones. 
+
+
+### Medición con regresión de un experimento 
+
+Ya vimos que con la regresión se puede medir un experimento, si $N$ es suficientemente grande: 
+
+- Siempre hay que tomar en cuenta el diseño en la medicion. Esto es, incluir efectos fijos de cada estrato en la regresión
+
+ - Esto es equivalente a hacer una comparación de medias dentro de cada estrato y luego promediar (ponderando) estas diferencias para sacar el ATE. 
+ 
+ - Cuando la $Y$ es una dicotómica, se debe usar una Modelo de Probabilidad Lineal. No debemos imponer formas funcionales. 
+ 
+ - Podemos agregar algunos controles para mejorar la eficiencia ($\downarrow$ varianza) del estimador. Especialmente variables que salieron desbalanceadas.
+
+### Ejemplo en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{impact_eval.png}
+\end{center}
+
+### Métodos cuasiexperimentales
+
+Los métodos cuasiexperimentales son aquellos en los que el Data Scientist no controla la función de asignación de tratamientos PERO tiene mucho conocimiento de ella. 
+
+- Todos los métodos cuasiexperimentales usan este conocimiento para llegar a comparativas (as good as random) en las que se pueda inferir causalidad entre las variables 
+
+Hoy vamos a ver 4: 
+
+- Ajuste por covariables 
+
+- Diferencias en Diferencias
+
+- Regresión Discontinua 
+
+- Event Studies
+
+### Métodos cuasiexperimentales II 
+
+\begin{center}
+\includegraphics[width = 8cm]{causal_inference.png}
+\end{center}
+
+### Métodos cuasiexperimentales III
+
+Recordemos las 3 características de asignación de tratamiento y cómo cambian en cuasiexperimentación:
+
+1. **Asignación Individual (SUTVA)**: Se mantiene. 
+
+2. **Asignación Probabilística (Overlap)**: Las distribuciones de las covariables ($X$) son lo suficientemente cercanas entre los grupos de tratamiento. 
+
+ - Cuando las distribuciones difieren mucho, no podemos usar métodos de econometría clásicos. Debemos intentar inferir causalidad mediante extrapolación para las observaciones extremas y excluirlas del diseño cuasiexperimental. 
+
+3. **Unconfoundness (Conditional Ignorability)**: Vamos a intentar construir mecanismos que nos lleven a esta comparaciones as good as random. *No es comprobable*
+
+### Ajuste por covariables 
+
+En principio, si tenemos SUTVA, podemos ajustar regresores causales con regresión: 
+
+$$y_i=X\beta+\epsilon_i$$
+
+- SUTVA implica que la $\beta$ que nos interesa depende sólo de las observaciones de cada $i$
+
+- Overlap se puede alcanzar controlando por muchos covariables $X$
+
+- En este caso el problema es el unconfoundness (exogeneidad). Sólo llegaremos a un estimador causal si y sólo si observamos cada variable que este correlacionada con la variable de interés y con la métrica $y_i$. Esto sería un modelo de tratamientos estructural
+
+ - En un mundo de Big Data (siguiente clase!), nos estamos acercando mucho más a la posibilidad de estimar estos modelos. 
+
+### Diferencias en Diferencias 
+
+El método de diferencias es muy popular. Esta es su estrategia de identificación causal:
+
+ - No asumimos nada de la función de asignación $P(treat)$
+ 
+ - Encontamos un grupo, que intentamos sea lo más parecido al grupo de tratamiento, que no haya recibido el tratamiento y que se haya evolucionado de la misma manera en el tiempo. 
+ 
+ - Esto es, que tenga **tendencia paralela**.
+ 
+ - Con esto, podemos inferir el $ATE=[\bar Y_t-\bar Y_c | durante =1]-[\bar Y_t-\bar Y_c | durante =0]$. Es decir, la diferencia post menos las diferencias previas. 
+ 
+ - Típicamente, esto se estima con:
+ 
+$y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$
+
+- Donde $\delta_{dif}$ es el estimador de diferencias en diferencias
+
+
+### Diferencias en Diferencias (2)
+
+Cómo evaluamos si hay tendencias paralelas en las observaciones previas a la intervención:
+
+- Típicamente se corre una prueba placebo. 
+
+Imaginense que observan $t=1,2,3,4,5,6$. En $t=4$ empezó la intervención. 
+
+- La prueba placebo consiste en correr el estimador de diferencias en diferencias ($y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$) para los periodos previos $1,2,3$ asumiendo que cada uno de ellos es donde sucedió la intervención. 
+
+$$durante_j = 1\{t \geq j\} \ \ j=1,2$$
+
+ - Si hay tendencias paralelas, el estimador de diferencias en diferencias en periodos previos debería ser pequeño y no significativo. 
+ 
+### Diferencias en Diferencias en Experimentación I 
+ 
+El método de diferencias en diferencias también puede ser utilizado en experimentación. 
+
+- Si el experimento duró varios periodos y tenemos observaciones previas al tratamiento, podemos usar diferencias en diferencias para mejorar ($\downarrow$ varianza) la estimación de ATE. 
+
+- Piensen en lo siguiente: Como los grupos fueron asignados aleatoriamente, a fuerzas tienen tendencias paralelas en los periodos previos a la intervención. 
+
+- Más aún, el estimador va a restar cualquier desbalance (aunque no significativo) de las observaciones previas. 
+
+- En la práctica, esto cambia ligeramente los estimadores de impacto. Pero no debería de ser un número significativo para el negocio. 
+
+
+### Diferencias en Diferencias en Experimentación II
+
+Si el experimento fue dinámico, puedes usar el método de diferencias en diferencias para medir el impacto 
+
+\begin{center}
+\includegraphics[width = 10cm]{dif_dif.png}
+\end{center}
+
+
+### Diferencias en Diferencias en Experimentación III 
+
+Noten como las diferencias previas son no significativas (experimento bien asignado). Aún así, el dif-dif limpia -3 pp y -2pp de diferencias previas. 
+
+\begin{center}
+\includegraphics[width = 8cm]{dif_dif_tabla.png}
+\end{center}
+
+### Diferencias en Diferencias en Experimentación IV
+
+\begin{center}
+\includegraphics[width = 10cm]{dif_dif_graph.png}
+\end{center}
+
+### Dif in Dif con `RCT`
+
+Para incluir dif in dif en la librería de RCT, sólo tenemos que hacer:
+```{r eval=FALSE, echo=T}
+library(RCT)
+dif_dif<-impact_eval(data = data, 
+                     endogenous_vars = "y_1", 
+                     treatment = "treat",
+                     control_vars = c('durante', 
+                                      "durante:treat"))
+
+```
+
+### Variables Instrumentales 
+
+Las variables instrumentales son otro método popular de inferencia causal:
+
+- Buscas estimar $Y_i = \beta_0 + \tau T_i+\epsilon_i$
+
+- Existe una variable $Z_i$ (instrumento) que está **MUY** correlacionada con el tratamiento de interés $T_i$ (Relevancia). 
+
+- Esta variable además **no está correlacionada** con la métrica de interés $Y_i$. (Exogeneidad). Formalmente esto implica $Cov(U_i,Z_i)$ que el instrumento no tiene correlación con ninguna otra variable no incluida en la regresión. 
+
+- Esto hace que la parte de la varianza de $T_i$ explicada por $Z_i$ sea unconfounded. 
+$$T_i=\gamma_0+\gamma_1Z_i+v_i \ \ 1st \ \ Stage$$
+$$Y_i=\eta_0+\eta_1Z_i+\omega_i \ \ 2nd  \ \ Stage$$
+$$\hat\tau = \frac{\hat\eta_1}{\hat \gamma_1}$$
+
+
+### Variables Instrumentales II 
+
+La anterior muestra una forma de estimar IV que se llama Two-Stage Least Squares: 
+
+>- Estimas el First Stage 
+
+>- Predices los scores del first stage (toda la varianza exógena de $T_i$)
+
+>- Usas esta predicción $\hat T_i$ y la metes a la regresión $Y_i=\beta_0+\tau\hat T_i+\epsilon_i$ 
+
+>- $\hat\tau$ es el estimador IV 2sls. Noten como es lo mismo que dividir los dos coeficientes del first stage y second stage
+
+### Variables Instrumentales III 
+
+Probemos que lo anterior es correcto: 
+$$Y_i=\beta_0+\tau T_i+\epsilon_i$$
+$$cov(Y_i,Z_i)=cov(\beta_0+\tau T_i+\epsilon_i,Z_i)$$
+$$cov(Y_i,Z_i)=cov(\beta_0,Z_i)+cov(\tau T_i,Z_i)+cov(u_i,Z_i)$$
+$$cov(Y_i,Z_i)=\tau cov(T_i,Z_i)$$
+$$\tau = \frac{cov(Y_i,Z_i)}{cov(T_i,Z_i)}=\frac{\eta_1}{\gamma_1}$$
+
+
+### Notas en IV 
+
+- El impacto encontrado es para los "compliers".
+
+- En realidad, si estimas el 2sls en dos etapas estarías ignorando los grados de libertad y heterocedasticidad de la predicción del first stage. 
+
+- El estimador te va a dar lo mismo, pero no los errores estándar.
+
+- En su lugar, se estima el $IV_{2sls}$ mediante el método de mínimos cuadrados generalizados en una sola etapa. 
+
+- Necesitas un intrumento **fuerte** en la primera etapa para que el estimador sea bueno (i.e. La primera etapa que tenga un $F-statistic \geq10$). 
+
+- Necesitas argumentar que tu instrumento es exógeno. Es decir, que no está correlacionado con ninguna variable no observada y con la métrica $Y_i$
+
+- Esto último hace muy dificil encontrar buenos instrumentos
+
+
+### Instrumentos en `R`
+
+La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
+
+\begin{center}
+\includegraphics[width = 10cm]{lfe.png}
+\end{center}
+
+### Instrumentos en `R` (2)
+
+La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
+
+\begin{center}
+\includegraphics[width = 10cm]{lfe_details.png}
+\end{center}
+
+### One-sided Non-compliance en Experimentos
+
+En la experimentación las variables instrumentales son muy importantes para encontrar el impacto del Treatment on the Treated (ToT):
+
+- Imaginen que lanzan un experimento donde envían SMS a los usuarios para ahorrar de manera aleatoria
+
+- El vector que define que mensaje recibía el usuario es $T_i$ (asignado aleatoriamente)
+
+- El vector que define quien vio el mensaje cuando lo recibió es $G_i$
+
+Cómo medimos el impacto del experimento? Tenemos dos opciones:
+
+- **Intend to Treat (ITT)**: Medimos $Y_i=\alpha + \tau T_i$. Esto nos arrojará el impacto de la intención de tratar sobre la $Y_i$ de manera insesgada (dado que sigue la asignación aleatoria). 
+
+- **Treatment on the Treated**: El impacto de los que efectivamente vieron el mensaje sobre $Y_i$
+
+### Intend to Treat (ITT)
+
+Este estimador es insesgado por definición. 
+
+- Sin embargo, puede no ser el estimador relevante. 
+
+- Imaginemos que mandamos el mensaje a 5 personas y sólo 2 lo vieron. Guardamos 5 personas en el grupo de control. 
+
+- Tenemos que $T_i=(0,0,0,0,0,1,1,1,1,1)$ pero $G_i=(0,0,0,0,0,1,0,0,0,1)$
+
+- Imaginemos que las personas que ven el mensaje incrementan $Y_i$ en 5 unidades $Y_{i|G_i=0}=17$. Los que no se quedan con el valor del grupo control $Y_{i|G_i=0}=12$
+
+- Cuando midamos el impacto con $\bar Y_{T_i=1}-\bar Y_{T_i=0}= 14-12=2$. 
+
+- Noten como el ITT nos dice que el impacto fue 2 cuando en realidad es 5 (para los tratados). Estoy promediando impactos de $(5,0,0,0,5)$. Así, subestimo el impacto el experimento sobre los tratados. 
+
+### IV en Experimentos
+
+Y si mido $Y_i \sim G_i$? Esto sería incorrecto, pues $G_i$ no es exógeno. La gente que ve el mensaje puede tener viertas características que hagan que sea más probable que lo hagan (sesgo de selección!).
+
+La alternativa es usar la asignación $T_i$ como variable instrumental de $G_i$. Vean como se cumplen ambos supuestos con mucha facilidad:
+
+- Relevancia: El mensaje que recibes esta altamente correlacionado con el mensaje que se te envió
+
+- Exogeneidad: $T_i$ es exógeno por construcción, pues es aleatorio.
+
+Con esto, se puede construir el impacto de los tratados $ToT$ como: 
+$$\tau=\frac{\eta_1}{\gamma_1}$$
+$$G_i=\gamma_0+\gamma_1T_i+v_i$$
+$$Y_i=\eta_0+\eta_1T_i+\omega_i$$
+
+### Regresión Discontinua
+
+Este es otro diseño cuasi-experimental muy utilizado en policy y en business. 
+
+- La asignación al tratamiento es definida por una **forcing variable** que define la pertenencia al tratamiento. 
+$$T_i=1\{forcing \geq k\}$$
+
+ - Ejemplos: Score de pobreza en Prospera, Score de elasticidad para asignar descuentos en tasa, reglas de edad para programas infantiles, etc. 
+ 
+- El mecanismo para llegar a unconfoundness es: Para las unidades muy cercanas al corte en ambos lados, estar de un lado o el otro fue casi aleatorio. Por ende las comparaciones entre ellas se pueden interpretar como causales. 
+
+### Regresión Discontinua II
+
+\begin{center}
+\includegraphics[width = 10cm]{rdd.jpeg}
+\end{center}
+
+### Regresión Discontinua: Supuestos
+
+Para estimar la RDD se necesita:
+
+1. Unconfoundness condicional en la forcing variable. 
+
+2. Continuidad: Si la $Y_i$ es continua en el corte, entonces el valor observado del otro grupo sirve como contrafactual.
+
+3. No manipulación de la forcing variable: Debemos examinar la densidad de la forcing variable para comprobar que no hay acumulación (bunching) de un lado del corte. 
+
+### Estimación de RDD 
+
+Estimar los impactos causales con RDD es posible via MCO: 
+$$y_i = \beta_0+\beta_1(forcing-k)+\tau T_i+\beta_3(forcing-k)T_i$$
+Para observaciones "cercanas" $|forcing-k|\leq k$
+
+- El primer término es el escalar
+
+- El segundo término denota la forma funcional de $y(forcing)$. Este puede ser polinómico. 
+
+- El tercer término es nuestro término de impacto de tratamiento. 
+
+- El cuarto término nos permite identificar si la forma funcional $y(forcing)$ cambia entre los lados de $k$
+
+Adicionalmente, típicamente se corren las regresiones con pesos triangulares $w=max\{0,h-|forcing|\}$
+
+### Estimación RDD II 
+
+La parte "díficil" en el RDD es seleccionar: 
+
+- $h$ (que tanto es tantito?): La forma óptima de elegirlo es el bandwidth de Imbens-Kalyanaraman. Este intenta encontrar el bandwidth que minimice (en promedio) el sesgo. 
+
+- La forma funcional de $y(forcing)$: Típicamente se empieza por una regresión lineal. Esto se fundamenta en la aproximación de Taylor. Cualquier $f(.)$ es localmente ~lineal. 
+
+
+De cualquier manera, casi siempre se corren pruebas de robustez donde: 
+
+- Se incrementa y disminuye $h$: La idea es ver que tan sensible es tu estimador a personas no tan distintas. 
+
+- Formas polinómicas de $y(forcing)$: Se intenta ver robustez a polinomios de 2,3 o cuarto grado. 
+
+### Otras pruebas 
+
+Típicamente se corren otras pruebas:
+
+- Densidad en el corte: Se verifica que no haya bunching en la forcing variable. Se estima el McCracy test
+
+- Pruebas placebo: Si corremos la RDD en otro corte $k*$, no deberíamos de encontrar impactos en Y. Esto también sirve para evaluar la continuidad
+
+- Pruebas placebo II: Evaluar el RDD sobre variables que no deberían ser afectadas por el tratamiento. No deberías encontrar impacto
+
+### Fuzzy RDD 
+
+La regresión discontinua tipo Fuzzy también asume que una forcing variable gobierna la asignación de tratamiento, sólo que esta no es Sharp: 
+
+- El punto del forcing variable marca **la elegibilidad** a recibir el tratamiento, pero este no es obligatorio. 
+
+- Noten como esto es el setting de variables instrumentales. La regla del corte de la forcing variable instrumenta la participación en el tratamiento. 
+
+- Lo único que le pedimos a la Fuzzy RDD es **monotonicidad**: No defiers. Es decir, que la probabilidad de participar aumente si cruzas al lado elegible. No hay personas que participen si no son elegibles. 
+
+### RDD en `R`
+
+Ya hay librerías que te ayudan a hacer la prueba de McCrary y calcular el $h$ de IK. En principio con el resto, podrías hacer la estimación con `lm`
+
+\begin{center}
+\includegraphics[width = 10cm]{Rdd_r.png}
+\end{center}
+
+### Event Studies 
+
+Finalmente, veamos event studies. Este método es muy útil cuando tenemos adopción escalonada del tratamiento en el tiempo. 
+
+- El mecanismo de asignación es: Si centramos todas las observaciones a cuando recibieron el tratamiento (evento), podemos identificar estimadores causales.
+
+- El razonamiento es que para que haya una variable omitida que ocasione sesgo, esta tiene que estar afectar a cada unidad en el periodo en que cada uno fue tratado. 
+
+- Por lo anterior, los event studies son mejores para identificar efectos causales mientras más escalonada haya sido la adopción. 
+
+$$t=tiempo-t_{tratamiento}$$
+$$y_{it}=\alpha_t+X\beta+\Sigma_{j=-\infty}^\infty\tau_t 1\{t=j \}$$
+
+### Event Studies 
+
+Noten como esa regresión estima $\tau_{-5},\tau_{-4},...,\tau_{0}, \tau_{1},...$ 
+
+Si el event study es bueno: 
+
+- No deberíamos de encontrar significancias para los periodos previos al evento. Los grupos deberían ser iguales (Overlap!)
+
+- El impacto por periodo esta en $\tau_t,  \ \ t\geq0$
+
+
