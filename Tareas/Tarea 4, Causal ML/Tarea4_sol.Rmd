@@ -1,0 +1,678 @@
+---
+title: "Targeted Marketing"
+author: "Isidoro Garcia"
+date: "2021"
+output: pdf_document
+graphics: yes
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, message = FALSE,
+                      fig.width = 6, fig.height = 4.5, fig.align = "right", cache = T)
+```
+
+\setlength{\parskip}{6pt}
+
+
+## Overview
+
+Los contratan como data scientists para una empresa que vende electrodomesticos. La empresa lanzó un experimento de control aleatorio via un mail en donde se envió un catalogo de los productos al grupo de tratamiento `mailing_indicator`. 
+
+Tu objetivo es estimar el impacto del envío sobre el gasto incremental: 
+
+$$\tau_{i}=\mathbb{E}[Y_{i}(1)-Y_{i}(0)|\boldsymbol{x}_{i}],$$
+
+En particular, queremos estimar el impacto de enviar el catalogo a nivel de cliente. Para ello, pondremos a competir algunos de los modelo de Causal Machine Learning que hemos aprendido en clase: 
+
+- Double Debiased Machine Learning 
+
+- Causal Forests 
+
+Adicionalmente, desarrollen una estrategia de focalización con base en los resultados de tu modelo. Elabora sobre la lógica económica (i.e. identifica los Beneficios y Costos Marginales de enviar la campaña). Finalmente, corrobora la validez externa de la estrategia usando datos de un año. Esto nos dará un termómetro de la utilidad del modelo para campañas posteriores. 
+
+
+
+## Paso 1: Estimación y predicción the Conditional Average Treatment Effects (CATE)
+
+Carguemos los datos de 2015
+
+```{r}
+library(tidyverse)
+library(data.table)
+library(gamlr)
+library(grf)
+library(xgboost)
+library(ranger)
+library(RCT)
+library(lfe)
+library(stargazer)
+library(knitr)
+```
+
+```{r, cache=TRUE}
+load("Bases input/Customer-Development-2015.RData")
+```
+
+Dividimos la base en entrenamiento y validacion. Usamos un seed fijo para replicabilidad.
+
+```{r}
+set.seed(1990)
+crm<-
+  crm %>% 
+  mutate(training_sample = rbinom(n = nrow(crm), 1, 0.7))
+  
+```
+
+
+#### Data cleaning
+
+1. Haz una primera revisión de la base. Cuantas variables tienen `NA`
+
+```{r }
+missings<-map_dbl(crm %>% select_all(), ~100*sum(is.na(.))/nrow(crm))
+kable(missings)
+```
+
+2. Muestra la matriz de correlación entre variables. Muestra los pares de variables que tienen más de 95% de correlación. Remueve una de cada par multicolineal. 
+
+```{r, cache=TRUE }
+cor_matrix <- cor(crm %>% select(-customer_id))
+
+cor_matrix[upper.tri(cor_matrix, diag = TRUE)] = NA
+
+cor_tibble<-tibble(row = rep(rownames(cor_matrix), ncol(cor_matrix)), 
+                   col = rep(colnames(cor_matrix), each = ncol(cor_matrix)), 
+                   cor = as.vector(cor_matrix))
+
+cor_tibble<-
+  cor_tibble %>% 
+  filter(!is.na(cor))
+
+large_cor_tibble<-
+  cor_tibble %>% 
+  filter(abs(cor)>=0.95)
+
+kable(large_cor_tibble, digits = 3)
+
+# Quitando las variables de col 
+crm<-
+  crm %>% 
+  select(-all_of(large_cor_tibble$col))
+```
+
+3 (2 pts). Corroba que la asignación tratamiento fue aleatoria mediante revisión del balance. Realiza las pruebas balance T y F. Cuántas variables salen desbalanceadas? Que muestra esto sobre la asignación de tratamiento?
+
+```{r }
+balance_t<-balance_table(crm %>% select(-customer_id, -outcome_spend), "mailing_indicator")
+kable(balance_t, digits = 2)
+
+table(balance_t$p_value1<0.05)
+
+balance_f<-balance_regression(crm %>% select(-customer_id, -outcome_spend), "mailing_indicator")
+kable(balance_f$F_test, digits = 3)
+
+```
+
+4. Realize un ajuste de False Discovery Rate al 10%. Cuántas variables salen desbalanceadas ahora? 
+
+```{r }
+# Creamos el ranking de los p-values 
+balance_t<-
+  balance_t %>%
+  arrange(p_value1) %>% 
+  mutate(ranking = row_number())
+
+
+balance_t<-
+  balance_t %>% 
+  mutate(corte_fdr = 0.1*ranking/nrow(balance_t), 
+         sig_fdr = if_else(p_value1<=corte_fdr, 'Significativa', 'No significativa'))
+
+
+table(balance_t$sig_fdr)
+```
+
+### Estimación de impacto de tratamiento (ATE)
+
+5 (2pts). Estima el impacto promedio de enviar el catalogo vía email. Estima el impacto sin controles y luego agregar dos estimaciones de robustez: 1) Agregando variables que salieron significativas y 2) Agregando variables que salieron significativas con el FDR. Interpreta los resultados 
+
+```{r, results='asis' }
+
+# Estimación sin  controles 
+itt_sin_controles<-felm(outcome_spend ~ mailing_indicator | 0 |0 | 0, data = crm)
+
+# Estimación con controles 25 
+controles<-str_c(balance_t %>% filter(p_value1<0.05) %>% select(variables1) %>% pull(), collapse = "+")
+formula_y<-str_c("outcome_spend~mailing_indicator+",controles, " | 0 | 0 |0")
+itt_controles<-felm(as.formula(formula_y), data = crm)
+
+stargazer(itt_sin_controles, itt_controles)
+rm(balance_t, balance_f, itt_controles, itt_sin_controles, 
+   cor_matrix, cor_tibble, large_cor_tibble)
+```
+
+
+#### Estimación de efectos heterogeneos
+
+Usaremos el training sample para estimar el Conditional Average Treatment Effect de enviar el catalogo sobre el gasto en dólares. Estimaremos dos tipos de modelos (si agregan otro es bienvenido): 
+
+(a) Double Debiased LASSO
+(b) Causal Forests 
+
+
+\bigskip
+
+Separa la base de entrenamiento de la de validación
+
+```{r, cache=TRUE}
+crm_training<-
+  crm %>% 
+  filter(training_sample == 1)
+crm_validation <-
+  crm %>% 
+  filter(training_sample == 0)
+
+rm(crm)
+```
+
+####Double Debiased LASSO
+
+6 (3pts). Estima un Double Debiased LASSO. Asegurate de mostrar el código. (Tip: recuerda que necesitas guardar el LASSO de cada K para poder usarlo en la base de validación)
+
+```{r, cache=TRUE }
+# X's
+X<-
+  crm_training %>% 
+  select(-c(customer_id, outcome_spend, training_sample,mailing_indicator))
+
+X<-sparse.model.matrix(~. + 0, data = X)
+
+outcome_spend<-crm_training$outcome_spend
+treat<-crm_training$mailing_indicator
+
+k<-treatment_assign(data = crm_training, 
+                    share_control = 0.2, n_t = 4, 
+                    strata_varlist = "customer_id", 
+                    missfits = "global", seed = 1900, 
+                    key = "customer_id")
+
+k<-k$data
+k<-
+  k %>% 
+  mutate(k = treat + 1)
+
+k<- k %>% ungroup()
+k<-k$k
+
+#######################
+# Cross-fitting 
+######################
+modelo<-map(1:5, 
+                function(a) { 
+                  treat_fit <-gamlr(x = X[k!=a, , drop= F], y = treat[k !=a],family="binomial")
+
+                  spend_fit <-gamlr(x = X[k!=a, , drop= F], y = outcome_spend[k !=a])
+
+                  modelos<-list("treat_fit" = treat_fit, "spend_fit" = spend_fit)
+                  
+
+                }) 
+
+names(modelo)<-str_c("k=", seq(1,5))
+
+scores<-map_dfr(1:5, 
+                function(a) {
+                   treat_hat<-as.numeric(predict(modelo[[a]]$treat_fit,
+                                                 newdata = X[k==a, , drop= F],
+                                                 type = "response"))
+
+                   spend_hat<-as.numeric(predict(modelo[[a]]$spend_fit,
+                                                 newdata = X[k==a, , drop= F],
+                                                 type = "response"))
+
+                   treat_resid <- treat[k==a] - treat_hat
+                  
+                   spend_resid <- outcome_spend[k==a]- spend_hat
+
+
+                   scores<-bind_cols("treat_hat" = treat_hat, "spend_hat"= spend_hat,
+                                   "treat_resid"= treat_resid, "spend_resid" = spend_resid)
+                  
+                  
+                  
+                  
+                })
+
+scores<-bind_cols(scores, "outcome_spend" = outcome_spend, "treat" = treat)
+
+save(modelo, file = "Modelos/ddml_lasso.Rdata")
+save(scores, file = 'Modelos/scores_ddml.Rdata')
+
+```
+
+7 (2pts). Cuál es el impacto de tratamiento promedio? Estimalo de dos maneras: 1) `spend_resid~treat_hat + treat` y 2) `spend~treat_resid`. Sale lo mismo? Justifica tu respuesta
+
+```{r, results='asis' }
+mailing_ate<-lm(spend_resid ~ treat_hat + treat, data = scores)
+
+mailing_ate2<-lm(spend_resid ~ treat_resid, data = scores)
+
+stargazer(mailing_ate, mailing_ate2, title = "ATE")
+
+```
+
+8 (3pts). Cuáles son las variables más importantes para las nuisance functions $T_i = g(X_i)+v_i$ y $y_i=m(X_i)+\epsilon_i$? (Tip: toma las variables que tengan $\beta \neq 0$ en cada $k$ y haz un `inner_join`. De ahí muestra el promedio de los coeficientes) Interpreta la función $g(X_i)$, porque sale así?
+
+```{r }
+
+coeficientes_m<-map(modelo, 
+                    function(x) { 
+                      
+
+                      
+                      coeficientes<-as.matrix(coef(x[["spend_fit"]]))
+
+                      coeficientes<-tibble(variable = rownames(coeficientes),
+                      coeficiente = coeficientes[,1])
+
+                      coeficientes<-coeficientes %>% filter(coeficiente !=0)
+                      })
+
+coeficientes_g<-map(modelo, 
+                    function(x) { 
+                        
+                      coeficientes<-as.matrix(coef(x[["treat_fit"]]))
+                        
+                      coeficientes<-tibble(variable = rownames(coeficientes),
+                      coeficiente = coeficientes[,1])
+  
+                      coeficientes<-coeficientes %>% filter(coeficiente !=0)
+                      })
+
+
+coeficientes_m<-reduce(coeficientes_m, inner_join, by = "variable")
+coeficientes_g<-reduce(coeficientes_g, inner_join, by = "variable")
+
+coeficientes_g<-
+  coeficientes_g %>% 
+  rowwise() %>%
+  mutate(coef_final= mean(coeficiente, coeficiente.x, coeficiente.y, coeficiente.x.x, coeficiente.y.y)) %>% 
+  select(variable, coef_final)
+
+coeficientes_m<-
+  coeficientes_m %>% 
+  rowwise() %>%
+  mutate(coef_final= mean(coeficiente, coeficiente.x, coeficiente.y, coeficiente.x.x, coeficiente.y.y)) %>% 
+  select(variable, coef_final)
+
+
+kable(
+   coeficientes_g %>%
+   arrange(desc(abs(coef_final))))
+
+kable(
+   coeficientes_m %>%
+   arrange(desc(abs(coef_final))))
+
+```
+
+9 (3pts). Ahora corre un DDML LASSO para encontrar los efectos a nivel cliente (Tip: interactúa todas las variables con `treat_resid`. Muestra el código. Qué varaibles salen significativas?
+
+```{r }
+
+crm_training<-
+  bind_cols(crm_training, scores %>% select(treat_resid))
+
+X<-
+  crm_training %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator))
+
+X<-sparse.model.matrix(~. + 0+ . *treat_resid, data = X)
+outcome_spend<-crm_training$outcome_spend
+
+ddml_hte<-gamlr(x = X, y = outcome_spend, free = "treat_resid")
+save(ddml_hte, file = 'Modelos/ddml_hte.Rdata')
+
+coeficientes<-as.matrix(coef(ddml_hte))
+
+coeficientes<-tibble(variable = rownames(coeficientes),
+                     coeficiente = coeficientes[,1])
+
+coeficientes<-coeficientes %>% filter(coeficiente !=0)
+
+kable(
+   coeficientes<-
+   coeficientes %>% 
+   arrange(desc(abs(coeficiente))))
+
+
+```
+
+10 (2 pts). Predice el CATE en la base de entrenamiento y en la base de validación. Como se ve la distribución del impacto de tratamiento en ambas? 
+
+```{r }
+# Prediciendo en la base de entrenamiento
+crm_training<-
+  crm_training %>% 
+  mutate(ddml_impact = as.numeric(predict(ddml_hte, newdata = X , type = "response")))
+
+
+# Validation 
+# Construyendo la primera X 
+X<-
+  crm_validation %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator)) 
+
+
+# Generando treat_resid en validacion
+scores_validation<-
+  map_dfc(1:5, 
+                function(a) {
+                   treat_hat<-as.numeric(predict(modelo[[a]]$treat_fit,
+                                                 newdata = X,
+                                                 type = "response"))
+
+                   spend_hat<-as.numeric(predict(modelo[[a]]$spend_fit,
+                                                 newdata = X,
+                                                 type = "response"))
+
+                   treat_resid <- crm_validation$mailing_indicator - treat_hat
+                  
+                   spend_resid <- crm_validation$outcome_spend- spend_hat
+
+
+                   scores<-bind_cols("treat_resid"= treat_resid, "spend_resid" = spend_resid)
+                  
+                  
+                  
+                  
+                })
+
+
+# Promediando los scores por K 
+scores_validation<-
+  scores_validation %>% 
+  rowwise() %>% 
+  mutate(spend_resid = mean(spend_resid...2, spend_resid...4, spend_resid...6, spend_resid...8, spend_resid...10), 
+         treat_resid = mean(treat_resid...1, treat_resid...3, treat_resid...5, treat_resid...7, treat_resid...9)) %>%
+  select(spend_resid, treat_resid)
+
+# Treat resid en la base 
+crm_validation <-
+  bind_cols(crm_validation, scores_validation %>% select(treat_resid))
+
+X<-
+  crm_validation %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator))
+
+
+X<-sparse.model.matrix(~. + 0+ . *treat_resid, data = X)
+
+crm_validation<-
+  crm_validation %>% 
+  mutate(ddml_impact = as.numeric(predict(ddml_hte, newdata = X, type = "response")))
+
+
+# Grafica de ambos 
+tau_i<-bind_rows(crm_training %>% select(customer_id, ddml_impact, training_sample, outcome_spend, mailing_indicator), 
+                 crm_validation %>% select(customer_id, ddml_impact, training_sample, outcome_spend, mailing_indicator))
+  
+tau_i<-
+  tau_i %>% 
+  mutate(training_sample = if_else(training_sample ==1, "Traning", "Validation"))
+
+ggplot(tau_i, aes(ddml_impact))+
+  geom_histogram(bins = 100, aes(fill = training_sample), alpha = 0.55)+
+  theme_bw()+
+  labs(x = 'Impacto de tratamiento por usuario', fill = 'Base')+
+  scale_x_continuous(labels = scales::comma, breaks = seq(0,1100,100))
+
+rm(X, coeficientes, coeficientes_g, coeficientes_m, mailing_ate, mailing_ate2)
+
+```
+
+
+
+####Causal Forest
+
+11 (2pts). Ahora vayamos al causal forest. Estima un causal forest en la base de entrenamiento (Estima 750 árboles)
+```{r, cache=TRUE }
+outcome_spend<-crm_training$outcome_spend
+
+X<-
+  crm_training %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator, ddml_impact, treat_resid))
+
+treat<-crm_training$mailing_indicator
+
+a<-Sys.time()
+
+causal_hte<-causal_forest(X = X, Y = outcome_spend, W = treat, num.trees = 750)
+
+Sys.time() - a
+```
+
+12 (3pts). Cómo se distribuye el impacto de tratamiento? Cuál es el impacto de tratamiento (ATE)? Qué tanto se acerca al impacto de tratamiento "real"? Cómo se compara con el impacto estimado con el ddml simple?
+```{r}
+# ATE 
+average_treatment_effect(causal_hte)
+
+crm_training<-
+  crm_training %>% 
+  mutate(cf_impact = predict(causal_hte)$predictions, 
+         spend_resid  = scores$spend_resid)
+
+
+# Validation
+X<-
+  crm_validation %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator, ddml_impact, treat_resid))
+
+crm_validation<-
+  crm_validation %>% 
+  mutate(cf_impact = predict(causal_hte, newdata = X)$predictions)
+
+
+# Grafica de ambos 
+tau_i<-bind_rows(crm_training %>% select(customer_id, ddml_impact, training_sample, outcome_spend, mailing_indicator, cf_impact), 
+                 crm_validation %>% select(customer_id, ddml_impact, training_sample, outcome_spend, mailing_indicator, cf_impact))
+
+
+tau_i_long<-
+  tau_i %>% 
+  pivot_longer(cols = c(ddml_impact, cf_impact), names_to = "modelo", values_to = "estimador")
+
+ggplot(tau_i_long, aes(estimador))+
+  geom_histogram(bins = 100, aes(fill = training_sample), alpha = 0.55)+
+  theme_bw()+
+  labs(x = 'Impacto de tratamiento por usuario', fill = 'Base')+
+  scale_x_continuous(labels = scales::comma, breaks = seq(0,1100,100))+
+  facet_wrap(~modelo, scales = "free")
+
+
+
+```
+
+13. Haz un scatter plot de las predicciones de ambos modelos? Hay alguna relación?
+
+```{r, results='asis' }
+ggplot(tau_i, aes(cf_impact, ddml_impact))+geom_point(alpha = 0.5)+
+  geom_abline(slope = 1, intercept = 0)+theme_bw()+
+  geom_smooth()
+
+
+comparativa<-lm(ddml_impact ~ cf_impact, data = tau_i)
+
+stargazer(comparativa)
+```
+
+14 (4pts). Evalúa el poder predictivo de cada modelo (OOS). Esto se hace por modelo: Divide la muestra en 10 partes con base en el score de ddml. Para cada parte, estima el impacto de tratamiento vía una regresión y saca el promedio del score. Valida si para los grupos que dice el score el impacto será más grande, el coeficiente de la regresión es. Cómo se ven los modelos? Cuál parece ser mejor?
+
+```{r} 
+
+tau_validation <-
+  tau_i %>% 
+  filter(training_sample == 0) %>% 
+  mutate(cut_ddml = ntile(ddml_impact, 10), 
+         cut_cf = ntile(cf_impact, 10))
+
+
+# DDML
+por_ddml<-tau_validation %>% split(.$cut_ddml)  
+
+por_ddml<-
+  map_dfr(por_ddml, 
+          function(x) {
+            ddml_mean = mean(x$ddml_impact)
+            cf_mean = mean(x$cf_impact)
+            regresion = coef(lm(outcome_spend~mailing_indicator, data = x))["mailing_indicator"]
+            
+            tabla<-tibble(corte = first(x$cut_ddml), "ddml" = ddml_mean, "cf" = cf_mean, "reg" = regresion)
+            
+          })
+
+
+# CAUSAL FOREST
+por_cf<-tau_validation %>% split(.$cut_cf)  
+
+por_cf<-
+  map_dfr(por_cf, 
+          function(x) {
+            ddml_mean = mean(x$ddml_impact)
+            cf_mean = mean(x$cf_impact)
+            regresion = coef(lm(outcome_spend~mailing_indicator, data = x))["mailing_indicator"]
+            
+            tabla<-tibble(corte = first(x$cut_cf), "ddml" = ddml_mean, "cf" = cf_mean, "reg" = regresion)
+            
+          })
+
+comparativa<-bind_rows(por_ddml, por_cf, .id = "modelo")
+
+comparativa<-comparativa %>% mutate(modelo = if_else(modelo==1, "DDML", "Causal Forest"))
+
+comparativa<-
+  comparativa %>% 
+  pivot_longer(cols = c(ddml, cf, reg), 
+               names_to = "Modelo", values_to = "estimador")
+
+ggplot(comparativa, aes(corte, estimador, fill = Modelo, color = Modelo))+
+  geom_point()+
+  geom_line()+
+  facet_wrap(~modelo)+
+  theme_bw()+
+  geom_hline(yintercept = 0)
+
+```
+
+15 (6 pts). Construye una estrategia de focalización a nivel usuario con base a los resultados de cada modelo. Considera lo siguiente: 
+
+- El costo marginal de mandar el mail es 0.99 USD 
+
+- El Beneficio marginal es el impacto incremental la utilidad generada por esas ventas 
+
+- El margen de ganancia sobre las ventas es de 32.5 fijo 
+
+Con esto, indica: 
+
+- Cuantos usuarios entrarían a la campaña? 
+
+- A partir de cuánto lift (ventas incrementales) entran? 
+
+- Cuál es el impacto promedio esperado de tu población final? 
+
+- Cuánta utilidad haremos con esta estrategia? Cómo se compara con la utilidad de la campaña sin focalizar?
+
+
+```{r }
+# Utilidad marginal 
+tau_i<-
+  tau_i %>% 
+  mutate(umg_ddml= ddml_impact*0.325-0.99, 
+         umg_cf = cf_impact*0.325-0.99)
+
+# 71561
+tau_i_cf<-
+  tau_i %>% 
+  filter(umg_cf >=0)
+
+# 138,234
+tau_i_ddml<-
+  tau_i %>% 
+  filter(umg_ddml>=0)
+
+# Impacto minimo y promedio 
+str_c("Impacto mínimo DDML", round(min(tau_i_ddml$ddml_impact), digits = 2))
+# Impacto minimo y promedio 
+str_c("Impacto mínimo CF", round(min(tau_i_cf$cf_impact), digits = 2))
+
+# Impacto promedio 
+str_c("Impacto promedio DDML", round(mean(tau_i_ddml$ddml_impact), digits = 2))
+# Impacto  promedio 
+str_c("Impacto promedio CF", round(mean(tau_i_cf$cf_impact), digits = 2))
+
+# Impacto total 
+str_c("Impacto total DDML", scales::comma(round(sum(tau_i_ddml$ddml_impact), digits = 2)))
+# Impacto  total 
+str_c("Impacto total CF", scales::comma(round(sum(tau_i_cf$cf_impact), digits = 2)))
+# Impacto total 
+str_c("Impacto total sin focalizar", scales::comma((average_treatment_effect(causal_hte)[1])*nrow(tau_i %>% filter(mailing_indicator==1))))
+
+# Utilidad total 
+str_c("Utilidad total DDML", scales::comma(round(sum(0.32*tau_i_ddml$ddml_impact)-nrow(tau_i_ddml)*0.99, digits = 2)))
+
+# Utilidad total 
+str_c("Utilidad total CF", scales::comma(round(sum(0.32*tau_i_cf$cf_impact)-nrow(tau_i_cf)*0.99, digits = 2)))
+
+# Utilidad total sin focalizar 
+str_c("Utilidad total sin focalizar", scales::comma((0.32*average_treatment_effect(causal_hte)[1]-0.99)*nrow(tau_i %>% filter(mailing_indicator==1))))
+
+```
+
+
+16 (3pts). Haz una gráfica del la utilidad total vs q (personas que entran en la campaña) para DDML y CF
+
+```{r }
+cortes<-seq(-34,1000,1)
+ut_q_ddml<-map_dfr(cortes, 
+              function(x) {
+                tau_i %>%
+                  filter(ddml_impact>=x) %>% 
+                  summarise(beneficio_total = sum(ddml_impact), 
+                            q = n(),
+                            costo_total = q*0.99, 
+                            utilidad_total = 0.32*beneficio_total - costo_total)
+                
+              })
+
+
+ut_q_cf<-map_dfr(cortes, 
+              function(x) {
+                tau_i %>%
+                  filter(cf_impact>=x) %>% 
+                  summarise(beneficio_total = sum(cf_impact), 
+                            q = n(),
+                            costo_total = q*0.99, 
+                            utilidad_total = 0.32*beneficio_total - costo_total)
+                
+              })
+
+
+
+ggplot(ut_q_ddml, aes(q, utilidad_total))+geom_point()+
+  geom_line()+
+  theme_bw()+
+  scale_y_continuous(labels = scales::comma)+
+  geom_hline(yintercept = max(ut_q_ddml$utilidad_total), linetype= 'dashed')+
+  geom_vline(xintercept = ut_q_ddml$q[ut_q_ddml$utilidad_total==max(ut_q_ddml$utilidad_total)], linetype= 'dashed')
+
+ggplot(ut_q_cf, aes(q, utilidad_total))+geom_point()+
+  geom_line()+
+  theme_bw()+
+  scale_y_continuous(labels = scales::comma)+
+  geom_hline(yintercept = max(ut_q_cf$utilidad_total), linetype= 'dashed')+
+  geom_vline(xintercept = ut_q_cf$q[ut_q_cf$utilidad_total==max(ut_q_cf$utilidad_total)], linetype= 'dashed')
+
+
+```
+
