@@ -1,0 +1,362 @@
+---
+title: 'Lec13: Causal Machine Learning II'
+author: "Isidoro Garcia Urquieta"
+date: "2021"
+output: beamer_presentation
+slide_level: 3
+fontsize: 10pt
+header-includes: 
+   \usepackage{graphicx}
+   \usepackage{fancyhdr}
+   \usepackage{cancel}
+   \pagestyle{fancy}
+   \setlength\headheight{3pt}
+   \fancyhead[R]{\includegraphics[width=2cm]{logo-ITAM.png}}
+   \lhead{\fontsize{8pt}{10pt}\selectfont \textit{Economía Computacional}}
+   \definecolor{verdeitam}{RGB}{0,90,0}
+   \setbeamercolor{structure}{fg=verdeitam}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Agenda
+
+- Causal Trees 
+
+- Double Debiased ML for HTE 
+
+- Causal forests 
+
+- Generalized Random Forests 
+
+
+
+### Como combinar Inferencia Causal con Machine Learning? 
+
+De manera general, la inferencia causal trata de **inferir** sobre **derivadas** o cambios en la métrica $Y_i$ en lugar de la $Y_i$ misma (el nivel)
+$$\tau_i=\frac{\partial Y_i}{\partial T_i}$$
+
+Por otro lado, los modelos de Machine Learning que vimos buscan **predecir** $Y_i$ fuera de la muestra:
+$$\hat Y_i=\hat{f(X_i)}+\epsilon_i$$
+Son problemas fundamentalmente distintos! 
+
+Un grupo de autores: (Christian Hansen, Susan Athey, Guido Imbens, Stephan Wager, Belloni, Victor Chernozshukov, Matt Taddy, Esther Duflo, Robert Tibshirani) se pusieron a pensar cómo aprovechar ML y aplicarlo a **predecir e inferir impactos causales (derivadas)**
+
+### Conclusiones clase anterior
+
+En esta clase vimos los primeros algoritmos para hacer inferencia causal en Big Data apalancándonos de algoritmos de ML:
+
+- El sesgo por variables omitidas es $\beta*\delta$ en $\hat\tau=\tau+\beta_1\delta_1$ 
+
+- Los propensity scores son **cruciales** para alcanzar balances en altas dimensiones. 
+
+- Estos se pueden 1) Estimar directamente via ML o 2) Resolver por los pesos que generan mayor balance
+
+- El partialling out (conditional unconfoundness) está detrás de todos estos algoritmos
+
+- Finalmente, el cross-fitting ó honesty (depende del autor) es un ejercicio importantísimo para asegurar estimadores insesgados. 
+
+La siguiente clase veremos como estos algoritmos (DDML) y otros nuevos (Causal Forests) extienden esta literatura para encontrar no sólo $\tau$ sino $\tau_i$
+
+
+### Double Debiased Machine Learning 
+
+Chernoszhukov, Chetverikov, Duflo y Hansen (2018) propusieron un método parecido al de Belloni (2014), pero con dos mejoras sustanciales: 
+
+1. Se puede usar cualquier método de Machine Learning en las dos etapas 
+
+2. Sacan un método de estimación **Cross-Fitting** que permite insesgar los estimadores. 
+
+El problema se motiva así: 
+$$y_i = \tau T_i+m(X_i)+\epsilon_i$$
+$$T_i=g(X_i)+u_i$$
+
+Donde $m(X_i)$ y $g(X_i)$ son **nuisance functions** desconocidas de todas las variables. Estas pueden tener cualquier forma (lineal y no lineal) y ser estimadas con cualquier método de ML. 
+
+### Double Debiased Machine Learning II 
+
+Pasos: 
+
+1. Divide tu muestra en K partes de manera aleatoria
+
+2. Estima $\hat{g(X_{i \in K^c})}$ en K-1 partes usando LASSO, Random Forest, XGB u otro método. 
+
+3. Predice $\hat{g(X_{i \in K})}$ y $V_{i \in K}^y=y_{i \in K}-\hat{g(X_{i \in K})}$
+
+4. Estima $\hat{m(X_{i \in K^c})}$ en K-1 partes usando LASSO, Random Forest, XGB u otro método. 
+
+5. Predice $\hat{m(X_{i \in K})}$ y $V_{i \in K}^T=T_{i \in K}-\hat{m(X_{i \in K})}$
+
+6. Obtén $\tau$ al correr la regresión de $V_{i}^y=\alpha+V_i^T+\psi_i$
+
+  - Esto es DDML2. En DDML1 estimas $\tau =\frac{1}{k}\Sigma_k \tau_k$
+
+### Double Debiased Machine Learning III
+
+Noten la parte del **cross-fitting**. Entrenas en todas vs una parte las nuisance functions y estimas (creas residuales) en la otra. 
+
+\begin{center}
+\includegraphics[width = 10cm]{cross_fitting_1.png}
+\end{center}
+
+### Cross-fitting 
+
+Los autores muestran que el cross-fitting es **crucial** para obtener estimadores insesgados/causales. Esto también se puede denominar **honesty**.
+
+\begin{center}
+\includegraphics[width = 10cm]{cross_fitting.png}
+\end{center}
+
+### Double Debiased Machine Learning IV
+
+Finalmente, noten como el algoritmo: 
+
+- Aprovecha ML para crear funciones que detectan todas las señales. Esto reduce los errores a un mínimo, pues nos da podemos estimar funciones muy complejas
+
+- Usa el concepto de **partialling out**. $m(X_i)$ y $g(X_i)$ contienen la varianza de $y_i$ y $T_i$ explicada por $X$. 
+
+- Al crear los residuales $V_i^y$ y $V_i^T$, estamos estimando la relacion entre toda la varianza no explicada por $X_i$ de $y_i$ vs $T_i$. Ergo, causal!
+
+- Finalmente, la estimación es doble robusta porque, al estimar ambas nuisance functions, no se necesita perfección en ninguna. 
+
+### Double Debiased Machine Learning for HTE
+
+Como podemos usar DDML para calcular efectos heterogeneos? 
+
+Pasos: 
+
+1. Divide tu muestra en K partes de manera aleatoria
+
+2. Estima $\hat{g(X_{i \in K^c})}$ en K-1 partes usando LASSO, Random Forest, XGB u otro método. 
+
+3. Predice $\hat{g(X_{i \in K})}$ y $V_{i \in K}^y=y_{i \in K}-\hat{g(X_{i \in K})}$
+
+4. Estima $\hat{m(X_{i \in K^c})}$ en K-1 partes usando LASSO, Random Forest, XGB u otro método. 
+
+5. Predice $\hat{m(X_{i \in K})}$ y $V_{i \in K}^T=T_{i \in K}-\hat{m(X_{i \in K})}$
+
+6. Corre un LASSO de $V_{i}^y=\alpha+\tau V_i^T+X\beta+W\delta$. Esto es un LASSO con cada $X$ interactuada con $T$, dejando que el LASSO escoja las interacciones relevantes. 
+
+Donde $W= \{X_1*T, X_2*T, ...,X_p*T \}$
+
+
+### Double Debiased Machine Learning for HTE II 
+
+Intuitivamente, el DDML crea 2 scores (uno para $y$ y otro para $T$) que sean **as good as random** y con ellos:
+
+- Estima el ATE 
+
+- Usa LASSO para estimar HTE 
+
+Algunas notas importantes: 
+
+Como uso DDML en bases que no sean en la que entrené?
+
+- Tienes que construir $V_j^T,V_j^y$ primero. 
+
+- Para ello, debes usar $\hat{g_k(X_{i})}$ y $\hat{m_k(X_{i})}$. Esto es genera k $\hat y_k,\hat T_k$. 
+
+- Promedia los k scores para obtener $\hat y, \hat T$
+
+- Usa $\hat y, \hat T$ para construir $V_j^T,V_j^y$ en la base de validación. 
+
+- Predice $\tau_i$ usando la información de la base
+
+### Causal Trees 
+
+Athey y Wager (2016) crearon un algoritmo llamado Causal Trees. Estos crecen muy parecido a los árboles de decisión, con dos cambios importantes: 
+
+1. **Honesty**: 
+
+- Tenemos una base de tamaño $N$. La dividimos en $N_{training},N_{validation}$
+
+- Despues, dividimos $N_{training}$ en en $N_{splitting}$ y en $N_{estimation}$
+
+- La parte de **splitting** se usa para crecer el árbol causal. La parte **estimating** se usa para estimar (valga la redundancia) el impacto. Se ve familiar? 
+
+- El honesty ayuda a que la parte que busca los subgrupos con mayor impacto de tratamiento no sea usada para estimar. De alguna manera valida el estimador (muy parecido al Cross-fitting)
+
+
+### Causal Trees II 
+
+Cómo se entrena en la parte **splitting**:
+
+1. Estimas un árbol de forma **greedy**. El **stop rule** se detiene cuando hay un mínimo de observaciones del control **y** del tratamiento. 
+
+2. Cuando el árbol termina, estimas el impacto de tratamiento en cada lift como:
+$$\hat{\tau}(X_{i \in leaf})=\bar Y_{T=1}-\bar Y_{T=0}$$
+La intuición es muy simple: 
+
+- El Error Cuadrático Medio (ECM) de $ECM(\tau)=sesgo(\tau)^2+Var(\tau)$
+
+- El splitting set se enfoca únicamente en detectar **en que subpoblaciones** cambia más el impacto $\tau$. Es decir se encarga de $Var(\tau)$
+
+- El estimating set se enfoca en estimar $\tau$ de manera insesgada. 
+
+
+### Causal Trees III 
+
+El segundo cambio **crucial** es el cambio de regla en el splitting set. 
+
+- En un tree normal el splitting busca disminuir el $ECM(y)$. Esto es, $ECM_y'=ECM_{y,split1}+ECM_{y,split2}<ECM_y^0$
+
+- El Causal tree debe enfocar en diminuir el $ECM(\tau)$. El problema es que no es observable :(. Como le hacemos? Los autores consideran 3 posibilidades: 
+
+1. Transformed Outcome Tree ($Y_i^*=Y_i \Big( \frac{T_i-e(X_i)}{e(X_i)*(1-e(X_i))} \Big)=\tau_i$): Usar el transformed outcome para despues usar out of the box decision trees. 
+
+2. Squared T-Statistic Tree ($T ^2=\frac{(\bar Y_L-\bar Y_R)^2}{S^2/N_L+S^2/N_R}$)
+
+3. Variance of Treatment Effects $\tau^2$: Haces split donde la intravarianza se minimice y la intervarianza se maximice
+
+4. Propensity Trees: Construyes un propensity tree; calculas $\tau$ en cada nodo terminal. (Balancing Score Rosenbaum!)
+
+### Causal Trees IV
+En su primer paper (Athey, Wager (2016)), los autores muestran que 1) El honesty es crucial para eliminar el sesgo, y 2) Que los trees que crecen usand $\tau^2$ como regla funcionan mejor
+
+Esto convierte a los Causal Trees en el primer algoritmo que **por diseño** busca efectos heterogeneos de tratamiento. Esto lo hace muy poderoso, ya que (como todo árbol) puede encontrar funciones $\tau(X_i)$ que sean altamente no-lineales.
+
+Pasos finales: 
+
+1. Divide la muestra en Training y Validation
+
+2. Divide Training en Splitting y Estimating
+
+3. Estima un árbol en splitting usando $\tau^2$ se minimice. Detente donde hay k observaciones de control y tratamiento.
+
+4. Pruning del árbol con CV
+
+5. Usa el árbol de splitting para **estimar** $\tau_l$ en el estimating set. 
+
+
+### Causal Forest 
+
+Los causal forests son una generalización de los Causal Trees: 
+
+- Usan los mismos principios de Bagging de un RF. 
+
+- En cada muestra $B$, ahora el default de `mtry` es $\sqrt p +20$ en lugar de $\sqrt p$. Esto es para incluir más variables y controlar por el sesgo de la estimación. 
+
+
+### Causal Forest I vs DDML HTE 
+
+Veamos los pros y cons de CF vs DDML
+
+- Ambos derivan intervalos de confianza del estimador
+
+Pros:
+
+- Construido explícitamente para Efectos Heterogeneos 
+
+- En promedio, insesgado. 
+
+- Puede mejorar al DDML si la función $\tau(X)$ es altamente no lineal
+
+Cons: 
+
+- Asume explícitamente que $T_i \in \{0,1\}$
+
+- Es un algoritmo algo lento. 
+
+- Sólo se utilizar para RCTs
+
+### Generalized Random Forests 
+
+Los Generalized Random Forests son una generalización más de los causal forests. Las mejoras son 2: 
+
+1. Usa una nueva regla de splitting que apalanca el concepto de **partialling out** de DDML:
+
+$$\hat \tau= \frac{\Sigma_i^N\alpha_i(x)(Y_i-\hat m^{-i}(X_i))(T_i-\hat e^{(-i)}(X_i))}{\Sigma_i^N\alpha_i(x)(T_i--\hat e^{(-i)}(X_i))^2}$$
+
+- Esto permite usar el algoritmo en estudios observacionales. 
+
+- Permite incluir $T$ que sean continuos, no sólo dicotómicas. 
+
+- Aceleera el tiempo de estimación
+
+### Generalized Random Forests II
+
+Analicemos los cambios. Tienes: 
+
+$$y_i=\tau T_i+m(X_i)+\epsilon_i$$
+$$T_i=g(X_i)+u_i$$
+
+1. Estimas regression forests sobre $\hat g(X_i), \hat m(X_i)$ 
+
+2. Genera predicciones **out-of-bag** de estos (Cross-fitting!!!!) $\hat g^{(-i)}(X_i),\hat m^{(-i)}(X_i)$
+
+3. Usa $\hat g^{(-i)}(X_i),\hat m^{(-i)}(X_i)$ para crecer el causal forest. Donde en cada árbol vas de forma greedy y te detienes dodne haya $k$ observaciones por grupo de tratamiento.
+
+4. Estimas $\tau$ en el estimating set con $\hat \tau= \frac{\Sigma_i^N\alpha_i(x)(Y_i-\hat m^{-i}(X_i))(T_i-\hat e^{(-i)}(X_i))}{\Sigma_i^N\alpha_i(x)(T_i--\hat e^{(-i)}(X_i))^2}$. 
+
+- Noten como esto es equivalente a estimar $\tau_i=\frac{Cov(V^y,V^T)}{Var(V^T)}$ 
+
+### Generalized Random Forest III 
+
+Noten como los GRF son muy parecidos a un DDML. La diferencia es que: 
+
+- GRF usa out of bag estimates para estimar las nuisance functions + Honesty. DDML usa cross-fitting (Muy parecido). 
+
+- EL GRF sigue creciendo con base en $Var(\tau)=(T_{i \in l}-\hat e^{(-i)}(X_i))^2$. Esto hace que se enfoque directamente en encontrar subgrupos donde los impactos de tratamiento difieren.
+
+- Ambos estiman las nuisance functions. 
+
+
+### GRF en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{grf.png}
+\end{center}
+
+
+### GRF en `R` II
+
+\begin{center}
+\includegraphics[width = 10cm]{grf1.png}
+\end{center}
+
+
+### GRF en `R` III
+
+\begin{center}
+\includegraphics[width = 10cm]{ate_grf.png}
+\end{center}
+
+
+### Validación
+
+En la práctica, como validas estos modelos? No tienes una $y$ que te indique si el modelo es acertado en predecir $\tau$ y $\tau_i$. Por ende se hace lo siguiente: 
+
+- Valida el ATE en la base de validación vs el pronosticado por el modelo (promedio de $\tau_i$)
+
+- Construye segmentos (quintiles, deciles) con base en el score $\tau_i$ y genera estimaciones de ATE para cada segmento. 
+
+- Valida si el impacto observado y el score tienen una relación monotónica y si el valor es acertado.
+
+
+### Referencias
+
+Athey, Susan, Guido Imbens y Stefan Wager (2018). "Approximate Residual Balancing: De-biased Inference of Average Treatment Effects in High Dimensions", Working Paper, arXiv:1604.07125v5
+
+Stefan Wager & Susan Athey (2018) Estimation and Inference of Heterogeneous Treatment Effects using Random Forests, Journal of the American Statistical Association, 113:523, 1228-1242, DOI: 10.1080/01621459.2017.1319839
+
+Chernoszhukov et al. (2018) "Double/debiased machine learning for treatment and structural parameters", Journal of Econometrics 21:C8-C29. doi: 10.1111/ectj.12097
+
+Chernoszhukov, Victor, Vira Semenova, Matt Goldman and Matt Taddy (2021), "Estimation and Inference on Heterogeneous Treatment Effects in High-Dimensional Dynamic Panels", Working paper. arXiv:1712.09988v4 [stat.ML] 16 Mar 2021
+
+Athey, Susan, Julie Tibshirani and Stefan Wager (2018), "Generalized Random Forest", The Annals of Statistics
+
+
+### Referencias II 
+
+Belloni, Alexandre, Victor Chernozhukov, and Christian Hansen. "High-Dimensional Methods and Inference on Structural and Treatment Effects". Journal of Economics Perspectives 28-2, p29-50.
+
+Athey, Susan and Guido Imbens (2016), "Recursive partitioning for heterogeneous causal effects". PNAS.
+
+Athey, Susan and Guido W. Imbens (2017), "The State of Applied Econometrics: Causality and Policy Evaluation", Journal of Economic Perspectives—Volume 31, Number 2—Spring 2017—Pages 3–32
+
+Taddy, Matt “Business Data Science: Combining Machine Learning and Economics to Optimize, Automate and Accelerate Business Decisions”. Chapter 5,6 and 9. McGraw-Hill, Ed 2019.
+
+Imbens, Guido and Donald Rubin "Causal Inference for Statistics, Social and Biomedical Sciences: An Introduction." Chapter 12. Cambridge University Press. Ed 2019
+
