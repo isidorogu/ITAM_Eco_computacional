@@ -1,7 +1,7 @@
 ---
 title: 'Lec3: Regression'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -328,7 +328,7 @@ Recordemos los supuestos de Gauss-Markov:
 
 1. La regresión es lineal en parámetros: Ojo! Lineal en parámetros no significa lineal a las X's. Podemos ajustar muchos tipos de función, siempre y cuando sea lineal en parámteros (i.e. no $\beta^2)$. 
 
-2. Muestreo aleatorio: Este supuesto es necesario para que las $\hat \beta$ sean variables aleatorias. 
+2. Muestreo aleatorio (Independencia): Este supuesto es necesario para que las $\hat \beta$ sean variables aleatorias. 
 
 3. $Var(X) \neq 0$: Hay varianza en las $X's$. Sino los estimadores se vuelven infinito. Además, no debe haber perfecta multicolinealidad. 
 

@@ -42,12 +42,14 @@ Carga los datos en BenAndJerry.csv.
 
 ```{r }
 # Carga la base de datos
-base<-fread(list.files(pattern = '.csv'))
+list.files(pattern = '.csv')
+base<-fread('Bases input/BenAndJerry.csv')
 ```
 
 
 ### 1. Cuales son las columnas de la base? Muestra una tabla con ellas
 ```{r sol1, results='asis'}
+
 kable(names(base))
 
 ```
@@ -56,6 +58,8 @@ kable(names(base))
 
 ```{r sol2}
 nrow(base) # Obs en la base 
+
+
 
 # unicas por variable 
 (unicas<-map_dbl(base %>% select_all(), ~n_distinct(.)))
