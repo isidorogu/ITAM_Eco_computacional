@@ -231,6 +231,17 @@ Cons:
 
 - La elección de $f(X)$. Si la elección que hacemos de $f(X)$ difiere mucho de la realidad, podemos tener un modelo que sea muy malo. Esto es especialmente cierto en un mundo de Big Data donde la cantidad de variables no permite exploración 2x2 de variables.  
 
+
+### Ejemplo Paramétrico: Regresión Lineal
+
+La regresión es lineal en parámetros. No obstante, podemos estimar funciones polinómicas no lineales sobre las $X$
+
+\begin{center}
+\includegraphics[width = 8cm]{parametrica.png}
+\end{center}
+
+
+
 ### Cómo estimamos $f$
 
 **No paramétrica**
@@ -244,6 +255,18 @@ Pros:
 Cons:
 
 - El problema continúa siendo complejo. Típicamente los algoritmos no parámetricos son más inestables a nuevos datos y requieren de bases mucho más grande para hacer estimaciones precisas. 
+
+
+### Ejemplo No paramétrico: K Nearest Neighbors
+
+La línea negra es la relación verdadera. Noten como con $k=1$ la función que se estima es super compleja. Con $k=9$ es una función más suave y parecida a la relación verdadera.
+
+
+\begin{center}
+\includegraphics[width = 8cm]{knn.png}
+\end{center}
+
+
 
 
 ### Trade-off Flexibilidad vs Interpretabilidad 
@@ -264,7 +287,7 @@ ggplot(grafica2, aes(flexibilidad, interpretabilidad, label = metodo))+geom_text
 
 ### Como elegimos el método de estimación de $f$? 
 
-Hasta ahora vimos que existen algoritmos supervisados y no supervisados. En ambos, queremos estimar $f(X)$ de manera paramétrica y no paramétrica. Sin embargo como elegimos entre los distintos métodos de aprendizaje estadístico. 
+Hasta ahora vimos que existen algoritmos supervisados y no supervisados. En ambos, queremos estimar $f(X)$ de manera paramétrica y no paramétrica. Sin embargo, como elegimos entre los distintos métodos de aprendizaje estadístico?
 
 **Poder predictivo**: En el caso de los algoritmos predictivos, estamos interesados en algoritmos que sean buenos prediciendo datos que no hayan visto. A esto le llamamos su desempeño fuera de la muestra (OOS por Out of Sample). 
 
@@ -310,7 +333,7 @@ Donde $f(x'\beta)$ es una función **lineal en parámetros** y $u_i$ es el error
 
 La regresión lineal se puede estimar mediante: 
 
-1) Mínimos Cuadrados Ordinarios ($min_{\{\beta \}}\Sigma_{i=1}^N(y_i - \bar{y})^2$) o 
+1) Mínimos Cuadrados Ordinarios ($min_{\{\beta \}}\Sigma_{i=1}^N(y_i - \hat{y})^2$) o 
 
 2) Máxima Verosimilitud ($max_{\{ \beta \}} \Sigma_{i=1}^{N} ln(f(x_i|\beta)$)
 
@@ -319,9 +342,27 @@ Ambas dan resultados iguales para el caso más simple. Para casos complejos (i.e
 El estimador para cualquier $X_k$ es: 
 
 $$\hat{\beta_k}= \frac{\Sigma_{i}^{N}(x_i-\bar{x})y_i}{\Sigma_{i}^{N}(x_i-\bar{x})^2}$$
-Si $n->\infty$ $\hat{\beta}_k$ converge en probabilidad a: 
+El intercepto se calcula como:
 
-$$\hat{\beta}_k \rightarrow^p = \frac{Cov(x_i,y_i)}{Var(x_i)}$$ 
+$$\hat{\beta_0}=\bar{y}-x_k\hat\beta_k$$
+
+### Estimación II 
+
+El ajuste se ve así:
+
+$$y_i = \hat y_i + \hat u_i$$
+
+Donde $\hat y_i = \beta_0 + x_k\hat \beta_k$ son los valores estimados y $\hat u_i$ son los **residuales**. 
+
+La suma de los residuales es siempre cero: 
+
+$$\Sigma_i^n\hat u_i = 0$$
+
+La covarianza de las varianbles $x_k$ y los residuales $\hat u_i$ es siempre cero:
+
+$$\Sigma_i^n\hat u_ix_i = 0$$
+
+
 
 ### Supuestos Regresión Lineal
 Recordemos los supuestos de Gauss-Markov: 
@@ -392,9 +433,40 @@ Usamos la ley de esperanzas iteradas $E[zx] = E[xE[z|x]]$
 
 $$E[\hat \beta] = \beta + E[(X'X)^{-1}X'E[u|x]] = \beta$$
 $$Var[\hat \beta] = Var[(X'X)^{-1}X'u] = (X'X)^{-1}X'Var[u|x] = (X'X)^{-1}\sigma^2$$
-Noten como asumí que la $Cov(u,X) = 0$. Es decir, asumí que no hay ommited variable bias. 
+Noten como usé la propiedad  $\Sigma_i^nx_iu_i=0$. 
 
 $$\hat \beta \sim N(\beta, (X'X)^{-1}\sigma^2)$$
+
+### Varianza del estimador (Error estándar)
+
+Veamos de cerca la varianza de los estimadores: 
+
+$$Var(\beta)=(X'X)^{-1}\sigma^2=\frac{\sigma^2}{\Sigma_i^n(x_{ik}-\bar{x_k})^2(1-R_a^2)}$$
+
+Donde $R_a^2$ es la bondad de ajuste de correr la regresión $x_k \sim x_{-k}$. 
+
+Es decir, la regresión de la variable x contra todas las otras. Noten como, mientras mas correlacionadas están las otras variables a $x_k$, más varianza se incluye. Queremos variables que sean lo más independientes posibles! Esto se ve matricialmente en $X'X$
+
+
+
+### Varianza del estimador (Error estándar) II
+
+Problema: No podemos saber si un estimador es significativo porque su error estándar depende de un parámetro ($\sigma^2 = Var(y|x)=Var(u_i)$). La varianza del **error**.
+
+Podemos estimarla! Usamos los **residuales** para ello $\hat u_i$
+
+$$\hat \sigma^2=\frac{1}{n-2}\Sigma_1^n \hat {u_i}$$
+
+Con esto, podemos estimar los errores estándar de los estimadores $\beta$, $se(\beta)=\frac{\hat \sigma}{(\Sigma_1^n(x_{ik}-\bar x_k)^2)^{1/2}}$
+
+
+### Convergencia en probabilidad 
+
+Si $n->\infty$ $\hat{\beta}_k$ converge en probabilidad a: 
+
+$$\hat{\beta}_k \rightarrow^p = \frac{Cov(x_i,y_i)}{Var(x_i)}=\beta$$ 
+
+$$\hat \sigma^2 \rightarrow^p \sigma^2$$
 
 
 ### Factibilidad de supuestos
@@ -444,7 +516,7 @@ $$ECM = \frac{1}{N}\Sigma_{i=1}^N(y_i - \hat y_i)^2$$
 
 Recuerden que estamos usando que: 
 
-$$y_i = \hat y_i + u_i$$
+$$y_i = \hat y_i + \hat{u_i}$$
 
 Se ve familiar para el contexto de Econometría? 
 
@@ -452,12 +524,12 @@ Se ve familiar para el contexto de Econometría?
 
 La suma total de los cuadrados. Es la variabilidad total de y: 
 
-$$TSS=\Sigma_{i=1}^{N}(y_i - \bar y)^2 = ESS +RSS$$
+$$TSS=\Sigma_{i=1}^{n}(y_i - \bar y)^2 = ESS +RSS$$
 La suma cuadrada de residuales. Es cuanto no explica el modelo. 
-$$RSS = \Sigma_{i=1}^N(y_i - \hat y_i)^2 = \Sigma_{i=1}^Nu_i^2 = N*ECM$$
+$$RSS = \Sigma_{i=1}^n(y_i - \hat y_i)^2 = \Sigma_{i=1}^n\hat{u_i}^2 = n*ECM$$
 La suma cuadrada de lo explicado. Que tan lejos va nuestro modelo de la media: 
 
-$$ESS=\Sigma_{i=1}^{N}(\hat y_i - \bar y)^2$$
+$$ESS=\Sigma_{i=1}^{n}(\hat y_i - \bar y)^2$$
 Definamos la $R^2$ o bondad de ajuste: 
 
 $$R^2 = \frac{TSS-RSS}{TSS} = 1 - \frac{RSS}{TSS}$$
