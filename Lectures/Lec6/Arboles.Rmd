@@ -1,7 +1,7 @@
 ---
 title: 'Lec5: Árboles de Decisión'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -79,6 +79,30 @@ En realidad, los árboles son un método de predicción **no paramétrico**. La 
 \end{center}
 
 
+### Árboles como una piecewise function
+
+En los árboles de regresión, $y_i$ es continua. La gran mayoría de las veces, $\hat{y_{iR}}$ va a ser la media de $y_i$ en el nodo terminal $R$. 
+
+Veamos como los árboles de regresión son como modelos de regresión piece-wise: 
+
+$$D_{iR}= 1 \{i \in R \}$$
+
+Se sigue que: 
+
+$$\hat{f(X)} = \hat{y_i}=\Sigma_{r=1}^R\hat\beta_RD_{iR}+\epsilon_i$$
+Donde $\hat{\beta_R}$ varía dependiendo de si es un árbol de regresión o clasificación.
+
+
+
+### Flexibilidad funcional
+
+Noten como los árboles detectan las no-linealidades (interacciones en los modelos de regresión) de $f(.)$ de manera automática. Incluso algunas de alto valor polinómico. 
+
+\begin{center}
+\includegraphics[width = 8cm]{regression_tree.png}
+\end{center}
+
+
 ### Funciones objetivo para árboles
 
 Como siempre, queremos disminuir el error de predicción fuera de la muestra. En el caso de los árboles, estas son las funciones a minimizar: 
@@ -89,32 +113,152 @@ Para $R$ particiones del espacio de covariables. Donde hay $j$ particiones.
 
 - **Clasificación**: Para $k$ clases
 
-  - Entropía: $-\Sigma_{}\hat p_{k}log(\hat p_{k})$
+  - Entropía: $-\Sigma\hat p_{k}log(\hat p_{k})$
  
   - Gini: $\Sigma_k=\hat p_k(1-\hat p_k)$
 
 Noten como para ambas medidas estamos buscando **pureza**. Cuando $\hat p_k$ es cero o uno, Gini y Entropía se hacen más pequeños. En estos score predecidos, significaría que la mayoría de las observaciones en el *leaf* son de una sola clase. 
 
+
+
+
+### Cómo estimo los árboles? 
+
+Cómo hacer las particiones? Otra vez estamos enfrentados al problema de dimensionalidad. Es casi imposible estimar cada árbol posible. 
+
+- Cómo escoger que splits? Para cada $X$, el árbol puede evaluar un corte en cada punto del dominio. Son muchas posibilidades! 
+
+- Para una profundidad $d$, un årbol puede tener $2^d$ nodos terminales (asumiendo un árbol simétrico)
+
+Si en cada nodo evalúa cada variable, tenemos $A_p*p*2^d$ posibilidades (Donde A es la cardinalidad del dominio de cada variable). 
+
+Este número es gigante incluso para una profundida y base pequeña!! 
+
+
+
+### Cómo estimo los árboles? 
+
+Los árboles típicamente se estiman **top-down** y de forma **greedy**. Esto se llama **CART: Classfication and Regression Tree** algorithm de Brieman (1984): 
+
+1. Empiezas en el nodo inicial
+
+2. Escoges el punto de corte & $x_i$ que disminuyen más el error de predicción
+
+3. Divides la muestra en los nodos determinados en (2). 
+
+4. Repites 2 y 3 iterativamente 
+
+
+### Cómo estimo los árboles? 
+
+Veamos que significa cada parte: 
+
+**Top-Down**
+
+- Son modelos jerárquicos. Una vez hecho un split, este no se puede deshacer. 
+
+- Los primeros splits juegan un rol super importante. 
+
+**Greedy**
+
+- En cada splt, el árbol busca el mejor splt posible para disminuir el error de predicción. Ojo! No busca la secuencia de split; el mejor split en el margen. Por eso se les denomina greedy. 
+
+### Hasta donde estimar el árbol
+
+El algoritmo descrito en las láminas anteriores tiene mucha propensión a caer en overfitting. Por ende, necesita reglas para detener el crecimiento del árbol. 
+
+Las dos más comunes son: 
+
+- Min final node `minsize`: Estima el árbol hasta que haya z o más observaciones en cada nodo terminal (típicamente 10)
+
+- Min node size/ `min cut`: Cada split debe dejar al menos `min cut` observaciones de cada lado  (típicamente 5)
+
+- Minimum loss improvement / `min dev`: Estima el árbol hasta que la disminución de cada split llegue a un corte de disminución. 
+
+Ambas, especialmente la tercera estrategia tienen un problema de miopía: Un split mediocre puede ser el preludio de un split mucho mejor. 
+
+
 ### Árboles de Regresión
 
-En los árboles de regresión, $y_i$ es continua. La gran mayoría de las veces, $\hat{y_{iR}}$ va a ser la media de $y_i$ en el nodo terminal $R$. 
+Los árboles de regresión pueden ser entendidos como una función piecewise de las variables  $X$
 
-Veamos como los árboles de regresión son como modelos de regresión piece-wise: 
+1. $y_i$ es continua
 
-$$D_{iR}= 1 \{i \in R \}$$
+2. La decisión de split es la disminución del Residual Sum of Squares (RSS)
 
-Se sigue que: 
+3. Las predicciones finales son medias $\frac{1}{N_r}\Sigma_{i \in r}y_{i}$
 
-$$\hat{y_i}=\Sigma_{r=1}^R\hat\beta_RD_{iR}+\epsilon_i$$
-Donde $\hat{\beta_R}=\frac{1}{N_r}\Sigma_{i \in r}y_{i}$
 
-### Árboles de Regresión
+### Estimación de árboles regresión
 
-Noten como los árboles detectan las no-linealidades (interacciones en los modelos de regresión) de $f(.)$ de manera automática. Incluso algunas de alto valor polinómico. 
+Esto es, para una $X_k$ y un punto de corte $s$ definimos dos espacios $R_l$ y $R_r$: 
 
-\begin{center}
-\includegraphics[width = 8cm]{regression_tree.png}
-\end{center}
+$$R_l(k,s): \{i:x_{ik}<s\} \ \ \ \ R_r(k,s): \{i:x_{ik}\geq s\}$$
+
+El RSS resultante es ahora: 
+
+$$RSS^1 = \Sigma_{i \in R_l}(y_i - \hat y_i)^2+\Sigma_{i \in R_r}(y_i - \hat y_i)^2$$
+
+Donde $RSS^1<RSS (modelo \ anterior)$
+
+El proceso sigue hasta que se llega a un criterio de finalización. Noten como para una variable $X \in \{1,...,100\}$ el árbol puede evaluar cortes en 1,2,3,4..... en cada valor! 
+
+
+
+
+
+### Árboles en R 
+
+Las librerías para estimar árboles es `tree` y `rpart`. La primera es la más sencilla; la segunda produce årboles más bonitos de graficar. 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(MASS)
+library(tidyverse)
+library(tree)
+library(rpart)
+library(broom)
+library(rpart.plot)
+data('mpg', package='ggplot2')
+mpg <- mpg %>%
+  mutate(drv=factor(drv), 
+         cyl = factor(cyl) )
+```
+
+
+### Árboles en R 
+
+Una estimación básica
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, fig.width=7, fig.height=3}
+t <- rpart( cty ~ displ + year + cyl + drv, data=mpg)
+rpart.plot(t, digits =3)  
+```
+
+### Árboles de Regresión en R 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+summary(t)
+```
+
+
+### Movemos `tree::min.dev` `rpart::cp`
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, , fig.width=7, fig.height=4}
+t2 <- rpart( cty ~ displ + year + cyl + drv, data=mpg, 
+             cp = 0.0001)
+rpart.plot(t2, digits =3)  
+
+```
+
+### Movemos `rpart::minbucket`
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, , fig.width=7, fig.height=4}
+t3 <- rpart( cty ~ displ + year + cyl + drv, data=mpg, 
+             minbucket = 50)
+rpart.plot(t3, digits =3)  
+
+```
+
 
 ### Árboles de Clasificación
 
@@ -132,77 +276,45 @@ a. Predicción categórica: El árbol predice la clase $k$ más común en $r \in
 
 b. Predicción continua: El árbol te da las probabilidades o scores como la proporción de casos en $r \in R$
 
-### Estimación de árboles 
 
-Cómo hacer las particiones? Otra vez estamos enfrentados al problema de dimensionalidad. Es casi imposible estimar cada árbol. 
+### Estimación de árboles de clasificación
 
-Sin tomar en cuenta esto, los árboles típicamente se estiman **top-down** y de forma **greedy**. Esto se llama **CART: Classfication and Regression Tree** algorithm de Brieman (1984): 
+Buscamos minimizar el error de clasificación de entropía $-\Sigma\hat p_{k}log(\hat p_{k})$ o Gini $\Sigma_k=\hat p_k(1-\hat p_k)$
 
-1. Empiezas en el nodo inicial
 
-2. Escoges la $x_i$ que disminuye más el error de predicción
-
-3. Divides la muestra en los nodos determinados en (2). 
-
-4. Repites 2 y 3 iterativamente 
-
-### Estimación de árboles 
-
-Esto es, para una $X_k$ y un punto de corte $s$ definimos dos espacios $R_l$ y $R_r$: 
+Esto es, para una $X_k$ y un punto de corte $s$ definimos dos espacios $R_l$ y $R_r$:
 
 $$R_l(k,s): \{i:x_{ik}<s\} \ \ \ \ R_r(k,s): \{i:x_{ik}\geq s\}$$
 
-El RSS resultante es ahora: 
+El estadístico resultante es ahora: 
 
-$$RSS^1 = \Sigma_{i \in R_l}(y_i - \hat y_i)^2+\Sigma_{i \in R_r}(y_i - \hat y_i)^2$$
+$$Gini^1 = \Sigma_{i \in R_l}\Sigma_k\hat p_k(1-\hat p_k)+\Sigma_{i \in R_r}\Sigma_k\hat p_k(1-\hat p_k)$$
 
-Donde $RSS^1<RSS (modelo \ anterior)$
-
-El proceso sigue hasta que se llega a un criterio de finalización. 
+Donde $Gini^1<Gini (modelo \ sin \ split)$
 
 
-### Hasta donde estimar el árbol
 
-El algoritmo descrito en las láminas anteriores tiene mucha propensión a caer en overfitting. Por ende, necesita reglas para detener el crecimiento del árbol. 
-
-Las dos más comunes son: 
-
-- Min node size/ `min cut`: Estima el árbol hasta que haya z o más observaciones en cada nodo terminal (típicamente 10). 
-
-- Minimum loss improvement / `min dev`: Estima el árbol hasta que la disminución de cada split llegue a un corte de disminución. 
-
-Ambas, especialmente la segunda estrategia tienen un problema de miopía: Un split mediocre puede ser el preludio de un split mucho mejor. 
-
-### Árboles en R 
-
-La librería para estimar árboles es `tree`. Los otros dos argumentos relevantes son: `mincut`: observaciones mínimas en los nodos terminales y `mindev`: es la ganancia en deviance mínima (en proporción) para que haga un split. 
+### Ejemplo Clasificación
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-library(MASS)
-library(tidyverse)
-library(tree)
-library(broom)
-data(cpus, package = 'MASS')
-
-cpus.ltr <- tree(log10(perf) ~ syct+mmin+mmax+cach
-                 +chmin+chmax, cpus)
+t3 <- rpart( class ~ displ + year + cyl + drv, data=mpg, 
+             cp=0.05)
+rpart.plot(t3, digits =2,type = 0)  
 
 ```
 
-### Árboles en R 
+### Ejemplo Clasificación
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-summary(cpus.ltr)
+predict(t3)[1:5, ]
+```
 
-```
-### Árboles en R 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-plot(cpus.ltr);  text(cpus.ltr)
-```
+
+
 
 ### Tree pruning 
 
-Hasta ahora vimos que estimamos el árbol hasta que `mincut` o `min dev` lo marquen. Esto genera dos problemas: Es díficil no caer en overfitting y no consideramos la posibilidad de split mediocres seguidos de grandes splits. 
+Hasta ahora vimos que estimamos el árbol hasta que `mincut` o `min dev` lo marquen. Esto genera tres problemas: Es díficil no caer en overfitting y no consideramos la posibilidad de split mediocres seguidos de grandes splits; Hay muchas posibilidades!
 
 Por lo anterior, es mejor estrategia estimar un árbol grande y despuer podarlo (prune!). Como? .... Cross-Validation! 
 
@@ -218,6 +330,7 @@ Preguntas:
 
 - Aquí es más díficil reducir el problema de **modelos candidatos** vs LASSO. 
 
+
 ### Cost complexity pruning 
 
 Cost complexity pruning (Weakest link pruning) es la manera más común de reducir el número de modelos candidatos y aplicar k-fold CV. 
@@ -230,8 +343,8 @@ El proceso funciona así:
 
 3. Aplica k-fold CV para escoger $\alpha$ 
 
-### Cost complexity pruning 
 
+### Cost complexity pruning 
 
 Veamos la formula de coxt complexity pruning:
 
@@ -252,11 +365,13 @@ Noten como el CV es un buen estimador del desempeño fuera de la muestra (3 nodo
 \end{center}
 
 
+
 ### Ejemplo de CV tree 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
-(cv_tree<-cv.tree(cpus.ltr, K= 5))
+cpus.ltr2 <- tree(log10(perf) ~ syct+mmin+mmax+cach
+                 +chmin+chmax, cpus, minsize = 1)
+(cv_tree<-cv.tree(cpus.ltr2, K= 5))
 
 ```
 
@@ -312,33 +427,59 @@ Cons:
 - Incluso con CV, es díficil no caer en overfitting. 
 
 
-### Boostrapping 
+### Árboles vs métodos lineales 
 
-Llegamos al segundo método de **remuestreo** (El primero fue CV)! 
 
-El boostrapping es muy útil para conseguir errores estandares e intervalos de confianza cuando la distribución de algún estimador es desconocida, tenemos pocas observaciones o es muy díficil de estimar. 
+\begin{center}
+\includegraphics[width = 8cm]{lineal_no_linear.png}
+\end{center}
 
-Por ejemplo, en el caso de la econometría, podemos inferir la distribución de nuestro estimador $\hat \beta$ al remuestrear la base con reemplazo y estimar $\beta$ con cada muestra.  
 
-Lo bonito del Boostrapping es que tiene otras aplicaciones además de la generación de errores estandár. Se puede aplicar a mejorar el poder predictivo de nuestros modelos estadísticos.
 
-### Boostrapping 
 
-Pasos: 
+### Ejemplo II 
 
-Dada una base de datos $\{ z_i\}_{i=1}^n$, para $b \in \{1,2,3...,B \}$ muestras: 
+```{r echo=TRUE, message=FALSE, warning=FALSE, , fig.width=7, fig.height=4}
+t3 <- cv.tree( tree(cty ~ displ + year + cyl + drv, data=mpg), K = 5)
+t3
+```
 
-1. Tomas una muestra **con reemplazo** $\{ z_i^b\}_{i=1}^n$
 
-2. Estimas $\beta_b$ usando la base de (1)
+### Ejemplo II
 
-Luego, $\{ \beta_b\}_{b=1}^B$ es una aproximación de la distribución de $\hat\beta$
+```{r echo=FALSE, fig.width=7, fig.height=4 , message=FALSE, warning=FALSE}
+base_grafica<-
+   tibble(size = t3$size, 
+          deviance = t3$dev, 
+          alpha = t3$k)
 
-El vector de tamaño $B$ $\{ \beta_b\}_{b=1}^B$ puede ser usado como la distribución teorica que aprendimos en la clase 2 (inferencia!) que usaba el Teorema del Límite Central. 
+ggplot(base_grafica, aes(size, deviance))+
+   geom_line()+geom_point()+theme_bw()
 
-$$\beta \in \hat \beta \pm 2sd(\hat \beta_b) $$
-$$se(\hat \beta) \simeq sd(\beta_b)=\sqrt{\frac{1}{B}\Sigma_b(\hat \beta_b - \hat \beta)}$$
-Donde $\hat \beta$ es el estimador original usando toda la base de datos. 
+```
+
+
+### Ejemplo II 
+
+```{r echo=FALSE, fig.width=7, fig.height=4 , message=FALSE, warning=FALSE}
+ggplot(base_grafica, aes(size, alpha))+
+   geom_line()+geom_point()+theme_bw()
+
+```
+
+
+
+### Prunes tree
+
+Escogemos el 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, , fig.width=7, fig.height=4}
+t4 <- prune(t, cp = 0.05)
+rpart.plot(t4, digits =3)  
+
+```
+
+
 
 
 
@@ -371,4 +512,10 @@ Donde $\hat \beta$ es el estimador original usando toda la base de datos.
 - Los Random Forests y los Gradient Boosting Machines usan Boostrapping y otros métodos para lograr esto! (Próxima clase!)
 
 
+
+### Bias and variance ejemplo
+
+\begin{center}
+\includegraphics[width = 8cm]{bias_variance.png}
+\end{center}
 
