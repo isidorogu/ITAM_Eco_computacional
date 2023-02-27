@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  16 MAR 2021 17:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  26 FEB 2023 20:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -669,10 +669,6 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifxetex.sty
-Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifluatex.sty
-Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1
@@ -708,50 +704,65 @@ Package microtype Info: Loading configuration file microtype.cfg.
 File: microtype.cfg 2019/11/18 v2.7d microtype main configuration file (RS)
 )) (/usr/local/texlive/2020/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
-Package: xurl 2020/01/24 v 0.09 modify URL breaks
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2020/01/13 v3.5 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count321
+\FV@InFile=\read3
+\FV@TabBox=\box74
+\c@FancyVerbLine=\count322
+\FV@StepNumber=\count323
+\FV@OutFile=\write5
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip67
+\fb@frw=\dimen282
+\fb@frh=\dimen283
+\FrameRule=\dimen284
+\FrameSep=\dimen285
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
+s
+\f@nch@headwidth=\skip68
+\f@nch@O@elh=\skip69
+\f@nch@O@erh=\skip70
+\f@nch@O@olh=\skip71
+\f@nch@O@orh=\skip72
+\f@nch@O@elf=\skip73
+\f@nch@O@erf=\skip74
+\f@nch@O@olf=\skip75
+\f@nch@O@orf=\skip76
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
 (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
-\BKM@id=\count321
-)) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
-s
-\f@nch@headwidth=\skip67
-\f@nch@O@elh=\skip68
-\f@nch@O@erh=\skip69
-\f@nch@O@olh=\skip70
-\f@nch@O@orh=\skip71
-\f@nch@O@elf=\skip72
-\f@nch@O@erf=\skip73
-\f@nch@O@olf=\skip74
-\f@nch@O@orf=\skip75
+\BKM@id=\count324
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2020/01/24 v 0.09 modify URL breaks
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count322
-\l__pdf_internal_box=\box74
+\l__kernel_color_stack_int=\count325
+\l__pdf_internal_box=\box75
 ) (./Clustering.aux)
 \openout1 = `Clustering.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 101.
-LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -788,16 +799,16 @@ LaTeX Font Info:    ... okay on input line 101.
 
 (/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count323
-\scratchdimen=\dimen282
-\scratchbox=\box75
-\nofMPsegments=\count324
-\nofMParguments=\count325
+\scratchcounter=\count326
+\scratchdimen=\dimen286
+\scratchbox=\box76
+\nofMPsegments=\count327
+\nofMParguments=\count328
 \everyMPshowfont=\toks47
-\MPscratchCnt=\count326
-\MPscratchDim=\dimen283
-\MPnumerator=\count327
-\makeMPintoPDFobject=\count328
+\MPscratchCnt=\count329
+\MPscratchDim=\dimen287
+\MPnumerator=\count330
+\makeMPintoPDFobject=\count331
 \everyMPtoPDFconversion=\toks48
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -807,8 +818,8 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 )) ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box76
-Package hyperref Info: Link coloring OFF on input line 101.
+\AtBeginShipoutBox=\box77
+Package hyperref Info: Link coloring OFF on input line 157.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty
@@ -818,57 +829,57 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count329
+\c@section@level=\count332
 )
-LaTeX Info: Redefining \ref on input line 101.
-LaTeX Info: Redefining \pageref on input line 101.
-LaTeX Info: Redefining \nameref on input line 101.
+LaTeX Info: Redefining \ref on input line 157.
+LaTeX Info: Redefining \pageref on input line 157.
+LaTeX Info: Redefining \nameref on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 101.
+(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 101.
+(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 101.
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 101.
+(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 157.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 101.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 101.
+(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 101.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 101.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 101.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 101.
+(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 101.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 101.
+(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 101.
+(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 101.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 101.
+(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 101.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 101.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 101.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 101.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 101.
+(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 101.
+(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 101.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 101.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 101.
+(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 157.
 
 (/usr/local/texlive/2020/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -894,14 +905,14 @@ Dictionary: translator-numbers-dictionary, Language: English
 tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \microtypecontext on input line 101.
+LaTeX Info: Redefining \microtypecontext on input line 157.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 101.
+LaTeX Info: Redefining \showhyphens on input line 157.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -911,20 +922,20 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 (./Clustering.nav)
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 102.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 158.
 <logo-ITAM.png, id=13, 1505.625pt x 569.12625pt>
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 102.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 158.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 
 Package Fancyhdr Warning: \headheight is too small (0.0pt): 
 Make it at least 25.102pt.
 We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 10
-2.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 15
+8.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-cmr.cfg
@@ -941,7 +952,7 @@ This may cause the page layout to be inconsistent, however.
 
  <./logo-ITAM.png>]
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 
-118.
+172.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -950,34 +961,34 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-18.
+72.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-118.
+172.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-118.
+172.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 118.
+(Font)              <10> on input line 172.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 118.
+(Font)              <7> on input line 172.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 118.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 118
+(Font)              <5> on input line 172.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 172
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 118
+LaTeX Font Info:    Trying to load font information for U+msb on input line 172
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -985,134 +996,64 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 118.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 172.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 118.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 172.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 118.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 172.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 118.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 172.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [2
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 149.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 202.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [3
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 170.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 221.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [4
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 193.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 242.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [5
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 215.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 262.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [6
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 234.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 286.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [7
 
 ]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <14.4> on input line 304.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <14.4> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 304.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 258.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 304.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [8
 
 ]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 271.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[9
-
-]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 290.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[10
-
-]
-<density.png, id=91, 662.97687pt x 398.48875pt>
-File: density.png Graphic file (type png)
-<use density.png>
-Package pdftex.def Info: density.png  used on input line 299.
-(pdftex.def)             Requested size: 227.62204pt x 136.8099pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 299.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[11
-
- <./density.png>]
-<density2.png, id=99, 630.355pt x 404.51125pt>
-File: density2.png Graphic file (type png)
-<use density2.png>
-Package pdftex.def Info: density2.png  used on input line 308.
-(pdftex.def)             Requested size: 227.62204pt x 146.06834pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 308.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[12
-
- <./density2.png>]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 332.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[13
-
-]
-<k_means.png, id=114, 721.69624pt x 491.8375pt>
-File: k_means.png Graphic file (type png)
-<use k_means.png>
-Package pdftex.def Info: k_means.png  used on input line 341.
-(pdftex.def)             Requested size: 312.9803pt x 213.29466pt.
-
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 341--341
- [] 
- []
-
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 341.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[14
-
- <./k_means.png>]
-<k_means2.png, id=122, 796.47563pt x 293.095pt>
-File: k_means2.png Graphic file (type png)
-<use k_means2.png>
-Package pdftex.def Info: k_means2.png  used on input line 352.
-(pdftex.def)             Requested size: 284.52756pt x 104.70015pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 352.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[15
-
- <./k_means2.png>]
 \openout4 = `Clustering.vrb'.
 
 (./Clustering.vrb
@@ -1120,211 +1061,380 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-<kmeans_R.png, id=130, 688.5725pt x 410.03188pt>
-File: kmeans_R.png Graphic file (type png)
-<use kmeans_R.png>
-Package pdftex.def Info: kmeans_R.png  used on input line 10.
-(pdftex.def)             Requested size: 284.52756pt x 169.42802pt.
+))
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 329.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[9
+
+]
+\openout4 = `Clustering.vrb'.
+
+(./Clustering.vrb
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 7.
 )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 369.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[16
+Package pdftex.def Info: logo-ITAM.png  used on input line 351.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[10
 
- <./kmeans_R.png>]
-<kmeans_R2.png, id=140, 1445.4pt x 903.375pt>
-File: kmeans_R2.png Graphic file (type png)
-<use kmeans_R2.png>
-Package pdftex.def Info: kmeans_R2.png  used on input line 378.
-(pdftex.def)             Requested size: 312.9803pt x 195.61406pt.
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 366.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[11
 
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 378--378
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 387.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[12
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 404.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[13
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 435.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[14
+
+]
+<algorithm.png, id=120, 537.00626pt x 510.40688pt>
+File: algorithm.png Graphic file (type png)
+<use algorithm.png>
+Package pdftex.def Info: algorithm.png  used on input line 442.
+(pdftex.def)             Requested size: 227.62238pt x 216.34761pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 442.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[15
+
+ <./algorithm.png>]
+<k_means.png, id=128, 721.69624pt x 491.8375pt>
+File: k_means.png Graphic file (type png)
+<use k_means.png>
+Package pdftex.def Info: k_means.png  used on input line 449.
+(pdftex.def)             Requested size: 312.97728pt x 213.29466pt.
+
+Overfull \hbox (5.68741pt too wide) in paragraph at lines 449--449
  [] 
  []
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 378.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 449.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[16
+
+ <./k_means.png>]
+<k_means2.png, id=136, 796.47563pt x 293.095pt>
+File: k_means2.png Graphic file (type png)
+<use k_means2.png>
+Package pdftex.def Info: k_means2.png  used on input line 458.
+(pdftex.def)             Requested size: 284.51912pt x 104.70015pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 458.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [17
 
- <./kmeans_R2.png>]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 400.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <14.4> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 400.
+ <./k_means2.png>]
+\openout4 = `Clustering.vrb'.
+
+(./Clustering.vrb
+<kmeans_R.png, id=144, 688.5725pt x 410.03188pt>
+File: kmeans_R.png Graphic file (type png)
+<use kmeans_R.png>
+Package pdftex.def Info: kmeans_R.png  used on input line 9.
+(pdftex.def)             Requested size: 284.52296pt x 169.42802pt.
+)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 400.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 473.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [18
 
-]
+ <./kmeans_R.png>]
+<kmeans_R2.png, id=153, 1445.4pt x 903.375pt>
+File: kmeans_R2.png Graphic file (type png)
+<use kmeans_R2.png>
+Package pdftex.def Info: kmeans_R2.png  used on input line 480.
+(pdftex.def)             Requested size: 312.9825pt x 195.61406pt.
+
+Overfull \hbox (5.69263pt too wide) in paragraph at lines 480--480
+ [] 
+ []
+
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 429.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 480.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [19
 
-]
+ <./kmeans_R2.png>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 457.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 500.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [20
 
 ]
-<aglomerativo.png, id=169, 783.42688pt x 314.17375pt>
-File: aglomerativo.png Graphic file (type png)
-<use aglomerativo.png>
-Package pdftex.def Info: aglomerativo.png  used on input line 466.
-(pdftex.def)             Requested size: 312.9803pt x 125.51385pt.
-
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 466--466
- [] 
- []
-
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 466.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 514.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [21
 
- <./aglomerativo.png>]
-<dendogram.png, id=177, 698.61pt x 306.64563pt>
-File: dendogram.png Graphic file (type png)
-<use dendogram.png>
-Package pdftex.def Info: dendogram.png  used on input line 477.
-(pdftex.def)             Requested size: 312.9803pt x 137.38097pt.
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 542.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[22
 
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 477--477
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 563.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[23
+
+]
+\openout4 = `Clustering.vrb'.
+
+(./Clustering.vrb
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+9.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Overfull \hbox (65.45905pt too wide) in paragraph at lines 27--27
+[]\T1/lmtt/m/n/10 ##  [1] "medoids"    "id.med"     "clustering" "objective"  "
+isolation"[] 
+ []
+
+
+Overfull \hbox (39.20912pt too wide) in paragraph at lines 27--27
+[]\T1/lmtt/m/n/10 ##  [6] "clusinfo"   "silinfo"    "diss"       "call"       "
+data"[] 
+ []
+
+
+Overfull \hbox (65.45905pt too wide) in paragraph at lines 96--96
+[]\T1/lmtt/m/n/10 ##  [1] "medoids"    "id.med"     "clustering" "objective"  "
+isolation"[] 
+ []
+
+
+Overfull \hbox (39.20912pt too wide) in paragraph at lines 96--96
+[]\T1/lmtt/m/n/10 ##  [6] "clusinfo"   "silinfo"    "diss"       "call"       "
+data"[] 
+ []
+
+)
+Overfull \vbox (726.65617pt too high) detected at line 661
+ []
+
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 661.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[24
+
+]
+<Clustering_files/figure-beamer/unnamed-chunk-4-1.pdf, id=195, 693.59125pt x 48
+1.8pt>
+File: Clustering_files/figure-beamer/unnamed-chunk-4-1.pdf Graphic file (type p
+df)
+<use Clustering_files/figure-beamer/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: Clustering_files/figure-beamer/unnamed-chunk-4-1.pdf  
+used on input line 666.
+(pdftex.def)             Requested size: 307.29776pt x 213.46298pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 666.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[25
+
+ <./Clustering_files/figure-beamer/unnamed-chunk-4-1.pdf>]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 693.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[26
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 719.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[27
+
+]
+<aglomerativo.png, id=223, 783.42688pt x 314.17375pt>
+File: aglomerativo.png Graphic file (type png)
+<use aglomerativo.png>
+Package pdftex.def Info: aglomerativo.png  used on input line 726.
+(pdftex.def)             Requested size: 312.98267pt x 125.51385pt.
+
+Overfull \hbox (5.6928pt too wide) in paragraph at lines 726--726
  [] 
  []
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 477.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[22
+Package pdftex.def Info: logo-ITAM.png  used on input line 726.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[28
 
- <./dendogram.png>]
-<dendogram_cut.png, id=185, 1310.8975pt x 618.81187pt>
-File: dendogram_cut.png Graphic file (type png)
-<use dendogram_cut.png>
-Package pdftex.def Info: dendogram_cut.png  used on input line 491.
-(pdftex.def)             Requested size: 284.52756pt x 134.30722pt.
+ <./aglomerativo.png>]
+<dendogram.png, id=231, 698.61pt x 306.64563pt>
+File: dendogram.png Graphic file (type png)
+<use dendogram.png>
+Package pdftex.def Info: dendogram.png  used on input line 735.
+(pdftex.def)             Requested size: 312.98581pt x 137.38097pt.
+
+Overfull \hbox (5.69594pt too wide) in paragraph at lines 735--735
+ [] 
+ []
+
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 491.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[23
+Package pdftex.def Info: logo-ITAM.png  used on input line 735.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[29
+
+ <./dendogram.png>]
+<dendogram_cut.png, id=239, 1310.8975pt x 618.81187pt>
+File: dendogram_cut.png Graphic file (type png)
+<use dendogram_cut.png>
+Package pdftex.def Info: dendogram_cut.png  used on input line 747.
+(pdftex.def)             Requested size: 284.51782pt x 134.30722pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 747.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[30
 
  <./dendogram_cut.png>]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 515.
+(amsmath)                 on input line 769.
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 515.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[24
+Package pdftex.def Info: logo-ITAM.png  used on input line 769.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[31
 
 ]
-<linkage.png, id=200, 1359.0775pt x 853.1875pt>
+<linkage.png, id=255, 1359.0775pt x 853.1875pt>
 File: linkage.png Graphic file (type png)
 <use linkage.png>
-Package pdftex.def Info: linkage.png  used on input line 526.
-(pdftex.def)             Requested size: 284.52756pt x 178.61487pt.
+Package pdftex.def Info: linkage.png  used on input line 778.
+(pdftex.def)             Requested size: 284.52298pt x 178.61487pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 526.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[25
+Package pdftex.def Info: logo-ITAM.png  used on input line 778.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[32
 
  <./linkage.png>]
-<linkage2.png, id=209, 1341.51187pt x 846.66313pt>
+<linkage2.png, id=263, 1341.51187pt x 846.66313pt>
 File: linkage2.png Graphic file (type png)
 <use linkage2.png>
-Package pdftex.def Info: linkage2.png  used on input line 535.
-(pdftex.def)             Requested size: 312.9803pt x 197.51894pt.
+Package pdftex.def Info: linkage2.png  used on input line 785.
+(pdftex.def)             Requested size: 312.96272pt x 197.51894pt.
 
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 535--535
+Overfull \hbox (5.67285pt too wide) in paragraph at lines 785--785
  [] 
  []
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 535.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[26
+Package pdftex.def Info: logo-ITAM.png  used on input line 785.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[33
 
  <./linkage2.png>]
 \openout4 = `Clustering.vrb'.
 
 (./Clustering.vrb
-<hierarchical.png, id=217, 1798.72pt x 663.98062pt>
+<hierarchical.png, id=271, 1798.72pt x 663.98062pt>
 File: hierarchical.png Graphic file (type png)
 <use hierarchical.png>
-Package pdftex.def Info: hierarchical.png  used on input line 9.
-(pdftex.def)             Requested size: 256.0748pt x 94.52702pt.
+Package pdftex.def Info: hierarchical.png  used on input line 8.
+(pdftex.def)             Requested size: 256.07324pt x 94.52702pt.
 )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 548.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[27
+Package pdftex.def Info: logo-ITAM.png  used on input line 796.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[34
 
  <./hierarchical.png>]
-\tf@nav=\write5
-\openout5 = `Clustering.nav'.
+\tf@nav=\write6
+\openout6 = `Clustering.nav'.
 
-\tf@toc=\write6
-\openout6 = `Clustering.toc'.
+\tf@toc=\write7
+\openout7 = `Clustering.toc'.
 
-\tf@snm=\write7
-\openout7 = `Clustering.snm'.
+\tf@snm=\write8
+\openout8 = `Clustering.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 550.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 550.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 798.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 798.
 (./Clustering.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 550.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 550.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 798.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 798.
  ) 
 Here is how much of TeX's memory you used:
- 23655 strings out of 480608
- 428595 string characters out of 5903631
- 686876 words of memory out of 5000000
- 38877 multiletter control sequences out of 15000+600000
- 584667 words of font info for 81 fonts, out of 8000000 for 9000
+ 24220 strings out of 480608
+ 437017 string characters out of 5903631
+ 715651 words of memory out of 5000000
+ 39388 multiletter control sequences out of 15000+600000
+ 586524 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 58i,15n,67p,798b,366s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 58i,15n,67p,798b,433s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/lo
-cal/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/20
-20/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2020/texmf-dist/
-fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/
-dvips/lm/lm-mathsy.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/l
-m/lmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi10.p
-fb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/lo
-cal/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive
-/2020/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2020/texm
-f-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2020/texmf-dist/fon
-ts/type1/public/lm/lmss8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/pu
-blic/lm/lmssbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/
-lmsso10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso12.p
-fb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr/l
-ocal/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texli
-ve/2020/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2020/tex
-mf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2020/texmf-dist/fo
-nts/type1/public/lm/lmtt12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/
-public/amsfonts/symbols/msam10.pfb>
-Output written on Clustering.pdf (27 pages, 1816677 bytes).
+cal/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2
+020/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2020/texmf-dist
+/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc
+/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/
+lm-rm.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmex10.pfb>
+</usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/loca
+l/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2
+020/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2020/texmf-d
+ist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2020/texmf-dist/fonts/
+type1/public/lm/lmss12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/publ
+ic/lm/lmss8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmssb
+x10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><
+/usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/loca
+l/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr/local/texlive/
+2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2020/texmf
+-dist/fonts/type1/public/lm/lmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts
+/type1/public/lm/lmsy7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/publ
+ic/lm/lmtk10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmtt
+10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></u
+sr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></usr/local/
+texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on Clustering.pdf (34 pages, 1929722 bytes).
 PDF statistics:
- 303 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
- 81 named destinations out of 1000 (max. 500000)
+ 371 PDF objects out of 1000 (max. 8388607)
+ 280 compressed objects within 3 object streams
+ 102 named destinations out of 1000 (max. 500000)
  12396 words of extra memory for PDF output out of 14400 (max. 10000000)
 

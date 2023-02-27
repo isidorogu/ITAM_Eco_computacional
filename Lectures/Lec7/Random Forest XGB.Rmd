@@ -452,6 +452,14 @@ Noten como $\partial w_i/\partial[I(y_i \neq G_m(x_i))]>0$. Es decir, el peso su
 - Genera una estimación final con base en todos los learners: $G(x)=\Sigma_{m=1}^M\alpha_mG_m(x)$
 
 
+
+### ADABoost 
+
+\begin{center}
+\includegraphics[width = 9cm]{adaboost.png}
+\end{center}
+
+
 ### Gradient Boosting 
 
 Vayamos al Gradient Boosting. Este difiere un poco del ADABoost en cómo se enfoca en los errores. Sin embargo, la idea es muy parecida: 
@@ -485,7 +493,7 @@ Empieza encontrando una Loss function por tipo de problema que sea diferenciable
 
 $$f_0(x_i)=argmin_\gamma \Sigma_{i=1}^NL(y_i, \gamma)$$
 
-- Típicamente $\gamma$ será el promedio de las observaciones para regresión o la moda para clasificación. $f(.)$ normalmente será un árbol; pero puede ser otro estimador
+- Típicamente $\gamma$ será el promedio de las observaciones para regresión o la moda para clasificación. $f(.)$ normalmente será un árbol; pero puede ser otro estimador $m \in \{1,m \}$
 
 2. Para cada secuencia $m=1,2, ..., M$
 
@@ -498,7 +506,7 @@ $$r_{im}=- \left[ \frac{\partial L(y_i,f(x_i))}{\partial f} \right]_{f=f_{m-1}}$
 
 b) Entrena un árbol con los residuales $r_{im}$ como variable objetivo. Esto arroja las regiones $R_{jm}$
 
-c) En cada región estima $\gamma_{jm}$: El promedio de las observaciones $y_i$ (o moda en clasificación)
+c) En cada región estima $\gamma_{jm}$: El promedio de las observaciones $r_{im}$ (o moda en clasificación)
 
 d) Actualiza $f_m(x)=f_{m-1}(x)+\lambda \Sigma_{j=1}^{Jm}\gamma_{jm}I(x \in R_{jm})$
 
@@ -514,7 +522,7 @@ Parámetros a tunear:
 
 - Número de árboles $M$: A diferencia de bagging y RF, si $M$ es muy grande, caeremos en overfitting. Usamos cross-validation para obtener $B$
 
-- $\lambda$ shrinkage parameter: Este controla (regulariza) al ritmo al que el algoritmo lee. Baja el peso de cada nuevo árbol. Se interpreta como "escepticismo". Típicamente tiene valores de 0.01, 0.001.
+- $\lambda$ learning rate: Este controla (regulariza) al ritmo al que el algoritmo lee. Baja el peso de cada nuevo árbol. Se interpreta como "escepticismo". Típicamente tiene valores de 0.01, 0.001.
 
 - $d$ Número de splits en cada árbol. Típicamente $d=1$
 
@@ -526,6 +534,223 @@ Parámetros a tunear:
 \includegraphics[width = 8cm]{d.png}
 \end{center}
 
+
+### Ejemplo 
+
+Tomemos un ejemplo de [Towards Data Science](https://towardsdatascience.com/all-you-need-to-know-about-gradient-boosting-algorithm-part-1-regression-2520a34a502) para clarificar GBM. Imaginen que tenemos una base de datos con sólo $y$ y 1 $x$. Queremos construir un modelo predictivo de $\hat y=f(x)$.
+
+
+\begin{center}
+\includegraphics[width = 6cm]{y_x.png}
+\end{center}
+
+Ahora, el paso 1 define un $f_0 = \bar y$. Empezamos con un predictor sencillo! Noten como, formalmente, esto es $f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^NL(y_i, \gamma)$
+
+
+### Ejemplo 
+
+Para mejorar la predicción, nos enfocamos en los residuales $r_{i1}=y-f_0$:  
+
+\begin{center}
+\includegraphics[width = 6cm]{r_im.png}
+\end{center}
+
+
+Despues construimos un árbol de decisión sobre $r_{im}$. Donde ese árbol tiene muy pocos splits. 
+
+
+### Ejemplo 
+
+Con el árbol, promediamos los residuales ($\gamma_{jm}$) en cada nodo terminal $R_{jm}$. Hacemos que el modelo se enfoque en los errores!  
+
+\begin{center}
+\includegraphics[width = 10cm]{him.png}
+\end{center}
+
+En este ejemplo tenemos $\gamma_{1m}=6$ y $\gamma_{2m}=-5.9$!
+
+### Ejemplo 
+
+Actualiza el modelo $f_m(x)=f_{m-1}(x)+\lambda\Sigma_{j=1}^{jm}\gamma_{jm}I(x \in R_{jm})$. En este ejemplo esto es:
+
+$$f_1(x)=f_0+\lambda\gamma_{jm}I(x \in R_{jm})$$
+
+$$f_1(x) =\Biggl\{ \ \ {f_0 + \lambda \cdot 6.0 \ \ \ if \ \ x<=49.5 \atop f_0 - \lambda \cdot 5.9 \ \ \ if \ \ x>4.5}$$
+
+
+\begin{center}
+\includegraphics[width = 6cm]{f1.png}
+\end{center}
+
+
+### Ejemplo 
+
+Calculo los nuevos residuales $r_{i2}$
+
+\begin{center}
+\includegraphics[width = 6cm]{r2.png}
+\end{center}
+
+Estimo un árbol sobre $r_{i2}$: 
+
+\begin{center}
+\includegraphics[width = 6cm]{hi2.png}
+\end{center}
+
+### Ejemplo 
+
+Actualizo el modelo, generando $f_2(x)=f_{1}(x)+\lambda\Sigma_{j=1}^{jm}\gamma_{j2}I(x \in R_{j2})$
+
+
+$$f_2(x) =\Biggl\{ \ \ {f_1 - \lambda \cdot 10.1 \ \ \ if \ \ x<=4.5 \atop f_1 + \lambda \cdot 0.5 \ \ \ if \ \ x>4.5}$$
+
+\begin{center}
+\includegraphics[width = 6cm]{f2.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $m=6$. $f_1(x)$
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm1.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $f_2(x), f_3(x), f_4(x)$
+
+\begin{center}
+\includegraphics[width = 8cm]{gbm2_4.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $f_5(x), f_6(x)$
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm5_6.png}
+\end{center}
+
+### Gamma y Lambda
+
+$\lambda$ como dijimos, este valor añade algo de escepticimos $\lambda \in (0,1)$. Si es muy grande, el algoritmo va a terminar muy rápido (bajo $M$) y puede seguir ruido. Típicamente tiene valores pequeños (0.01, 0.001)
+
+Veamos como "derivar" las $\gamma's$
+
+$$f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^NL(y_i, \gamma)$$
+
+$$f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^N0.5(y_i-\gamma)^2$$
+CPO: $\partial L/ \partial \gamma$
+
+$$\Sigma_{i=1}^N(y_i - \gamma^*)=0$$
+$$\Sigma_{i=1}^Ny_i = N\gamma^*$$
+$$\gamma^*=\frac{\Sigma_{i=1}^Ny_i}{N}$$
+
+### Gamma 
+
+$$\gamma_{jm} = argmin_{\gamma}\Sigma_{x_i \in R_{jm}}L(y_i, f_{m-1}(x_i)+\gamma)$$
+
+$$\gamma_{jm} = argmin_{\gamma}\Sigma_{x_i \in R_{jm}}0.5(y_i - f_{m-1}(x_i)-\gamma)^2$$
+
+CPO:
+
+$$\Sigma_{i=1}^N(y_i -f_{m-1}(x_i)- \gamma^*)=0$$
+$$N\gamma^*=\Sigma_{x_i \in R_{jm}}(y_i -f_{m-1}(x_i))$$
+$$\gamma^*_{jm}=\frac{\Sigma_{x_i \in R_{jm}} r_{im}}{n_j}$$
+
+### Porque se llama Gradient boosting y no Residual Boosting?
+
+Si recuerdan, $r_{im}=- \left[ \frac{\partial L(y_i,f(x_i))}{\partial f} \right]_{f=f_{m-1}}$. Dado que es un vector de una derivada parcial, es un gradiente. 
+
+Resulta que para un Loss-function particular $L(y_i,f(x_i))=0.5(y_i-f(x_i))^2$, el gradiente es exactamente lo mismo que los residuales. En realidad, se pueden implementar Gradient Boosting Machines para distintas Loss functions!!! 
+
+### Ejemplo en `R`
+
+La mejor libreria para correr GBMs es `gbm`
+
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm_r.png}
+\end{center}
+
+
+### Ejemplo en `R`
+
+La mejor libreria para correr GBMs es `gbm`
+
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm_r2.png}
+\end{center}
+
+
+### Ejemplo en `R`
+
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(gbm)
+
+# Simulate data
+set.seed(101)  # for reproducibility
+N <- 1000
+X1 <- runif(N)
+X2 <- 2 * runif(N)
+X3 <- ordered(sample(letters[1:4], N, replace = TRUE), levels = letters[4:1])
+X4 <- factor(sample(letters[1:6], N, replace = TRUE))
+X5 <- factor(sample(letters[1:3], N, replace = TRUE))
+X6 <- 3 * runif(N) 
+mu <- c(-1, 0, 1, 2)[as.numeric(X3)]
+SNR <- 10  # signal-to-noise ratio
+Y <- X1 ^ 1.5 + 2 * (X2 ^ 0.5) + mu
+sigma <- sqrt(var(Y) / SNR)
+Y <- Y + rnorm(N, 0, sigma)
+X1[sample(1:N,size=500)] <- NA  # introduce some missing values
+X4[sample(1:N,size=300)] <- NA  # introduce some missing values
+data <- data.frame(Y, X1, X2, X3, X4, X5, X6)
+
+
+```
+
+```{r, message=F, warning=F, echo=T, fig.width=4.5, fig.height=3}
+set.seed(102)  # for reproducibility
+
+gbm1 <- gbm(Y ~ ., data = data, var.monotone = c(0, 0, 0, 0, 0, 0),
+            distribution = "gaussian", n.trees = 100, 
+            shrinkage = 0.1,interaction.depth = 1, 
+            bag.fraction = 0.5, train.fraction = 0.5,  
+            n.minobsinnode = 10, keep.data = TRUE, 
+            verbose = FALSE, n.cores = 1)  
+
+
+# predictions will be on the link scale
+best.iter <- gbm.perf(gbm1, method = "OOB")
+
+```
+
+### Ejemplo `R`
+
+```{r, message=F, warning=F, echo=T, fig.width=4.5, fig.height=3}
+summary(gbm1, n.trees = best.iter) # Variable importance
+
+```
+
+
+### Extreme Gradient Boosting Machines (XGBoosting)
+
+Los Extrem Gradient Boosting Machines son muy parecidos a los GBM; le agregan algunas cosas: 
+
+- El concepto de `mtry` de los RF para ortogonalizar los árboles
+
+- El bagging (ya lo tenía GBM)
+
+- Regularizadores de los nodos de los árboles! `alpha` `lambda`
+
+- Es una implementación super rápida y paralelizable de GBM ! 
 
 ### Extreme Gradient Boosting Machines (XGBoosting)
 
@@ -547,7 +772,7 @@ Una generalización de los Gradient Boosting Machines; se agregan más hiperpar�
 
 - `colsample_`: La muestra de columnas por cada árbol (Como en RF!)
 
-- `lambda`: Regularización del meta proceso estilo LASSO 
+- `lambda`: Regularización de los nodos terminales de cada arbol estilo LASSO 
 
 
 ### Extreme Gradient Boosting Machines (XGBoosting)
