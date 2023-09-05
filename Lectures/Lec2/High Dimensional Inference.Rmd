@@ -1,7 +1,7 @@
 ---
 title: 'Lec2: High Dimensional Inference'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -40,7 +40,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 >- La **muestra** es una porción de esta población. Esta debe ser **representativa** para poder hacer buenas inferencias. 
 
->- Los **estadísticos** se construyen a partir de los datos observados. Ellos estiman lo que puede ser el parámetro. Es por eso que son **variables aleatorias**. 
+>- Los **estadísticos** se construyen a partir de los datos observados. Ellos estiman un aproximado del parámetro. Es por eso que son **variables aleatorias**. 
 
 >- Asi, un estimador $\hat{\beta_n}$ va a tener distintos valores para muestras distintas de la población $(n_1, n_2, n_3, ...)$
 
@@ -324,16 +324,12 @@ Supongamos ademas que en $N_0<p$ de esas pruebas la hipótesis nula es verdadera
 
 Veamos los errores: 
 
+\begin{center}
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyverse)
-comandos<-tibble(Real= c('Noise', 'Signal'),
-                 No_Rechazar = c('Negativos Verdaderos', 'Falsos Negativos'),
-                 Rechazar = c('Falsos Positivos', 'Positivos verdaderos'))
+\includegraphics[width = 6cm]{matriz_confusion.png}
 
-library(kableExtra)
-kable(comandos)
-```
+\end{center}
+
 
 Queremos un algoritmo que balanceé ambos errores. 
 

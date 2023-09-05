@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  18 JAN 2021 23:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  27 DEC 2022 06:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -669,10 +669,6 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifxetex.sty
-Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifluatex.sty
-Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1
@@ -708,20 +704,13 @@ Package microtype Info: Loading configuration file microtype.cfg.
 File: microtype.cfg 2019/11/18 v2.7d microtype main configuration file (RS)
 )) (/usr/local/texlive/2020/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
-Package: xurl 2020/01/24 v 0.09 modify URL breaks
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bookmark.sty
-Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
-(/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
-File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
-\BKM@id=\count321
-)) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2020/01/13 v3.5 verbatim text (tvz,hv)
-\FV@CodeLineNo=\count322
+\FV@CodeLineNo=\count321
 \FV@InFile=\read3
 \FV@TabBox=\box74
-\c@FancyVerbLine=\count323
-\FV@StepNumber=\count324
+\c@FancyVerbLine=\count322
+\FV@StepNumber=\count323
 \FV@OutFile=\write5
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
@@ -730,11 +719,6 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \fb@frh=\dimen283
 \FrameRule=\dimen284
 \FrameSep=\dimen285
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/grffile/grffile.sty
-Package: grffile 2019/11/11 v2.1 Extended file name support for graphics (legac
-y)
-Package grffile Info: This package is an empty stub for compatibility on input 
-line 40.
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
 s
@@ -747,6 +731,13 @@ s
 \f@nch@O@erf=\skip74
 \f@nch@O@olf=\skip75
 \f@nch@O@orf=\skip76
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
+\BKM@id=\count324
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2020/01/24 v 0.09 modify URL breaks
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count325
@@ -754,24 +745,24 @@ File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 ) (./High-Dimensional-Inference.aux)
 \openout1 = `High-Dimensional-Inference.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 154.
-LaTeX Font Info:    ... okay on input line 154.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -828,7 +819,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 )) ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box77
-Package hyperref Info: Link coloring OFF on input line 154.
+Package hyperref Info: Link coloring OFF on input line 157.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty
@@ -840,55 +831,55 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count332
 )
-LaTeX Info: Redefining \ref on input line 154.
-LaTeX Info: Redefining \pageref on input line 154.
-LaTeX Info: Redefining \nameref on input line 154.
+LaTeX Info: Redefining \ref on input line 157.
+LaTeX Info: Redefining \pageref on input line 157.
+LaTeX Info: Redefining \nameref on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 154.
+(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 154.
+(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 154.
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 154.
+(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 157.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 154.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 154.
+(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 154.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 154.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 154.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 154.
+(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 154.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 154.
+(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 154.
+(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 154.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 154.
+(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 154.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 154.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 154.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 154.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 154.
+(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 154.
+(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 154.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 154.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 154.
+(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 157.
 
 (/usr/local/texlive/2020/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -914,14 +905,14 @@ Dictionary: translator-numbers-dictionary, Language: English
 tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \microtypecontext on input line 154.
+LaTeX Info: Redefining \microtypecontext on input line 157.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 154.
+LaTeX Info: Redefining \showhyphens on input line 157.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -931,11 +922,11 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 (./High-Dimensional-Inference.nav)
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 155.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 158.
 <logo-ITAM.png, id=13, 1505.625pt x 569.12625pt>
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 155.
+Package pdftex.def Info: logo-ITAM.png  used on input line 158.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 
 Package Fancyhdr Warning: \headheight is too small (0.0pt): 
@@ -944,7 +935,7 @@ We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 15
-5.
+8.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-cmr.cfg
@@ -964,7 +955,7 @@ This may cause the page layout to be inconsistent, however.
 
 (./High-Dimensional-Inference.vrb
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 
-7.
+6.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -972,53 +963,53 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 6
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-7.
+6.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-7.
+6.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 7.
+(Font)              <10> on input line 6.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 7.
+(Font)              <7> on input line 6.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 7.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 7.
+(Font)              <5> on input line 6.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 6.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 7.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 6.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 7.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 6.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 7.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 6.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 7.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 6.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-3.
+2.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ))
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 184.
+Package pdftex.def Info: logo-ITAM.png  used on input line 185.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [2
 
@@ -1030,7 +1021,7 @@ l.2 \protect\hypertarget{agenda}{}
                                   )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 184.
+Package pdftex.def Info: logo-ITAM.png  used on input line 185.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [3
 
@@ -1042,7 +1033,7 @@ l.2 \protect\hypertarget{agenda}{}
                                   )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 184.
+Package pdftex.def Info: logo-ITAM.png  used on input line 185.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [4
 
@@ -1054,14 +1045,14 @@ l.2 \protect\hypertarget{agenda}{}
                                   )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 184.
+Package pdftex.def Info: logo-ITAM.png  used on input line 185.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [5
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [6
 
@@ -1069,11 +1060,11 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 233.
 ferencia-estaduxedstica}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 \end{frame}
+l.232 \end{frame}
                  
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [7
 
@@ -1081,11 +1072,11 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 233.
 ferencia-estaduxedstica}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 \end{frame}
+l.232 \end{frame}
                  
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [8
 
@@ -1093,11 +1084,11 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 233.
 ferencia-estaduxedstica}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 \end{frame}
+l.232 \end{frame}
                  
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [9
 
@@ -1105,11 +1096,11 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 233.
 ferencia-estaduxedstica}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 \end{frame}
+l.232 \end{frame}
                  
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [10
 
@@ -1117,51 +1108,51 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 233.
 ferencia-estaduxedstica}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.233 \end{frame}
+l.232 \end{frame}
                  
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 233.
+Package pdftex.def Info: logo-ITAM.png  used on input line 232.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [11
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 254.
+Package pdftex.def Info: logo-ITAM.png  used on input line 251.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [12
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 279.
+Package pdftex.def Info: logo-ITAM.png  used on input line 274.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [13
 
 ]
 \openout4 = `High-Dimensional-Inference.vrb'.
 
-(./High-Dimensional-Inference.vrb
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 17.
-)
+(./High-Dimensional-Inference.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 311.
+Package pdftex.def Info: logo-ITAM.png  used on input line 304.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [14
 
 ]
 \openout4 = `High-Dimensional-Inference.vrb'.
 
-(./High-Dimensional-Inference.vrb)
-Overfull \vbox (51.8427pt too high) detected at line 349
+(./High-Dimensional-Inference.vrb
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 5.
+)
+Overfull \vbox (51.89943pt too high) detected at line 340
  []
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 349.
+Package pdftex.def Info: logo-ITAM.png  used on input line 340.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [15
 
@@ -1171,7 +1162,7 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 349.
 (./High-Dimensional-Inference.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 365.
+Package pdftex.def Info: logo-ITAM.png  used on input line 354.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [16
 
@@ -1180,7 +1171,7 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 365.
 
 (./High-Dimensional-Inference.vrb
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-27.
+26.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1190,19 +1181,19 @@ File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-4-1.pdf Grap
 hic file (type pdf)
 <use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-4-1.pdf  used on input line 33.
+-chunk-4-1.pdf  used on input line 32.
 (pdftex.def)             Requested size: 307.2995pt x 96.1221pt.
 )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 402.
+Package pdftex.def Info: logo-ITAM.png  used on input line 389.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [17
 
  <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-4-1.pdf>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 427.
+Package pdftex.def Info: logo-ITAM.png  used on input line 412.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [18
 
@@ -1213,11 +1204,11 @@ File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-5-1.pdf Grap
 hic file (type pdf)
 <use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-5-1.pdf  used on input line 434.
+-chunk-5-1.pdf  used on input line 417.
 (pdftex.def)             Requested size: 307.2871pt x 212.93697pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 434.
+Package pdftex.def Info: logo-ITAM.png  used on input line 417.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [19
 
@@ -1228,18 +1219,18 @@ File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-6-1.pdf Grap
 hic file (type pdf)
 <use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-6-1.pdf  used on input line 441.
+-chunk-6-1.pdf  used on input line 422.
 (pdftex.def)             Requested size: 307.2871pt x 212.93697pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 441.
+Package pdftex.def Info: logo-ITAM.png  used on input line 422.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [20
 
  <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-6-1.pdf>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 453.
+Package pdftex.def Info: logo-ITAM.png  used on input line 432.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [21
 
@@ -1250,18 +1241,18 @@ File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-7-1.pdf Grap
 hic file (type pdf)
 <use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-7-1.pdf>
 Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-7-1.pdf  used on input line 468.
+-chunk-7-1.pdf  used on input line 445.
 (pdftex.def)             Requested size: 307.29724pt x 89.94064pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 468.
+Package pdftex.def Info: logo-ITAM.png  used on input line 445.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [22
 
  <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-7-1.pdf>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 500.
+Package pdftex.def Info: logo-ITAM.png  used on input line 475.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [23
 
@@ -1271,7 +1262,7 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 500.
 (./High-Dimensional-Inference.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 525.
+Package pdftex.def Info: logo-ITAM.png  used on input line 498.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [24
 
@@ -1281,7 +1272,7 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 525.
 (./High-Dimensional-Inference.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 559.
+Package pdftex.def Info: logo-ITAM.png  used on input line 530.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [25
 
@@ -1291,99 +1282,104 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 559.
 (./High-Dimensional-Inference.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 594.
+Package pdftex.def Info: logo-ITAM.png  used on input line 563.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [26
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 614.
+Package pdftex.def Info: logo-ITAM.png  used on input line 581.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [27
 
 ]
+<matriz_confusion.png, id=219, 931.98187pt x 171.13937pt>
+File: matriz_confusion.png Graphic file (type png)
+<use matriz_confusion.png>
+Package pdftex.def Info: matriz_confusion.png  used on input line 602.
+(pdftex.def)             Requested size: 170.70744pt x 31.34691pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 641.
+Package pdftex.def Info: logo-ITAM.png  used on input line 602.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [28
 
-]
+ <./matriz_confusion.png>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 662.
+Package pdftex.def Info: logo-ITAM.png  used on input line 621.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [29
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 678.
+Package pdftex.def Info: logo-ITAM.png  used on input line 635.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [30
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 708.
+Package pdftex.def Info: logo-ITAM.png  used on input line 663.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [31
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 733.
+Package pdftex.def Info: logo-ITAM.png  used on input line 686.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [32
 
 ]
-<fdr.png, id=250, 1031.855pt x 939.51pt>
+<fdr.png, id=252, 1031.855pt x 939.51pt>
 File: fdr.png Graphic file (type png)
 <use fdr.png>
-Package pdftex.def Info: fdr.png  used on input line 744.
+Package pdftex.def Info: fdr.png  used on input line 695.
 (pdftex.def)             Requested size: 227.62285pt x 207.25192pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 744.
+Package pdftex.def Info: logo-ITAM.png  used on input line 695.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [33
 
  <./fdr.png>]
-<High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf, id=258,
+<High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-11-1.pdf, id=260,
  712.6625pt x 423.5825pt>
+File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-11-1.pdf Gra
+phic file (type pdf)
+<use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
+-chunk-11-1.pdf  used on input line 703.
+(pdftex.def)             Requested size: 307.2871pt x 182.64107pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 703.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[34
+
+ <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-11-1.pdf>]
+\openout4 = `High-Dimensional-Inference.vrb'.
+
+(./High-Dimensional-Inference.vrb
+<High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf, id=274,
+ 689.57625pt x 394.47375pt>
 File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf Gra
 phic file (type pdf)
 <use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-12-1.pdf  used on input line 754.
-(pdftex.def)             Requested size: 307.2871pt x 182.64107pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 754.
-(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
-[34
-
- <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf>]
-\openout4 = `High-Dimensional-Inference.vrb'.
-
-(./High-Dimensional-Inference.vrb
-<High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-13-1.pdf, id=272,
- 689.57625pt x 394.47375pt>
-File: High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-13-1.pdf Gra
-phic file (type pdf)
-<use High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-13-1.pdf>
-Package pdftex.def Info: High-Dimensional-Inference_files/figure-beamer/unnamed
--chunk-13-1.pdf  used on input line 4.
+-chunk-12-1.pdf  used on input line 3.
 (pdftex.def)             Requested size: 307.2866pt x 175.78404pt.
 )
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 765.
+Package pdftex.def Info: logo-ITAM.png  used on input line 712.
 (pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [35
 
- <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-13-1.pdf>]
+ <./High-Dimensional-Inference_files/figure-beamer/unnamed-chunk-12-1.pdf>]
 \tf@nav=\write6
 \openout6 = `High-Dimensional-Inference.nav'.
 
@@ -1393,18 +1389,18 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 765.
 \tf@snm=\write8
 \openout8 = `High-Dimensional-Inference.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 767.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 767.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 714.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 714.
 (./High-Dimensional-Inference.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 767.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 767.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 714.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 714.
  ) 
 Here is how much of TeX's memory you used:
- 24173 strings out of 480608
- 438763 string characters out of 5903631
- 703739 words of memory out of 5000000
- 39345 multiletter control sequences out of 15000+600000
- 579346 words of font info for 83 fonts, out of 8000000 for 9000
+ 24148 strings out of 480608
+ 438079 string characters out of 5903631
+ 703431 words of memory out of 5000000
+ 39329 multiletter control sequences out of 15000+600000
+ 579245 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  58i,15n,67p,814b,437s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/lo
@@ -1428,10 +1424,10 @@ ype1/public/lm/lmtk10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/publi
 c/lm/lmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmtti
 10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/
 msam10.pfb>
-Output written on High-Dimensional-Inference.pdf (35 pages, 825113 bytes).
+Output written on High-Dimensional-Inference.pdf (35 pages, 856075 bytes).
 PDF statistics:
- 371 PDF objects out of 1000 (max. 8388607)
+ 373 PDF objects out of 1000 (max. 8388607)
  286 compressed objects within 3 object streams
  89 named destinations out of 1000 (max. 500000)
- 12371 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 12376 words of extra memory for PDF output out of 14400 (max. 10000000)
 

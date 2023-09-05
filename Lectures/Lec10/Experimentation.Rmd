@@ -1,7 +1,7 @@
 ---
-title: 'Lec10: Causal Inference: Experiments'
+title: 'Lec10: Inferencia Causal: Experimentos I'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -36,15 +36,6 @@ Diseño de experimentos
 
 - Balance 
 
-Evaluación de impacto
- 
-- ITT 
-
-- Non compliance 
-
-- Efectos heterogeneos 
-
-- Aplicaciones 
 
 ### Introducción a la inferencia causal 
 
@@ -99,19 +90,29 @@ Es decir, el estimador naive ignora el **sesgo de selección**. La asignación a
 
 ### Sesgo de selección 
 
-El sesgo de selección significa que los grupos que recibieron el tratamiento y los que no (el grupo control) **son diferentes**. Esto hace que la comparativa entre los grupos sea injusta. No podemos atribuirle las diferencias al tratamiento porque los grupos ya eran distintos.
+El sesgo de selección significa que los grupos que recibieron el tratamiento y los que no (el grupo control) **son diferentes**. 
 
-Hay dos tipos de sesgo de selección: 
+- Esto hace que la comparativa entre los grupos sea injusta. No podemos atribuirle las diferencias al tratamiento porque los grupos ya eran distintos.
+
+- En un mundo ideal, te gustaría que la **única** diferencia entre los grupos fuera el tratamiento.
+
+Hay dos tipos de sesgo de selección (en pre-intervención!): 
 
 - **Selección en observables**: Los grupos son distintos en variables que observamos en los datos 
 
 - **Selección en no observables**: Los grupos de tratamiento son distintos en variables que no observamos. 
 
+### Sesgo de selección
+
+En ambos casos de selección, la implicación es que la media observada para cada grupo no es independiente a el grupo donde esta el individuo ya que este "se seleccionó" para el grupo: 
+
 Esto es $E[Y_i(0)] \neq E[Y_i(0)|d=0]$ y $E[Y_i(1)] \neq E[Y_i(1)|d=1]$.
 
-- Noten como esto es $Y(0,1) \not \perp d$. Es decir, la asignación de tratamiento no es ortogonal a los potential outcomes. 
+Noten como esto es $Y(0,1) \not \perp d$. Es decir, la asignación de tratamiento no es ortogonal a los potential outcomes. 
 
 Por ende, **lo más importante en la inferencia causal es el mecanismo de asignación de tratamientos.**
+
+Estamos ante la búsqueda de una asignación de tratamiento que ayude a hacer inferencia causal
 
 
 ### Mecanismos de asignación 
@@ -137,7 +138,7 @@ La inferencia causal se basa en intentar estimar el contrafactual con base en el
 
 1. **Asignación aleatoria (experimentación)**: Esta es la única que cumple con 1,2 y 3. El investigador conoce la función de asignación 
 
-2. **Asignación no aleatorio (métodos cuasi experimentales)**: Buscamos, entendiendo la función de asignación que no controlamos, estimar el contrafactual. 
+2. **Asignación no aleatorio (métodos cuasi experimentales)**: Buscamos, entendiendo la función de asignación que no controlamos, estimar el contrafactual (conditional unconfoundness).
 
 En esta clase vamos a hablar de 1. Los métodos cuasiexperimentales los cubriremos en la siguiente clase. 
 
@@ -153,7 +154,7 @@ Los experimentos de control aleatorio son el resultado de una función de asigna
 
 Son el **Gold Standard** para estimar contrafactuales en medicina, criminología, negocios, etc. 
 
-Experimento: Conjuntos de grupos de tratamiento y probailidades de pertenecer a cada uno. 
+Experimento: Conjuntos de grupos de tratamiento y probabilidades de pertenecer a cada uno. 
 
 ### SUTVA 
 
@@ -417,6 +418,9 @@ Para las pruebas de poder tenemos dos dimensiones que considerar:
 
 2. Con que probabilidades asigno cada grupo de tratamiento? 
 
+
+### Poder I 
+
 Para 1, mostremos un poco de algebra. El estadístico T se distribuye asi: 
 
 $$T = \frac{\bar Y_1 - \bar Y_0 - \tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})} } \sim N(0,1)$$
@@ -430,7 +434,7 @@ $$T = \mathcal{N}(\frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}, 1)
 
 Ahora, la probabilidad de rechazar $H_0$ a un nivel de significancia $\alpha$ es: 
 
-$$Pr(|T| > \Phi^{-1}(1-\frac{\alpha}{2})) = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}})$$
+$$Pr(|T| > \Phi^{-1}(1-\frac{\alpha}{2})) = \Phi \left( -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}\right)$$
 
 Queremos que la probabilidad de rechazar la $H_0: \tau=0$ cuando es falsa sea igual a $\beta$ (poder!).
 
@@ -490,11 +494,11 @@ Existen dos pruebas que deben correr:
 
 Cuando el número de columnas crece mucho, es muy fácil caer en falsos positivos (Bonferroni!)
 
-- Pruebas conjuntas F: Correr un modelo de probabilidad lineal de pertenecer a cada tratamiento vs el grupoc control. 
+- Pruebas conjuntas F: Correr un modelo de probabilidad lineal de pertenecer a cada tratamiento vs el grupo control. 
 
 ### Balance tests: F-test
 
-Cuando el número de variables a evaluar son iguales, entramos en un problema de multiple hypothesis testing (i.e. Bonferroni adjustments). 
+Cuando el número de variables a evaluar son grandes, entramos en un problema de multiple hypothesis testing (i.e. Bonferroni adjustments). 
 
 La manera más sencilla de solucionar esto es hacer una prueba única conjunta:
 
@@ -554,49 +558,22 @@ Finalmente, revisamos si el modelo (con todas las variables) explica la probabil
 \includegraphics[width = 10cm]{balance_f.png}
 \end{center}
 
-### Medición de impacto
 
-La medición de impacto tiene las siguientes directices:
+### Resumen
 
-- Se puede hacer comparación de medias.
+- La inferencia causal se trata sobre la **función de asignación**. Para que esta nos ayude a arrojar estimadores causales necesitamos que cumpla 3 características: 
 
-- SIEMPRE deben incluir en la medición el diseño. Esto es, incluir efectos fijos por estrato del diseño. 
+1. Asignación individual (No contaminación): Stable Unit Treatment Variable Assignment 
 
-Esto genera que los estimadores pierdan varianza. Adicionalmente, genera que sea más sencillo correr una regresión para medir los impactos.
+2. Asignación Probabilística (Overlap): No hay selección en variables
 
-- Cuando la variable $y$ métrica de interés es dicotómica, se debe correr un **Modelo de Probabilidad Lineal** y no un logit. La razón es no debemos imponer formas funcionales que generen sesgo. Más aún, es muy poco probable que nos encontremos con $P>1, P<0$.
+3. Unconfoundness: El tratamiento es independiente a las variables
 
-- Podemos agregar controles en la medición. Esto no es necesario pero puede ayudar a la eficiencia. Se recomienda agregar variables que salieron desbalanceadas (para rebalancear).
+Los experimentos son el Gold standard de la inferencia causal: 
 
-- Finalmente, podemos usar Dif in Dif si el experimento corrió varios periodos y tenemos los datos pre-tratamiento. 
+- La asignación aleatoria permite cumplir condiciones 2 y 3. 
 
+- El Data Scientist tiene que estar pendiente de si se cumple 1
 
-### Ejemplo: HTE (1 sola interacción)
-
-\begin{center}
-\includegraphics[width = 10cm]{transacted_itt.png}
-\end{center}
-
-
-### Ejemplo: HTE (doble interaccion)
-
-\begin{center}
-\includegraphics[width = 10cm]{net_deposits_by_curp.png}
-\end{center}
-
-### Medición de impacto II: Dif in Dif 
-
-En general, el dif in dif no debería de generar cambios en el estimador de impacto (en principio). Su principal ganancia es la disminución de la varianza de los estimadores:
-
-\begin{center}
-\includegraphics[width = 10cm]{dif_dif.png}
-\end{center}
-
-### Otros temas 
-
-Finalmente, nos faltó cubrir algunos otros temas importantes:
-
-- Non-compliance: One sided y two sided. Se debe usar la asignación como variable instrumental del tratamiento efectivo. 
-
-- Medición de efectos heterogeneos: Siempre debemos reportar los impactos heterógeneos para las variables que utlizamos para crear bloques y NO otras (en principio). Esto refleja cierta honestidad intelectual del experimentador.
+- La asignación estratificada es mejor que la asignación simple, pues te permite aumentar la eficiencia de los estimadores y observar efecto heterogeneos. 
 

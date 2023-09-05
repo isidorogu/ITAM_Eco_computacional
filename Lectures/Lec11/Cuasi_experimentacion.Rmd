@@ -1,7 +1,7 @@
 ---
-title: 'Lec11: Causal Inference: Experiments & Obs Studies'
+title: 'Lec11: Inferencia Causal II: Experimentos & Obs Studies'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -22,33 +22,68 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Agenda
 
-Experimentación
+Evaluación de impacto Experimentos
  
+- ITT 
+
+- Non compliance (IV)
+
+- Efectos heterogeneos 
+
 - Experimentos de bajo poder: P-values exactos de Fisher
 
 - Diferencias en Diferencias
 
-- Non-compliance (Variables Instrumentales)
-
 Estudios observacionales
 
-- Event Studies
+- Dif-in-Dif Doubly Robust
 
 - Regresión Discontinua
 
+
+
+### Medición de impacto
+
+La medición de impacto tiene las siguientes directices:
+
+- Se puede hacer comparación de medias.
+
+- SIEMPRE deben incluir en la medición el diseño. Esto es, incluir efectos fijos por estrato del diseño. 
+
+Esto genera que los estimadores pierdan varianza. Adicionalmente, genera que sea más sencillo correr una regresión para medir los impactos.
+
+- Cuando la variable $y$ métrica de interés es dicotómica, se debe correr un **Modelo de Probabilidad Lineal** y no un logit. La razón es no debemos imponer formas funcionales que generen sesgo. Más aún, es muy poco probable que nos encontremos con $P>1, P<0$.
+
+- Podemos agregar controles en la medición. Esto no es necesario pero puede ayudar a la eficiencia. Se recomienda agregar variables pre-tratamiento que salieron desbalanceadas (para rebalancear).
 
 
 ### Medición de Experimentos 
 
 Vamos a cubrir con mejor detalle la medición de los experimentos de control aleatorio. 
 
->- De donde viene la aleatoriedad en los experimentos?
+- De donde viene la aleatoriedad en los experimentos?
 
->- Viene del sampling como en las regresiones?
+- Viene del sampling como en las regresiones?
 
->- No! viene del set de posibilidades de aleatorización. 
+- No! viene del set de posibilidades de aleatorización. 
 
->- Veamos primero los errores exactos que vienen de la aleatorización
+- Veamos primero los errores exactos que vienen de la aleatorización
+
+
+### Distribuciones de la asignación de tratamiento 
+
+Imaginen que tenemos un experimento donde: 
+
+- $N$=20: Tamaño total de la muestra
+
+- $N_t$ = 10: Tamaño del grupo de tratamiento
+
+- $N_c$ = 10: Tamaño del grupo de tratamiento
+
+Vamos a hacer una asignación aleatoria. De cuantas maneras la podemos hacer? 
+
+$${N \choose N_t}=\frac{N!}{N_t(N_c)}=\frac{20!}{10!10!}=184,756$$
+Había 184,756 maneras de asignar el experimento. Al medir el mismo, el investigador debería hacer pruebas de hipótesis comparado el estadístico observado vs los 184,755 casos restantes. 
 
 ### Distribuciones de la asignación de tratamiento 
 
@@ -155,21 +190,351 @@ Ya vimos que con la regresión se puede medir un experimento, si $N$ es suficien
 \includegraphics[width = 10cm]{impact_eval.png}
 \end{center}
 
+
+### Efectos Heterógeneos
+
+Los efectos heterógeneos son una parte muy importante del análisis experimental pues nos permiten ver el **Conditional Average Treatment Effect (CATE)**. 
+
+Esto es muy importante pues nos permite evaluar preguntas muy interesantes de policy o business que apuntan a **personalización/targeting**:
+
+- Debo darle incentivos monetarios a todos los usuarios para que abran la cuenta? A cuáles segmentos? 
+
+- La condicionalidad de llevar a los hijos a chequeos clínico tiene el mismo impacto para jefes del hogar hombres o mujeres?
+
+Noten como el targeting apunta a mejorar el impacto de la intervención: Si focalizo mi intervención, puedo excluir grupos con impactos de tratamiento bajos y sólo enfocarme en grupos donde el impacto es alto. Esto genera un concepto muy útil llamado **Gain**. 
+
+
+
+### Ejemplo: HTE (1 sola interacción)
+
+Qué segmento deposita o tradea cuando recibe efectivo? 
+
+\begin{center}
+\includegraphics[width = 10cm]{transacted_itt.png}
+\end{center}
+
+
+### Ejemplo: HTE (doble interaccion)
+
+Si vemos por segmento y por genero?
+
+\begin{center}
+\includegraphics[width = 10cm]{net_deposits_by_curp.png}
+\end{center}
+
+
+### Variables a analizar HTE
+
+En general, las variables sobre las que se quiere evaluar impactos heterógeneos deben ser declaradas previo al experimento. Es decir, deben ser variables que usamos para estratificar la asignación del mismo.
+
+- Evaluar sobre variables a posteriori puede ser algo fishy. No está prohibido; pero se debe corroborar antes el balance en pre-treatment variables e limitarlo a preguntas muy interesantes.
+
+Si podemos hacer dobles interacciones o incluso triples, pero empezamos a caer en dos problemas conocidos: Falta de poder y evaluación de pruebas múltiples! Hay que hacerlas de manera seleccionada.
+
+
+
+### Variaciones del ejemplo base 
+
+
+**Muchos periodos**
+
+Podemos usar Dif in Dif si el experimento corrió varios periodos y tenemos los datos pre-tratamiento. En principio, las diferencias previas entre grupos de tratamiento y control debería ser cero. Cómo podemos *asegurarlo*?
+
+- El Dif-Dif (En su TWFE form) te permite evaluar impactos dinámicos 
+
+- Incluir la variable endógena para varios periodos como estratificador es super recomendable.
+
+**Participación Parcial**
+
+Algo muy común en los experimentos es la participación parcial. Esto es, personas asignadas al tratamiento no cumplan con su asignación inicial. 
+
+- Las Variables instrumentales son el go-to teórico. No obstante, veremos que tiene limitantes serias en la práctica. 
+
+- Análisis del estimador Treatment on the Treated (ToT) suelen ser mejor alternativa.  
+
+
+### Muchos periodos: Dif-in-Dif 
+
+El método de diferencias en diferencias puede ser utilizado en experimentación. 
+
+- Si un experimento duró varios periodos y tenemos observaciones previas al tratamiento, podemos usar diferencias en diferencias para mejorar ($\downarrow$ varianza) la estimación de ATE. 
+
+- Piensen en lo siguiente: Como los grupos fueron asignados aleatoriamente, a "fuerzas" tienen tendencias paralelas en los periodos previos a la intervención. 
+
+- Más aún, el estimador va a restar cualquier desbalance (aunque no significativo) de las observaciones previas. 
+
+- En la práctica, esto cambia ligeramente los estimadores de impacto. Pero no debería de ser un número significativo para el negocio. 
+
+### Muchos periodos: Dif-in-Dif II
+
+En general, el dif in dif no debería de generar cambios en el estimador de impacto. Su principal ganancia es la disminución de la varianza de los estimadores:
+
+\begin{center}
+\includegraphics[width = 10cm]{dif_dif.png}
+\end{center}
+
+
+Es importante tener la variable endógena como estratificador para garantizar esto! (Control for what you can, randomize what you can't).
+
+
+### Dif-in-Dif: Estrategia de identificación 
+
+El método de diferencias es muy popular. Esta es su estrategia de identificación causal:
+
+ - No asumimos nada de la función de asignación $P(treat)$ (Ojo, si vemos que se cumpla SUTVA)
+ 
+ - Encontamos un grupo, que intentamos sea lo más parecido al grupo de tratamiento, que no haya recibido el tratamiento y que se haya evolucionado de la misma manera en el tiempo. (Overlap!)
+ 
+ - Esto es, que tenga **tendencia paralela**. (Unconfoundness!)
+ 
+ - Con esto, podemos inferir el $ATE=[\bar Y_t-\bar Y_c | durante =1]-[\bar Y_t-\bar Y_c | durante =0]$. Es decir, la diferencia post menos las diferencias previas. 
+ 
+ - Típicamente, esto se estima con:
+ 
+$y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$
+
+- Donde $\delta_{dif}$ es el estimador de diferencias en diferencias
+
+
+
+### Diferencias en Diferencias (2)
+
+Cómo evaluamos si hay tendencias paralelas en las observaciones previas a la intervención:
+
+- Típicamente se corre una prueba placebo. 
+
+Imaginense que observan $t=1,2,3,4,5,6$. En $t=4$ empezó la intervención. 
+
+- La prueba placebo consiste en correr el estimador de diferencias en diferencias ($y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$) para los periodos previos $1,2,3$ asumiendo que cada uno de ellos es donde sucedió la intervención. 
+
+$$durante_j = 1\{t \geq j\} \ \ j=1,2$$
+
+ - Si hay tendencias paralelas, el estimador de diferencias en diferencias en periodos previos debería ser pequeño y no significativo. 
+ 
+
+### Ejemplo
+
+Noten como las diferencias previas son no significativas (experimento bien asignado). Aún así, el dif-dif limpia -3 pp y -2pp de diferencias previas. 
+
+\begin{center}
+\includegraphics[width = 8cm]{dif_dif_tabla.png}
+\end{center}
+
+### Ejemplo II
+
+\begin{center}
+\includegraphics[width = 10cm]{dif_dif_graph.png}
+\end{center}
+
+### Dif in Dif con `RCT`
+
+Para incluir dif in dif en la librería de RCT, sólo tenemos que hacer:
+```{r eval=FALSE, echo=T}
+library(RCT)
+dif_dif<-impact_eval(data = data, 
+                     endogenous_vars = "y_1", 
+                     treatment = "treat",
+                     control_vars = c('durante', 
+                                      "durante:treat"), 
+                     fixed_effect_vars = 'strata')
+
+```
+
+### One-sided Non-compliance en Experimentos
+
+El experimento pudo tener participación parcial de un lado (Non-defiers):
+
+- Imaginen que lanzan un experimento donde envían SMS a los usuarios para ahorrar de manera aleatoria
+
+- El vector que define que mensaje recibía el usuario es $T_i$ (asignado aleatoriamente)
+
+- El vector que define quien vio el mensaje cuando lo recibió es $G_i$
+
+Cómo medimos el impacto del experimento? Tenemos dos opciones:
+
+- **Intend to Treat (ITT)**: Medimos $Y_i=\alpha + \tau T_i$. Esto nos arrojará el impacto de la intención de tratar sobre la $Y_i$ de manera insesgada (dado que sigue la asignación aleatoria). 
+
+- **Treatment on the Treated**: El impacto de los que efectivamente vieron el mensaje sobre $Y_i$
+
+### Intend to Treat (ITT)
+
+Este estimador es insesgado por definición: Mide el impacto de la asignación inicial (aleatoria). Sin embargo, puede no ser el estimador relevante. 
+
+- Imaginemos que mandamos el mensaje a 5 personas y sólo 2 lo vieron. Guardamos 5 personas en el grupo de control. 
+
+- Tenemos que $T_i=(0,0,0,0,0,1,1,1,1,1)$ pero $G_i=(0,0,0,0,0,1,0,0,0,1)$
+
+- Imaginemos que las personas que ven el mensaje incrementan $Y_i$ en 5 unidades $Y_{i|G_i=0}=17$. Los que no se quedan con el valor del grupo control $Y_{i|G_i=0}=12$
+
+- Cuando midamos el impacto con $\bar Y_{T_i=1}-\bar Y_{T_i=0}= 14-12=2$. 
+
+- Noten como el ITT nos dice que el impacto fue 2 cuando en realidad es 5 (para los tratados). Estoy promediando impactos de $(5,0,0,0,5)$. Así, subestimo el impacto el experimento sobre los tratados. 
+
+### Intend to Treat (ITT)
+
+Para correr el ITT estimator, lo único que tengo que hacer es correr la regresión de los outcomes vs la asignación de tratamiento: 
+
+$$Y_i = \alpha_s+\tau T_i+\epsilon_i$$
+
+Donde $\tau$ es el ITT estimator. 
+
+
+### Treatment on the Treated (ToT)
+
+La otra alternativa es intentar estimar el impacto de los usuarios que fueron efectivamente tratados. 
+
+Tenemos 2 opciones: 
+
+- Usar Variables Instrumentales para estimar el Local Average Treatment Effect (LATE) sobre los compliers. 
+
+- Usar $G_i$ (effective treatment) en lugar de $T_i$ (As per treated analysis)
+
+Veamos las ventajas y desventajas de uno y otro
+
+### Variables Instrumentales
+
+Las variables instrumentales son otro método popular de inferencia causal:
+
+- Buscas estimar $Y_i = \beta_0 + \tau T_i+\epsilon_i$
+
+- Existe una variable $G_i$ (instrumento) que está **MUY** correlacionada con el tratamiento de interés $T_i$ (Relevancia). 
+
+- Esta variable además **no está correlacionada** con la métrica de interés $Y_i$. (Exogeneidad/Unconfoundness). Formalmente esto implica $Cov(U_i,Z_i)$ que el instrumento no tiene correlación con ninguna otra variable no incluida en la regresión. 
+
+- La varianza de $T_i$ explicada por $G_i$ es causal! 
+$$T_i=\gamma_0+\gamma_1G_i+v_i \ \ 1st \ \ Stage$$
+$$Y_i=\eta_0+\eta_1G_i+\omega_i \ \ 2nd  \ \ Stage$$
+$$\hat\tau = \frac{\hat\eta_1}{\hat \gamma_1}$$
+
+
+### Variables Instrumentales II 
+
+La anterior muestra una forma de estimar IV que se llama Two-Stage Least Squares: 
+
+- Estimas el First Stage 
+
+- Predices los scores del first stage (toda la varianza exógena de $T_i$)
+
+- Usas esta predicción $\hat T_i$ y la metes a la regresión $Y_i=\beta_0+\tau\hat T_i+\epsilon_i$ 
+
+- $\hat\tau$ es el estimador IV 2sls. Noten como es lo mismo que dividir los dos coeficientes del first stage y second stage
+
+Formalmente, usas una correción de los errores de libertad para obtener los errores éstandar exactos. 
+
+
+### Variables Instrumentales III 
+
+Probemos que lo anterior es correcto: 
+$$Y_i=\beta_0+\tau T_i+\epsilon_i$$
+$$cov(Y_i,G_i)=cov(\beta_0+\tau T_i+\epsilon_i,G_i)$$
+$$cov(Y_i,G_i)=cov(\beta_0,G_i)+cov(\tau T_i,G_i)+cov(u_i,G_i)$$
+$$cov(Y_i,G_i)=\tau cov(T_i,G_i)$$
+$$\tau = \frac{cov(Y_i,G_i)}{cov(T_i,G_i)}=\frac{\eta_1}{\gamma_1}$$
+
+
+### Notas en IV en Experimentos 
+
+El impacto encontrado es para los "compliers".
+
+- Los compliers son los usuarios que de recibir $T_i$, se tratan efectivamente 
+
+- Este impacto excluye a los Never takers: Usuarios que no tienen el cambio en el comportamiento sin importar si reciben el tratamiento o no.
+
+- Igualmente excluye a los Always takers: Usuarios que siempre observan el cambio en su comportamiento 
+
+- Por definición se asume que no habrá defiers
+
+Como se les ocurre traducir esto a experimentos digitales en negocios? 
+
+
+
+### Notas en IV en Experimentos II: Supuestos
+
+Recordemos que necesitamos que el instrumento sea **Relevante** y **Exógeno**:
+
+
+- La exogeneidad es muy fácil de justificar. Dado que el tratamiento fue asignado aleatoriamente, es natural que sea independiente a todas las variables 
+
+
+- Necesitas un intrumento **fuerte** en la primera etapa para que el estimador sea bueno (i.e. La primera etapa que tenga un $F-statistic \geq10$). Más aún, necesitas que la participación sea alta (i.e. $P(G_i) \sim  T_i \rightarrow 1$ ); de lo contrario el instrumento será débil.
+
+- Esto último hace complicado usar IV en experimentos digitales. Como la participación parcial es alta, el IV estimator tiende a tener muchísima varianza. 
+
+
+### Instrumentos en `R`
+
+La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
+
+\begin{center}
+\includegraphics[width = 10cm]{lfe.png}
+\end{center}
+
+### Instrumentos en `R` (2)
+
+La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
+
+\begin{center}
+\includegraphics[width = 10cm]{lfe_details.png}
+\end{center}
+
+
+### As per Treated Analysis 
+
+Que hacemos si tenemos un experimento donde la participación parcial fue alta? 
+
+- El ITT diluye demasiado el impacto; generando dificultad en observar impactos 
+
+- La asignación de tratamiento es un instrumento débil, lo que genera que el IV estimator tenga mucha varianza y números sin sentido ($\gamma_1$ es muy pequeño. $\tau = \eta_1/\gamma_1$ se hace gigante)
+
+Idealmente, lo mejor sería tener un **placebo** en el grupo de control. Esto es, darles un tratamiento innocuo 
+
+- En medicina, darle mentas en lugar de medicamento
+
+- En business, un mensaje simple sin CTA
+
+
+### Placebo identified analysis 
+
+Con el grupo placebo, uno puede identificar a los compliers de ambos grupos. 
+
+1.  Filtrar a los controles que no se tomaron el placebo/ no recibieron el mensaje/etc. 
+
+2. Filtrar los usuarios tratados que se tomaron el medicamento/ no recibieron el mensaje/etc. 
+
+3. Realizar la evaluación de impacto comparando ambos compliers 
+
+- Previo corroborar buen Unconfoundness de participación en ambos grupos! 
+
+
+### As Per Treated Analysis 
+
+La otra opción final es, sino tengo placebo group, es filtrar a los usuarios tratados del análisis. Esto puede ser problemático y se debe hacer con cuidado: 
+
+- Típicamente la no participación es NO aleatoria; lo que indica cierto sesgo de selección. 
+
+Por ende, es recomendable optar por
+
+- Un análisis de regresión con controles en desbalance, y/o
+
+- Un diferencias en diferencias. En la práctica, estos grupos tienden a tener tendencias paralelas. El Dif-in-Dif nos ayuda a eliminar las diferencias de nivel 
+
+De cualquier manera, conforme se va bajando en la calidad de los análisis, el Data Scientist debe reconocer la certeza/robustez de los resultados
+
+
 ### Métodos cuasiexperimentales
 
 Los métodos cuasiexperimentales son aquellos en los que el Data Scientist no controla la función de asignación de tratamientos PERO tiene mucho conocimiento de ella. 
 
 - Todos los métodos cuasiexperimentales usan este conocimiento para llegar a comparativas (as good as random) en las que se pueda inferir causalidad entre las variables 
 
-Hoy vamos a ver 4: 
+Hoy vamos a ver 3: 
 
-- Ajuste por covariables 
+- Ajuste por covariables
 
-- Diferencias en Diferencias
+- Diferencias en Diferencias Doubly Robust y Event Studies 
 
 - Regresión Discontinua 
 
-- Event Studies
 
 ### Métodos cuasiexperimentales II 
 
@@ -203,205 +568,143 @@ $$y_i=X\beta+\epsilon_i$$
 
  - En un mundo de Big Data (siguiente clase!), nos estamos acercando mucho más a la posibilidad de estimar estos modelos. 
 
-### Diferencias en Diferencias 
-
-El método de diferencias es muy popular. Esta es su estrategia de identificación causal:
-
- - No asumimos nada de la función de asignación $P(treat)$
- 
- - Encontamos un grupo, que intentamos sea lo más parecido al grupo de tratamiento, que no haya recibido el tratamiento y que se haya evolucionado de la misma manera en el tiempo. 
- 
- - Esto es, que tenga **tendencia paralela**.
- 
- - Con esto, podemos inferir el $ATE=[\bar Y_t-\bar Y_c | durante =1]-[\bar Y_t-\bar Y_c | durante =0]$. Es decir, la diferencia post menos las diferencias previas. 
- 
- - Típicamente, esto se estima con:
- 
-$y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$
-
-- Donde $\delta_{dif}$ es el estimador de diferencias en diferencias
 
 
-### Diferencias en Diferencias (2)
+### Doubly Robust Dif-in-Dif 
 
-Cómo evaluamos si hay tendencias paralelas en las observaciones previas a la intervención:
+Si bien les explique el estimador de Dif-in-Dif más sencillo, en la actualidad hay estimadores mucho más sofisticados. Estos generalizan al dif-in-dif tradicional en varias dimensiones: 
 
-- Típicamente se corre una prueba placebo. 
+- El tratamiento sucedió en varios periodos: Tenemos muchos puntos de before and after. 
 
-Imaginense que observan $t=1,2,3,4,5,6$. En $t=4$ empezó la intervención. 
+- El tratamiento fue lanzado en distintos periodos (staggering)
 
-- La prueba placebo consiste en correr el estimador de diferencias en diferencias ($y=\beta_0+X\beta+\delta *T+\beta_d*durante+\delta_{dif}durante*T$) para los periodos previos $1,2,3$ asumiendo que cada uno de ellos es donde sucedió la intervención. 
-
-$$durante_j = 1\{t \geq j\} \ \ j=1,2$$
-
- - Si hay tendencias paralelas, el estimador de diferencias en diferencias en periodos previos debería ser pequeño y no significativo. 
- 
-### Diferencias en Diferencias en Experimentación I 
- 
-El método de diferencias en diferencias también puede ser utilizado en experimentación. 
-
-- Si el experimento duró varios periodos y tenemos observaciones previas al tratamiento, podemos usar diferencias en diferencias para mejorar ($\downarrow$ varianza) la estimación de ATE. 
-
-- Piensen en lo siguiente: Como los grupos fueron asignados aleatoriamente, a fuerzas tienen tendencias paralelas en los periodos previos a la intervención. 
-
-- Más aún, el estimador va a restar cualquier desbalance (aunque no significativo) de las observaciones previas. 
-
-- En la práctica, esto cambia ligeramente los estimadores de impacto. Pero no debería de ser un número significativo para el negocio. 
+- Evalúan de manera más robusta las tendencias paralelas para grupos "not treated yet" o "never treated". 
 
 
-### Diferencias en Diferencias en Experimentación II
+### Doubly Robust Dif-in-Dif 
 
-Si el experimento fue dinámico, puedes usar el método de diferencias en diferencias para medir el impacto 
+Assumption 1: El tratamiento es irreversible:
+
+$$D_{t-1} = 1 \rightarrow D_t = 1 \  \  for \ \  \ t \in \{t, \infty\}$$
+
+Assumption 2: Los grupos $G$ se definen por el periodo en el cuál la persona fue expuesta al tratamiento por primera vez 
+
+$$G = 1\{group \ treated \ time \ t \}$$
+
+
+La Probabilidad de ser tratado (Overlap!) en el periodo $t$ para el grupo $t$ está definida como:
+
+$$p_{g,t}(X)= p(G_g=1 | X)$$
+
+### Doubly Robust Dif-in-Dif 
+
+Los potential outcomes están definidos como: 
+
+$$Y_{i,t} = Y_{i,t}(0)+\Sigma_{g=2}^{\tau}(Y_{i,t}(g)-Y_{i,t}(0)) \cdot G_{i,g}$$
+Donde: 
+
+- $Y_{i,t}(0)$ es el outcome en los periodos donde la persona no fue expuesta al tratamiento
+
+- $Y_{i,t}(g)$ es el outcome cuando la persona empezó a ser expuesta
+
+En un setup con 2 periodos (before-after), el ATT es (y para los tratados - y para los tratados en ese mismo periodo):
+
+$$ATT = E[Y_2(2)-Y_2(0) | G_2 = 1]$$
+
+Generalizando para muchos periodos: $ATT(g,t) = E[Y_t(g)-Y_t(0) | G_t = 1]$
+
+
+### Doubly Robust Dif-in-Dif 
+
+Hay dos grupos de comparación posibles:
+
+**Never treated group** (dif-dif "clásicos")
+
+- Tiene que tener tendencias paralelas $E[Y_t(0)-Y_{t-1}(0) | X, G_g =1]=E[Y_t(0)-Y_{t-1}(0) | X, G_g =0, C=0]$ 
+
+- Tiene que ser suficientemente similar (OVERLAP!)
+
+
+**Eventually treated** (Staggered Dif-in-Diff/ Event Studies)
+
+- Tiene que tener tendencias paralelas $E[Y_t(0)-Y_{t-1}(0) | X, G_g =1]=E[Y_t(0)-Y_{t-1}(0) | X, G_g =0, D_s=0]$ 
+
+En ambas, debe haber overlap $0<p(G_g=1 | X)<1$
+
+### Doubly Robust Dif-in-Dif 
+
+El estimador doble robusto es: 
+
+$$ATT_{DR}(g,t;\delta)=$$
+
+$$E \left [ \left( \frac{G_g}{E[G_g]} -  \frac{ \frac{p_{g,t+\delta}(X)(1-D_{t+\delta}(1-G_g))}{1-p_{g,t+\delta }(X)}}{E \left[ \frac{p_{g,t+\delta}(X)(1-D_{t+\delta}(1-G_g))}{1-p_{g,t+\delta }(X)} \right ]}\right )(Y_t - Y_{g-\delta-1} - m_{g,t,\delta} ) \right ]$$
+
+### DR Dif-in-Dif Ejemplo
+
+Veamos un ejemplo de los autores: 
 
 \begin{center}
-\includegraphics[width = 10cm]{dif_dif.png}
+\includegraphics[width = 10cm]{time_series.png}
 \end{center}
 
 
-### Diferencias en Diferencias en Experimentación III 
+### DR Dif-in-Dif Ejemplo
 
-Noten como las diferencias previas son no significativas (experimento bien asignado). Aún así, el dif-dif limpia -3 pp y -2pp de diferencias previas. 
+Podríamos usar un Event Study clásico para identificar los efectos de un tratamiento escalonado. 
 
-\begin{center}
-\includegraphics[width = 8cm]{dif_dif_tabla.png}
-\end{center}
-
-### Diferencias en Diferencias en Experimentación IV
+$$t=tiempo-t_{tratamiento}$$
+$$y_{it}=\alpha_t+X\beta+\Sigma_{j=-\infty}^\infty\tau_t 1\{t=j \}$$
 
 \begin{center}
-\includegraphics[width = 10cm]{dif_dif_graph.png}
+\includegraphics[width = 8cm]{event_study.png}
 \end{center}
 
-### Dif in Dif con `RCT`
+### DR Dif-in-Dif Ejemplo 
 
-Para incluir dif in dif en la librería de RCT, sólo tenemos que hacer:
-```{r eval=FALSE, echo=T}
-library(RCT)
-dif_dif<-impact_eval(data = data, 
-                     endogenous_vars = "y_1", 
-                     treatment = "treat",
-                     control_vars = c('durante', 
-                                      "durante:treat"))
 
+\begin{center}
+\includegraphics[width = 10cm]{calloway_santana.png}
+\end{center}
+
+
+### DR Dif-in-Dif Ejemplo `R`
+
+```{r, eval=FALSE, echo=TRUE}
+################
+# Sin controles
+################
+event_robust<-map(endogenas, 
+                  ~att_gt(yname = ., 
+                          tname = 'semana_num', 
+                          idname = 'user_id', 
+                          gname = 'semana_treated',
+                          control_group = 'notyettreated',
+                          allow_unbalanced_panel = T,
+                          data = panel %>% filter(t>=-4)))
+
+save(event_robust, file ='Modelos/event_winsor_semana_nivel.Rdata')
+
+# Explorando la tabla 
+names(event_robust)<-endogenas
 ```
 
-### Variables Instrumentales 
-
-Las variables instrumentales son otro método popular de inferencia causal:
-
-- Buscas estimar $Y_i = \beta_0 + \tau T_i+\epsilon_i$
-
-- Existe una variable $Z_i$ (instrumento) que está **MUY** correlacionada con el tratamiento de interés $T_i$ (Relevancia). 
-
-- Esta variable además **no está correlacionada** con la métrica de interés $Y_i$. (Exogeneidad). Formalmente esto implica $Cov(U_i,Z_i)$ que el instrumento no tiene correlación con ninguna otra variable no incluida en la regresión. 
-
-- Esto hace que la parte de la varianza de $T_i$ explicada por $Z_i$ sea unconfounded. 
-$$T_i=\gamma_0+\gamma_1Z_i+v_i \ \ 1st \ \ Stage$$
-$$Y_i=\eta_0+\eta_1Z_i+\omega_i \ \ 2nd  \ \ Stage$$
-$$\hat\tau = \frac{\hat\eta_1}{\hat \gamma_1}$$
 
 
-### Variables Instrumentales II 
+### DR Dif-in-Dif Ejemplo `R`
 
-La anterior muestra una forma de estimar IV que se llama Two-Stage Least Squares: 
+```{r, eval=FALSE, echo=TRUE}
+# Como event study 
+att_event<-map(event_robust, 
+               ~aggte(., type = 'dynamic', na.rm = T))
 
->- Estimas el First Stage 
-
->- Predices los scores del first stage (toda la varianza exógena de $T_i$)
-
->- Usas esta predicción $\hat T_i$ y la metes a la regresión $Y_i=\beta_0+\tau\hat T_i+\epsilon_i$ 
-
->- $\hat\tau$ es el estimador IV 2sls. Noten como es lo mismo que dividir los dos coeficientes del first stage y second stage
-
-### Variables Instrumentales III 
-
-Probemos que lo anterior es correcto: 
-$$Y_i=\beta_0+\tau T_i+\epsilon_i$$
-$$cov(Y_i,Z_i)=cov(\beta_0+\tau T_i+\epsilon_i,Z_i)$$
-$$cov(Y_i,Z_i)=cov(\beta_0,Z_i)+cov(\tau T_i,Z_i)+cov(u_i,Z_i)$$
-$$cov(Y_i,Z_i)=\tau cov(T_i,Z_i)$$
-$$\tau = \frac{cov(Y_i,Z_i)}{cov(T_i,Z_i)}=\frac{\eta_1}{\gamma_1}$$
+att_event<-map_dfr(att_event, ~tidy(.))
+att_event$variable<-rep(endogenas, each = 8)
+att_event<-att_event %>% select(variable, everything()) %>% select(-type)
+save(att_event, file = 'Tablas/att_event_winsor_nivel.Rdata')
+write.xlsx(att_event, file ='Tablas/att_event_winsor_nivel.xlsx')
 
 
-### Notas en IV 
-
-- El impacto encontrado es para los "compliers".
-
-- En realidad, si estimas el 2sls en dos etapas estarías ignorando los grados de libertad y heterocedasticidad de la predicción del first stage. 
-
-- El estimador te va a dar lo mismo, pero no los errores estándar.
-
-- En su lugar, se estima el $IV_{2sls}$ mediante el método de mínimos cuadrados generalizados en una sola etapa. 
-
-- Necesitas un intrumento **fuerte** en la primera etapa para que el estimador sea bueno (i.e. La primera etapa que tenga un $F-statistic \geq10$). 
-
-- Necesitas argumentar que tu instrumento es exógeno. Es decir, que no está correlacionado con ninguna variable no observada y con la métrica $Y_i$
-
-- Esto último hace muy dificil encontrar buenos instrumentos
-
-
-### Instrumentos en `R`
-
-La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
-
-\begin{center}
-\includegraphics[width = 10cm]{lfe.png}
-\end{center}
-
-### Instrumentos en `R` (2)
-
-La mejor librería para esto y varias cosas de econometría tipo panel es `lfe`
-
-\begin{center}
-\includegraphics[width = 10cm]{lfe_details.png}
-\end{center}
-
-### One-sided Non-compliance en Experimentos
-
-En la experimentación las variables instrumentales son muy importantes para encontrar el impacto del Treatment on the Treated (ToT):
-
-- Imaginen que lanzan un experimento donde envían SMS a los usuarios para ahorrar de manera aleatoria
-
-- El vector que define que mensaje recibía el usuario es $T_i$ (asignado aleatoriamente)
-
-- El vector que define quien vio el mensaje cuando lo recibió es $G_i$
-
-Cómo medimos el impacto del experimento? Tenemos dos opciones:
-
-- **Intend to Treat (ITT)**: Medimos $Y_i=\alpha + \tau T_i$. Esto nos arrojará el impacto de la intención de tratar sobre la $Y_i$ de manera insesgada (dado que sigue la asignación aleatoria). 
-
-- **Treatment on the Treated**: El impacto de los que efectivamente vieron el mensaje sobre $Y_i$
-
-### Intend to Treat (ITT)
-
-Este estimador es insesgado por definición. 
-
-- Sin embargo, puede no ser el estimador relevante. 
-
-- Imaginemos que mandamos el mensaje a 5 personas y sólo 2 lo vieron. Guardamos 5 personas en el grupo de control. 
-
-- Tenemos que $T_i=(0,0,0,0,0,1,1,1,1,1)$ pero $G_i=(0,0,0,0,0,1,0,0,0,1)$
-
-- Imaginemos que las personas que ven el mensaje incrementan $Y_i$ en 5 unidades $Y_{i|G_i=0}=17$. Los que no se quedan con el valor del grupo control $Y_{i|G_i=0}=12$
-
-- Cuando midamos el impacto con $\bar Y_{T_i=1}-\bar Y_{T_i=0}= 14-12=2$. 
-
-- Noten como el ITT nos dice que el impacto fue 2 cuando en realidad es 5 (para los tratados). Estoy promediando impactos de $(5,0,0,0,5)$. Así, subestimo el impacto el experimento sobre los tratados. 
-
-### IV en Experimentos
-
-Y si mido $Y_i \sim G_i$? Esto sería incorrecto, pues $G_i$ no es exógeno. La gente que ve el mensaje puede tener viertas características que hagan que sea más probable que lo hagan (sesgo de selección!).
-
-La alternativa es usar la asignación $T_i$ como variable instrumental de $G_i$. Vean como se cumplen ambos supuestos con mucha facilidad:
-
-- Relevancia: El mensaje que recibes esta altamente correlacionado con el mensaje que se te envió
-
-- Exogeneidad: $T_i$ es exógeno por construcción, pues es aleatorio.
-
-Con esto, se puede construir el impacto de los tratados $ToT$ como: 
-$$\tau=\frac{\eta_1}{\gamma_1}$$
-$$G_i=\gamma_0+\gamma_1T_i+v_i$$
-$$Y_i=\eta_0+\eta_1T_i+\omega_i$$
+```
 
 ### Regresión Discontinua
 
@@ -429,6 +732,9 @@ Para estimar la RDD se necesita:
 2. Continuidad: Si la $Y_i$ es continua en el corte, entonces el valor observado del otro grupo sirve como contrafactual.
 
 3. No manipulación de la forcing variable: Debemos examinar la densidad de la forcing variable para comprobar que no hay acumulación (bunching) de un lado del corte. 
+
+
+Como se cumplen SUTVA y Overlap aquí? 
 
 ### Estimación de RDD 
 
@@ -489,27 +795,6 @@ Ya hay librerías que te ayudan a hacer la prueba de McCrary y calcular el $h$ d
 \includegraphics[width = 10cm]{Rdd_r.png}
 \end{center}
 
-### Event Studies 
 
-Finalmente, veamos event studies. Este método es muy útil cuando tenemos adopción escalonada del tratamiento en el tiempo. 
-
-- El mecanismo de asignación es: Si centramos todas las observaciones a cuando recibieron el tratamiento (evento), podemos identificar estimadores causales.
-
-- El razonamiento es que para que haya una variable omitida que ocasione sesgo, esta tiene que estar afectar a cada unidad en el periodo en que cada uno fue tratado. 
-
-- Por lo anterior, los event studies son mejores para identificar efectos causales mientras más escalonada haya sido la adopción. 
-
-$$t=tiempo-t_{tratamiento}$$
-$$y_{it}=\alpha_t+X\beta+\Sigma_{j=-\infty}^\infty\tau_t 1\{t=j \}$$
-
-### Event Studies 
-
-Noten como esa regresión estima $\tau_{-5},\tau_{-4},...,\tau_{0}, \tau_{1},...$ 
-
-Si el event study es bueno: 
-
-- No deberíamos de encontrar significancias para los periodos previos al evento. Los grupos deberían ser iguales (Overlap!)
-
-- El impacto por periodo esta en $\tau_t,  \ \ t\geq0$
 
 

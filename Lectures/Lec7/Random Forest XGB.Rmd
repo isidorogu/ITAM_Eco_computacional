@@ -1,7 +1,7 @@
 ---
 title: 'Lec7: Random Forest y XGB'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -106,7 +106,7 @@ El boostrapping es muy útil para conseguir errores estandares e intervalos de c
 
 Por ejemplo, en el caso de la econometría, podemos inferir la distribución de nuestro estimador $\hat \beta$ al remuestrear la base **con reemplazo** y estimar $\beta$ con cada muestra.  
 
-Lo bonito del Boostrapping es que tiene otras aplicaciones además de la generación de errores estandár. Se puede aplicar a mejorar el poder predictivo de nuestros modelos estadísticos.
+Lo bonito del Boostrapping es que tiene otras aplicaciones además de la generación de errores estandár. Se puede aplicar a mejorar el poder predictivo de nuestros modelos estadísticos. Podemos usarlo para disminuir la varianza de los árboles.
 
 ### Boostrapping 
 
@@ -125,6 +125,13 @@ El vector de tamaño $B$ $\{ \beta_b\}_{b=1}^B$ puede ser usado como la distribu
 $$\beta \in \hat \beta \pm 2sd(\hat \beta_b) $$
 $$se(\hat \beta) \simeq sd(\beta_b)=\sqrt{\frac{1}{B}\Sigma_b(\hat \beta_b - \hat \beta)}$$
 Donde $\hat \beta$ es el estimador original usando toda la base de datos. 
+
+### Boostrapping 
+
+Como podríamos usar Bootstrapping para mejorar un modelo predictivo usando boostrapping? Cómo se combinaría con Cross-Validation? 
+
+
+
 
 
 ### Bagging 
@@ -173,11 +180,20 @@ Queda pendiente algo: Cuántas submuestras $B$ tomar? Con $B$ alto caemos en ove
 
 Cuantas $B$ tomar? 
 
-- En la práctica, necesitamos $B$ suficientemente grandes para estabilizar la varianza. Esto
+- En la práctica, necesitamos $B$ suficientemente grandes para estabilizar la varianza. Esto implica prueba y error en la práctica.
 
 - Otro punto importante es que un número grande $B$ no induce overfitting, al contrario. 
 
 - Con: Estimar los árboles con demasiadas submuestras puede ser computacionalmente complejo. No obstante es alcanzable en una buena computadora (Parallel Computing!)
+
+### Bagging 
+
+
+\begin{center}
+
+Cómo decidirían cuantos árboles estimar usando Bagging?
+
+\end{center}
 
 ### Out-of-Bag
 
@@ -249,6 +265,28 @@ Un Random Forest resuelve esto así (para una base $(n,p)$:
 \begin{center}
 \includegraphics[width = 8cm]{m.png}
 \end{center}
+
+
+### Random Forest: Hiperparámetros
+
+Noten como los hiperparámetros a estimar van aumentando:
+
+- En regularización L1 o L2 (LASSO, Ridge) sólo teníamos a $\lambda$ estimable via CV
+
+- En los árboles teníamos `min.obs` y `min.dev`. Como se estimaban?
+
+En el Random Forest tengo:
+
+- `min.obs` 
+
+- `min.dev`
+
+- `m`
+
+- `B` o `num.trees`
+
+Acá necesitamos estimar a prueba y error. Optimizamos el algoritmo como una optimización númerica.
+
 
 ### Random Forests en `R`
 
@@ -350,47 +388,375 @@ carf<-ranger(logMedVal~., data= CAhousing,
 \includegraphics[width = 12cm]{comparativa.png}
 \end{center}
 
+
 ### Boosting 
 
-Ahora discutamos Boosting. Como el bagging y el CV, se puede utilizar en muchos contextos. 
+El Boosting es una de las ideas más poderosas para crear buenos modelos de predicción. Al igual que los random forests, los boosting machines combinan muchos "weak" learners que funcionan como un comité. 
 
-En Bagging creamos varias bases de datos, estimamos árboles en cada uno y promediamos. En Boosting, los árboles crecen **secuencialmente**. 
+Sin embargo, hay diferencias gigantes en cómo funciona el Boosting. Intuitivamente: 
 
-- Esto es, cada árbol usa información del árbol anterior. 
+- En el boosting, el cómite se agrupa de **super weak** learner (incluso stumps), mientras que RF agrupa árboles más grandes e independientes.
 
-Pasos. Para $b \in \{1,...,B \}$: 
+- En el boosting, los learners son construídos de manera secuencial; en el RF, de manera paralela.
 
-1. Estimas el primer árbol $\hat f^b(X)$ sobre los residuales $r$ con $d$ splits ($d+1$ nodos terminales)
+- Al estimarse de manera secuencial, los Boosting algorithms **siempre** toman el último learner y lo usan para poner **enfoque** en lo que le falta aprender al algoritmo. Esto es como un proceso que va aprendiendo que es en lo que es malo automáticamente para corregirlo! 
 
-2. Obtienes una nueva función de prediccion: $\hat f(x) \leftarrow \hat f(x) + \lambda \hat f^b(X)$
 
-3. Actualiza los residuales: $r_i \leftarrow r_i + \lambda \hat f^b(X)$
+### Boosting
 
-El modelo final: $\hat f(x) = \Sigma_{b=1}^B \lambda \hat f^b(x)$
+- En cada nueva iteración, puede agregarse bagging para que el algoritmo observe nuevos puntos  
+
+- Finalmente, muchos boosting algoritmos incluyen un **peso** o **learning rate** cuando agregan los weak learners. Esto funciona como un regulizador! 
+
+En suma, un boosting algorithm estima mucho weak learners y los agrega. En cada learner, pone enfoque en los errores. Así, el algoritmo mejora donde más hace falta. Finalmente asigna un peso a cada learner en ese comité final. 
+
+
+\begin{center}
+\includegraphics[width = 8cm]{boosting.png}
+\end{center}
+
+
+
+
+
+
+### ADABoost 
+
+Tomemos el ADABoost como ejemplo:
+
+- Construye un weak learner $G_m(x)$, para $m \in \{ 1,...M \}$. En él, le asigna a cada punto $(y_i,X_i)$ un peso $w_i=\frac{1}{N}$ 
+
+- Estima el error de ese weak learner 
+
+
+$$err=\frac{\Sigma_{i=1}^Nw_iI(y_i \neq G_m(x_i))}{\Sigma_{i=1}^Nw_i}$$
+
+- Le asigna un "peso" (votos) a $G_m(x)$ en el comité final $\alpha_m$ por $G_m$:
+
+$$\alpha_m = log((1-err)/err)$$
+
+
+
+### ADABoost
+
+Noten como un weak learner muy bueno $err \rightarrow 0$, $\alpha_m \rightarrow \infty$. Por otro lado, si $err \rightarrow 1$, $\alpha_m \rightarrow 0$. 
+
+- Modifica los pesos de las obsevaciones de acuerdo al acierto: a las observaciones que el modelo atinó, $\downarrow w_i$; para observaciones donde el modelo falló $\uparrow w_i$. 
+
+$$w_i \leftarrow w_i *e^{\alpha_m*I(y_i \neq G_m(x_i))}$$
+
+Noten como $\partial w_i/\partial[I(y_i \neq G_m(x_i))]>0$. Es decir, el peso sube si no le atine en esa observación. 
+
+- Estima el siguiente $G_m(x)$ aplicando los nuevos pesos.
+
+- Genera una estimación final con base en todos los learners: $G(x)=\Sigma_{m=1}^M\alpha_mG_m(x)$
+
+
+
+### ADABoost 
+
+\begin{center}
+\includegraphics[width = 9cm]{adaboost.png}
+\end{center}
+
+
+### Gradient Boosting 
+
+Vayamos al Gradient Boosting. Este difiere un poco del ADABoost en cómo se enfoca en los errores. Sin embargo, la idea es muy parecida: 
+
+1 Empieza con un first learner
+
+2 Para cada learner $M$: 
+
+- Estima el siguiente learner usando los **errores** como variable objetivo. De aquí su nombre **gradient**
+
+- Estima el nuevo learner $\gamma$ con base en las regiones marcadas por el nuevo learner
+
+3 Actualiza el modelo agregado con el aprendizaje 
+
+
+
+
+### Gradient Boosting: Loss function
+
+Empieza encontrando una Loss function por tipo de problema que sea diferenciable:
+
+
+\begin{center}
+\includegraphics[width = 10cm]{loss_functions.png}
+\end{center}
+
+
+### Gradient Boosting: Algoritmo
+
+1. Empiezas con un algoritmo y estimación base 
+
+$$f_0(x_i)=argmin_\gamma \Sigma_{i=1}^NL(y_i, \gamma)$$
+
+- Típicamente $\gamma$ será el promedio de las observaciones para regresión o la moda para clasificación. $f(.)$ normalmente será un árbol; pero puede ser otro estimador $m \in \{1,m \}$
+
+2. Para cada secuencia $m=1,2, ..., M$
+
+a) Para cada observación, estima el gradiente $r_i$ (los residuales!) usando el algoritmo de la iteración anterior $f_{m-1}$:
+
+$$r_{im}=- \left[ \frac{\partial L(y_i,f(x_i))}{\partial f} \right]_{f=f_{m-1}}$$
+
+### Gradient Boosting: Algoritmo
+
+
+b) Entrena un árbol con los residuales $r_{im}$ como variable objetivo. Esto arroja las regiones $R_{jm}$
+
+c) En cada región estima $\gamma_{jm}$: El promedio de las observaciones $r_{im}$ (o moda en clasificación)
+
+d) Actualiza $f_m(x)=f_{m-1}(x)+\lambda \Sigma_{j=1}^{Jm}\gamma_{jm}I(x \in R_{jm})$
+
+
+De vuelta: construyes un grupo de muchos modelos muy simples, haces que cada modelo tome los errores del anterior y se enfoque en eso. Finalmente, juntas todos los modelos, ponderándolos por un $\lambda$, que regulariza el aprendizaje.
+
+
 
 ### Gradient Boosting Machines
 
-Cuál es la intuición del Boosting?
-
-- En lugar de tener una combinación de arboles que aprenden mucho tengamos árboles sencillos
-
-- Cada árbol va a estar aprendiendo lo siguiente más importante de $f(x)$. Se toma el árbol que disminuye más el RSS (gradient)
-
-- Esto hace que las GBM aprendan **lento**.
 
 Parámetros a tunear: 
 
-- Número de árboles $B$: A diferencia de bagging y RF, si $B$ es muy grande, caeremos en overfitting. Usamos cross-validation para obtener $B$
+- Número de árboles $M$: A diferencia de bagging y RF, si $M$ es muy grande, caeremos en overfitting. Usamos cross-validation para obtener $B$
 
-- $\lambda$ shrinkage parameter: Este controla (regulariza) al ritmo al que el algoritmo lee. Baja el peso de cada nuevo árbol. Se interpreta como "escepticismo". Típicamente tiene valores de 0.01, 0.001.
+- $\lambda$ learning rate: Este controla (regulariza) al ritmo al que el algoritmo lee. Baja el peso de cada nuevo árbol. Se interpreta como "escepticismo". Típicamente tiene valores de 0.01, 0.001.
 
 - $d$ Número de splits en cada árbol. Típicamente $d=1$
 
+- $\gamma$ la función de aprendizaje
+
+### Qué tan grandes deben ser los árboles?
+
+\begin{center}
+\includegraphics[width = 8cm]{d.png}
+\end{center}
+
+
+### Ejemplo 
+
+Tomemos un ejemplo de [Towards Data Science](https://towardsdatascience.com/all-you-need-to-know-about-gradient-boosting-algorithm-part-1-regression-2520a34a502) para clarificar GBM. Imaginen que tenemos una base de datos con sólo $y$ y 1 $x$. Queremos construir un modelo predictivo de $\hat y=f(x)$.
+
+
+\begin{center}
+\includegraphics[width = 6cm]{y_x.png}
+\end{center}
+
+Ahora, el paso 1 define un $f_0 = \bar y$. Empezamos con un predictor sencillo! Noten como, formalmente, esto es $f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^NL(y_i, \gamma)$
+
+
+### Ejemplo 
+
+Para mejorar la predicción, nos enfocamos en los residuales $r_{i1}=y-f_0$:  
+
+\begin{center}
+\includegraphics[width = 6cm]{r_im.png}
+\end{center}
+
+
+Despues construimos un árbol de decisión sobre $r_{im}$. Donde ese árbol tiene muy pocos splits. 
+
+
+### Ejemplo 
+
+Con el árbol, promediamos los residuales ($\gamma_{jm}$) en cada nodo terminal $R_{jm}$. Hacemos que el modelo se enfoque en los errores!  
+
+\begin{center}
+\includegraphics[width = 10cm]{him.png}
+\end{center}
+
+En este ejemplo tenemos $\gamma_{1m}=6$ y $\gamma_{2m}=-5.9$!
+
+### Ejemplo 
+
+Actualiza el modelo $f_m(x)=f_{m-1}(x)+\lambda\Sigma_{j=1}^{jm}\gamma_{jm}I(x \in R_{jm})$. En este ejemplo esto es:
+
+$$f_1(x)=f_0+\lambda\gamma_{jm}I(x \in R_{jm})$$
+
+$$f_1(x) =\Biggl\{ \ \ {f_0 + \lambda \cdot 6.0 \ \ \ if \ \ x<=49.5 \atop f_0 - \lambda \cdot 5.9 \ \ \ if \ \ x>4.5}$$
+
+
+\begin{center}
+\includegraphics[width = 6cm]{f1.png}
+\end{center}
+
+
+### Ejemplo 
+
+Calculo los nuevos residuales $r_{i2}$
+
+\begin{center}
+\includegraphics[width = 6cm]{r2.png}
+\end{center}
+
+Estimo un árbol sobre $r_{i2}$: 
+
+\begin{center}
+\includegraphics[width = 6cm]{hi2.png}
+\end{center}
+
+### Ejemplo 
+
+Actualizo el modelo, generando $f_2(x)=f_{1}(x)+\lambda\Sigma_{j=1}^{jm}\gamma_{j2}I(x \in R_{j2})$
+
+
+$$f_2(x) =\Biggl\{ \ \ {f_1 - \lambda \cdot 10.1 \ \ \ if \ \ x<=4.5 \atop f_1 + \lambda \cdot 0.5 \ \ \ if \ \ x>4.5}$$
+
+\begin{center}
+\includegraphics[width = 6cm]{f2.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $m=6$. $f_1(x)$
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm1.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $f_2(x), f_3(x), f_4(x)$
+
+\begin{center}
+\includegraphics[width = 8cm]{gbm2_4.png}
+\end{center}
+
+
+### Ejemplo
+
+Veamos como se ve esto en $f_5(x), f_6(x)$
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm5_6.png}
+\end{center}
+
+### Gamma y Lambda
+
+$\lambda$ como dijimos, este valor añade algo de escepticimos $\lambda \in (0,1)$. Si es muy grande, el algoritmo va a terminar muy rápido (bajo $M$) y puede seguir ruido. Típicamente tiene valores pequeños (0.01, 0.001)
+
+Veamos como "derivar" las $\gamma's$
+
+$$f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^NL(y_i, \gamma)$$
+
+$$f_0(x_i) = argmin_{\gamma}\Sigma_{i=1}^N0.5(y_i-\gamma)^2$$
+CPO: $\partial L/ \partial \gamma$
+
+$$\Sigma_{i=1}^N(y_i - \gamma^*)=0$$
+$$\Sigma_{i=1}^Ny_i = N\gamma^*$$
+$$\gamma^*=\frac{\Sigma_{i=1}^Ny_i}{N}$$
+
+### Gamma 
+
+$$\gamma_{jm} = argmin_{\gamma}\Sigma_{x_i \in R_{jm}}L(y_i, f_{m-1}(x_i)+\gamma)$$
+
+$$\gamma_{jm} = argmin_{\gamma}\Sigma_{x_i \in R_{jm}}0.5(y_i - f_{m-1}(x_i)-\gamma)^2$$
+
+CPO:
+
+$$\Sigma_{i=1}^N(y_i -f_{m-1}(x_i)- \gamma^*)=0$$
+$$N\gamma^*=\Sigma_{x_i \in R_{jm}}(y_i -f_{m-1}(x_i))$$
+$$\gamma^*_{jm}=\frac{\Sigma_{x_i \in R_{jm}} r_{im}}{n_j}$$
+
+### Porque se llama Gradient boosting y no Residual Boosting?
+
+Si recuerdan, $r_{im}=- \left[ \frac{\partial L(y_i,f(x_i))}{\partial f} \right]_{f=f_{m-1}}$. Dado que es un vector de una derivada parcial, es un gradiente. 
+
+Resulta que para un Loss-function particular $L(y_i,f(x_i))=0.5(y_i-f(x_i))^2$, el gradiente es exactamente lo mismo que los residuales. En realidad, se pueden implementar Gradient Boosting Machines para distintas Loss functions!!! 
+
+### Ejemplo en `R`
+
+La mejor libreria para correr GBMs es `gbm`
+
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm_r.png}
+\end{center}
+
+
+### Ejemplo en `R`
+
+La mejor libreria para correr GBMs es `gbm`
+
+
+\begin{center}
+\includegraphics[width = 10cm]{gbm_r2.png}
+\end{center}
+
+
+### Ejemplo en `R`
+
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(gbm)
+
+# Simulate data
+set.seed(101)  # for reproducibility
+N <- 1000
+X1 <- runif(N)
+X2 <- 2 * runif(N)
+X3 <- ordered(sample(letters[1:4], N, replace = TRUE), levels = letters[4:1])
+X4 <- factor(sample(letters[1:6], N, replace = TRUE))
+X5 <- factor(sample(letters[1:3], N, replace = TRUE))
+X6 <- 3 * runif(N) 
+mu <- c(-1, 0, 1, 2)[as.numeric(X3)]
+SNR <- 10  # signal-to-noise ratio
+Y <- X1 ^ 1.5 + 2 * (X2 ^ 0.5) + mu
+sigma <- sqrt(var(Y) / SNR)
+Y <- Y + rnorm(N, 0, sigma)
+X1[sample(1:N,size=500)] <- NA  # introduce some missing values
+X4[sample(1:N,size=300)] <- NA  # introduce some missing values
+data <- data.frame(Y, X1, X2, X3, X4, X5, X6)
+
+
+```
+
+```{r, message=F, warning=F, echo=T, fig.width=4.5, fig.height=3}
+set.seed(102)  # for reproducibility
+
+gbm1 <- gbm(Y ~ ., data = data, var.monotone = c(0, 0, 0, 0, 0, 0),
+            distribution = "gaussian", n.trees = 100, 
+            shrinkage = 0.1,interaction.depth = 1, 
+            bag.fraction = 0.5, train.fraction = 0.5,  
+            n.minobsinnode = 10, keep.data = TRUE, 
+            verbose = FALSE, n.cores = 1)  
+
+
+# predictions will be on the link scale
+best.iter <- gbm.perf(gbm1, method = "OOB")
+
+```
+
+### Ejemplo `R`
+
+```{r, message=F, warning=F, echo=T, fig.width=4.5, fig.height=3}
+summary(gbm1, n.trees = best.iter) # Variable importance
+
+```
+
+
 ### Extreme Gradient Boosting Machines (XGBoosting)
 
-Una generalización de los Gradient Boosting Machines. Igual busca disminuir el gradiente de RSS mediante Boosting. La diferencia es que los XGBoosting tienen muchos más parámetros a tunear (aquí algunos):
+Los Extrem Gradient Boosting Machines son muy parecidos a los GBM; le agregan algunas cosas: 
 
-- $B$ `nrounds`: Número de árboles
+- El concepto de `mtry` de los RF para ortogonalizar los árboles
+
+- El bagging (ya lo tenía GBM)
+
+- Regularizadores de los nodos de los árboles! `alpha` `lambda`
+
+- Es una implementación super rápida y paralelizable de GBM ! 
+
+### Extreme Gradient Boosting Machines (XGBoosting)
+
+Una generalización de los Gradient Boosting Machines; se agregan más hiperparámetros: 
+
+- $M$ `nrounds`: Número de árboles
 
 - `early_stopping_rounds`: Resuelve la miopía y la gobierna. Cuántas rondas pueden pasar sin que disminuya el RSS para parar. Igual los hace más ligeros que un Random Forest.
 
@@ -402,7 +768,12 @@ Una generalización de los Gradient Boosting Machines. Igual busca disminuir el 
 
 - $\lambda$ `eta`: El tasa de aprendizaje $[0,1]$. 
 
-- `subsample`: La muestra que toma para estimar el árbol ($m$ en RF) 
+- `subsample`: La muestra sobre N que toma para estimar el árbol
+
+- `colsample_`: La muestra de columnas por cada árbol (Como en RF!)
+
+- `lambda`: Regularización de los nodos terminales de cada arbol estilo LASSO 
+
 
 ### Extreme Gradient Boosting Machines (XGBoosting)
 
@@ -410,12 +781,109 @@ Una generalización de los Gradient Boosting Machines. Igual busca disminuir el 
 
 - Esto los convierte en los algoritmos favoritos (por poderosos) de muchos científicos de datos.
 
-- Tienden a ser más ligeros que los Random Forests. 
+- Tienden a ser más ligeros que los Random Forests, ya que cada árbol es muy pequeño
 
 - la librería para estimarlos en `R` es `library(xgboost)`
 
-- Típicamente se tunea estos parámetros haciendo un grid de todos ellos (que cubra mucho del espacio) y despues se observa cuál combinación fue la ganadora. 
+- Típicamente se tunea estos parámetros haciendo un grid de todos ellos (que cubra mucho del espacio) y despues se observa cuál combinación fue la ganadora.  Esta es la parte más complicada
+
+
+### Ejemplo en `R`
+
+
+```{r eval=FALSE, echo=TRUE}
+library(tidyverse)
+library(tidymodels) # caret igual sirve
+library(xgboost)
+
+# Loading the data lists for training 
+load('Bases output/universo_training.Rdata')
+
+# Creating the grid that covers must of the hyper space 
+xgb_grid<-grid_latin_hypercube(
+                tree_depth(), 
+                min_n(), 
+                loss_reduction(), 
+                sample_size = sample_prop(), 
+                learn_rate(),
+                size = 15)
+
+```
 
 
 
+### Ejemplo en `R`
+
+
+```{r eval=FALSE, echo=TRUE}
+Xs<-sparse.model.matrix(~. + 0, data = data)
+y<-data$y
+
+# XGBOOST matrix 
+training<-xgb.DMatrix(data = Xs, label = y)
+
+# Watchlist 
+watchlist<-list(training = training, validation = validation)
+names(watchlist$validation)<- names(watchlist$training)
+
+# transforming xgb_grid to have proper names 
+xgb_grid<-xgb_grid %>% 
+                rename(max_depth = tree_depth, 
+                       min_child_weight = min_n, 
+                       gamma = loss_reduction, 
+                       subsample = sample_size, 
+                       eta = learn_rate) %>% 
+                mutate(eval_metric = 'auc') 
+
+```
+
+
+
+### Ejemplo en `R`
+
+```{r eval=FALSE, echo=TRUE}
+
+a<-Sys.time()
+xgb_eth<-map(xgb_grid_list, 
+             function(x)
+               xgb.train(params = as.list(x), 
+                         data = training$buy_eth, 
+                         nrounds = 300, 
+                         objective = "binary:logistic", 
+                         early_stopping_rounds = 5, 
+                         verbose = 1, 
+                         watchlist = c(training = watchlist$training$buy_eth, 
+                                       test = watchlist$validation$buy_eth)))
+Sys.time() -a
+save(xgb_eth, xgb_grid_list, training, watchlist, file = "Modelos/xgb_eth.Rdata")
+
+```
+
+
+
+
+### Ejemplo en `R`
+
+```{r eval=F, echo=T}
+
+########################################
+# Choosing the best model for each coin
+########################################
+write.xlsx(xgb_grid, file = 'Tablas/xgb_grid.xlsx')
+
+# Exporting the parameters and AUC 
+
+# ETH 
+params_eth<-map_dfr(xgb_eth, ~.$params)
+params_eth<-bind_cols(params_eth, auc = map_dbl(xgb_eth, function(x) x$best_score))  
+params_eth$model_number<-seq(1:15)
+
+
+```
+
+### Ejemplo en `R`
+
+\begin{center}
+\includegraphics[width = 10cm]{xgb_tuning.png}
+\end{center}
 

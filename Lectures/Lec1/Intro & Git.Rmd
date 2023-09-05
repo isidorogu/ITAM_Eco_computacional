@@ -1,7 +1,7 @@
 ---
 title: 'Lec1: Intro & Git'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Objetivos del curso
 
->- Este es un curso de Data Science/Advanced Analytics. El objetivo es proveerlos de las herramientas estadísticas y de programación desde el enfoque de economistas. 
+>- Este es un curso de Advanced Analytics. El objetivo es proveerlos de las herramientas estadísticas y de programación desde el enfoque de economistas. 
 
 >- Al final de curso espero que puedan: 
 
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = FALSE)
  
  >- Usar técnicas de reducción de dimensionalidad (K-means, PCA)
 
- >- Hacer uso de las herramientas más utilizadas en la industria de Data Science (R, Github)
+ >- Hacer uso de las herramientas más utilizadas en la industria de Data Science (R, Python, Github)
 
  >- Entender como combinar teoría económica con Data Science. 
 
@@ -40,9 +40,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 * Soy Economista del ITAM y Master en Uchicago. 
 
-* Ahora trabajo como Head of Data Science en [Bitso](www.bitso.com).
+* Ahora trabajo como VP of Data Science en [Bitso](www.bitso.com).
 
-* Antes de eso fui Director de Analytics, Modeling and Experimentation en Banorte. En esta área fundé el equipo de Experimentación basada en Economía Conductual (Behavioral Economics) y el área de Machine Learning relacionado a la Econometría. Pasé por el camino tradicional de Banxico (Inveco), Research Assistant y Banco Mundial. 
+* Antes de eso fui Director de Analytics, Machine Learning and Experimentation en Banorte. Pasé por el camino tradicional de Banxico (Inveco), Research Assistant y Banco Mundial. 
 
 * En este tiempo conocí muchos data scientists que o: tienen las habilidades computacionales pero no saben construir relaciones entre variables (no son economistas...) o saben teoría económica pero no saben programar ni conocen algoritmos que involucren Big Data.  
 
@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = FALSE)
     
     * Esto involucra los métodos para analizar los datos: Estadística, Econometría y Machine Learning; y 
     
-    * Computer Science: Los métodos para recibir, guardar y estructurar los datos (Data Engineering)
+    * Computer Science: Los métodos para recibir, guardar y estructurar los datos (Data Engineering, MLE)
 
 * **Machine Learning** son una colección de algoritmos 'tontos' que apreden cosas solos. Esto es, algoritmos de estadística y econometría + esteroides (Re-muestreo y mucha capacidad de cómputo). 
 
@@ -78,7 +78,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ### De que es este curso entonces?  
 
 
-Los algoritmos que mencionen cubren casi todo el espectro de Data Science menos la ingeniería de datos.  Estos cubren: 
+Los algoritmos que veremos cubren casi todo el espectro de Data Science menos la ingeniería de datos y MLE. Estos cubren: 
     
  * **Métodos Supervisados**: Tienes una variable éndogena $y$ que gobierna el aprendizaje estadístico. 
 
@@ -90,12 +90,8 @@ Finalmente, haré énfasis en el **Exploratory Data Analysis (EDA)** en todo el 
 
 ### Temario
 
-Tendremos 17 sesiones. En ellas vamos a tener ~12 sesiones teóricas, 3 sesiones con invitados de la industria y 2 donde se presenten sus proyectos finales. Vamos al [temario](https://github.com/isidorogu/ITAM_Eco_computacional/blob/main/Temario-Eco-Computacional.docx)
+Tendremos 16 sesiones. En ellas vamos a tener ~12 sesiones teóricas y 3 sesiones con invitados de la industria. Vamos al [temario](https://github.com/isidorogu/ITAM_Eco_computacional/blob/main/Temario-Eco-Computacional.docx)
 
-* El [repositorio](https://github.com/isidorogu/ITAM_Eco_computacional) contiene el temario, los pdfs de las clases, tareas y éxamenes. 
-
-    * Ahí se haran las entregas y subiré todo lo relacionado al curso.
-    
 
 ### Qué es Git
 
@@ -110,7 +106,7 @@ Github es una plataforma en línea para guardar repositorios (folders) e interac
 
 \includegraphics[width = 8cm]{github_screen.png}
 
-Vayan todos a abrir su cuenta en Github. Recuerden su mail y user.name 
+Vayan todos a abrir su cuenta en Github. Recuerden su mail personal y user.name 
 
 
 ### Instalación de Git 
@@ -223,24 +219,10 @@ Ya tienes el repo local y remoto configurados. Ahora que?
 ### Lista de comandos básicos
 Veamos la lista de comandos básicos 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-library(tidyverse)
-comandos<-tibble(comando = c('status', 'checkout', 'add' , 'commit', 'push', 'remote', 'fetch', 'merge', 'pull', 'rebase', 'branch'),
-                 descripcion = c('Status del repo', 
-                                 'Moverme a alguna version de cambio o branch', 
-                                 'Añadir archivos al stage', 
-                                 'Comprometer los cambios en add', 
-                                 'Empujar los cambios al repo remoto', 
-                                 'Hacer algun cambio del repo remoto al que se conecta el local', 
-                                 'Buscar los cambios hechos en el repo remoto', 
-                                 'Combinar tu repo local con los cambios que jalaste en fetch', 
-                                 'git fetch + git merge', 
-                                 'Mueve el repo local a un punto particular. cambios secuenciales', 
-                                 'Crea copia del repo remoto para trabajo paralelo'))
+\begin{center}
+\includegraphics[width = 8cm]{comandos_git.jpg}
+\end{center}
 
-library(kableExtra)
-kable(comandos)
-```
 
 ### `git status`
 
@@ -405,9 +387,4 @@ Los pull requests son peticiones para incorporar cambios al código maestro por 
 \begin{center}
 \includegraphics[width = 7cm]{pull_request1.png}
 \end{center}
-
-
-### Cómo vamos a `Git` y `Github` en Eco-Computacional
-
-Yo subiré las tareas. Ustedes deben hacer `git pull` a su computadora para obtener los archivos. Crear su branch (nombre = tarea_#_clave_unica). Despues hacer push del branch al repo. Yo podré revisar el codigo en `Github`. 
 

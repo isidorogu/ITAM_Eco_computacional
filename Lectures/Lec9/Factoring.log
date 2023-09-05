@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  6 APR 2021 18:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  11 MAR 2023 14:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -669,10 +669,6 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifxetex.sty
-Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
-) (/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifluatex.sty
-Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 1
@@ -708,20 +704,13 @@ Package microtype Info: Loading configuration file microtype.cfg.
 File: microtype.cfg 2019/11/18 v2.7d microtype main configuration file (RS)
 )) (/usr/local/texlive/2020/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
-Package: xurl 2020/01/24 v 0.09 modify URL breaks
-) (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bookmark.sty
-Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
-(/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
-File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
-\BKM@id=\count321
-)) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2020/01/13 v3.5 verbatim text (tvz,hv)
-\FV@CodeLineNo=\count322
+\FV@CodeLineNo=\count321
 \FV@InFile=\read3
 \FV@TabBox=\box74
-\c@FancyVerbLine=\count323
-\FV@StepNumber=\count324
+\c@FancyVerbLine=\count322
+\FV@StepNumber=\count323
 \FV@OutFile=\write5
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
@@ -742,6 +731,13 @@ s
 \f@nch@O@erf=\skip74
 \f@nch@O@olf=\skip75
 \f@nch@O@orf=\skip76
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2019/12/03 v1.28 bookmark driver for pdfTeX (HO)
+\BKM@id=\count324
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/xurl/xurl.sty
+Package: xurl 2020/01/24 v 0.09 modify URL breaks
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count325
@@ -749,24 +745,24 @@ File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 ) (./Factoring.aux)
 \openout1 = `Factoring.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 141.
-LaTeX Font Info:    ... okay on input line 141.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 157.
+LaTeX Font Info:    ... okay on input line 157.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -823,7 +819,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 )) ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box77
-Package hyperref Info: Link coloring OFF on input line 141.
+Package hyperref Info: Link coloring OFF on input line 157.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 (/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty
@@ -835,55 +831,55 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count332
 )
-LaTeX Info: Redefining \ref on input line 141.
-LaTeX Info: Redefining \pageref on input line 141.
-LaTeX Info: Redefining \nameref on input line 141.
+LaTeX Info: Redefining \ref on input line 157.
+LaTeX Info: Redefining \pageref on input line 157.
+LaTeX Info: Redefining \nameref on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 141.
+(Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 141.
+(Font)                  OT1/lmr/bx/n --> OT1/cmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 141.
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 141.
+(Font)                  OT1/cmss/b/n --> OT1/lmss/b/n on input line 157.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 141.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 141.
+(Font)                  OT1/lmss/m/n --> T1/lmr/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 141.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 141.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 141.
+(Font)                  OT1/lmr/bx/n --> T1/lmss/b/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 141.
+(Font)                  OT1/lmss/m/n --> T1/lmss/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 141.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 141.
+(Font)                  OT1/lmss/bx/n --> T1/lmss/m/n on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 141.
+(Font)                  OT1/lmr/m/it --> T1/lmss/m/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 141.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 141.
+(Font)                  OT1/lmr/bx/it --> T1/lmss/m/it on input line 157.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 141.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 141.
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 141.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 141.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 141.
+(Font)                  OT1/lmss/b/n --> T1/lmr/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 141.
+(Font)                  T1/lmss/b/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 141.
+(Font)                  T1/lmss/m/n --> T1/lmss/b/n on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 141.
+(Font)                  T1/lmss/m/it --> T1/lmss/b/it on input line 157.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 141.
+(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 157.
 
 (/usr/local/texlive/2020/texmf-dist/tex/latex/translator/translator-basic-dicti
 onary-English.dict
@@ -909,14 +905,14 @@ Dictionary: translator-numbers-dictionary, Language: English
 tionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \microtypecontext on input line 141.
+LaTeX Info: Redefining \microtypecontext on input line 157.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 141.
+LaTeX Info: Redefining \showhyphens on input line 157.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -926,20 +922,20 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
 (./Factoring.nav)
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 142.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 158.
 <logo-ITAM.png, id=13, 1505.625pt x 569.12625pt>
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 142.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 158.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 
 Package Fancyhdr Warning: \headheight is too small (0.0pt): 
 Make it at least 25.102pt.
 We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 14
-2.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 15
+8.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-cmr.cfg
@@ -956,7 +952,7 @@ This may cause the page layout to be inconsistent, however.
 
  <./logo-ITAM.png>]
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 
-164.
+178.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -965,34 +961,34 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-64.
+78.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-164.
+178.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-164.
+178.
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 164.
+(Font)              <10> on input line 178.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 164.
+(Font)              <7> on input line 178.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 164.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 164
+(Font)              <5> on input line 178.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 178
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 164
+LaTeX Font Info:    Trying to load font information for U+msb on input line 178
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1000,108 +996,161 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 164.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 178.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 164.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 178.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 164.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 178.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 164.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 178.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [2
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 184.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 196.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [3
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 216.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[4
 
 ]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 206.
+(amsmath)                 on input line 236.
 
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 206.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[4
-
-]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
 Package pdftex.def Info: logo-ITAM.png  used on input line 236.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [5
 
 ]
-<dos_componentes.png, id=61, 642.90187pt x 364.36125pt>
-File: dos_componentes.png Graphic file (type png)
-<use dos_componentes.png>
-Package pdftex.def Info: dos_componentes.png  used on input line 245.
-(pdftex.def)             Requested size: 227.62204pt x 129.00166pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 245.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 264.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [6
 
- <./dos_componentes.png>]
-<dos_componentes2.png, id=69, 920.94063pt x 540.51938pt>
-File: dos_componentes2.png Graphic file (type png)
-<use dos_componentes2.png>
-Package pdftex.def Info: dos_componentes2.png  used on input line 254.
-(pdftex.def)             Requested size: 227.62204pt x 133.59544pt.
+]
+<dos_componentes.png, id=67, 642.90187pt x 364.36125pt>
+File: dos_componentes.png Graphic file (type png)
+<use dos_componentes.png>
+Package pdftex.def Info: dos_componentes.png  used on input line 271.
+(pdftex.def)             Requested size: 227.61864pt x 129.00166pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 254.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 271.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [7
+
+ <./dos_componentes.png>]
+<dos_componentes2.png, id=76, 920.94063pt x 540.51938pt>
+File: dos_componentes2.png Graphic file (type png)
+<use dos_componentes2.png>
+Package pdftex.def Info: dos_componentes2.png  used on input line 278.
+(pdftex.def)             Requested size: 227.62083pt x 133.59544pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 278.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[8
 
  <./dos_componentes2.png>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 270.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[8
+Package pdftex.def Info: logo-ITAM.png  used on input line 302.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[9
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 318.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[10
+
+]
+<sigma_matrix.png, id=96, 780.9175pt x 542.025pt>
+File: sigma_matrix.png Graphic file (type png)
+<use sigma_matrix.png>
+Package pdftex.def Info: sigma_matrix.png  used on input line 328.
+(pdftex.def)             Requested size: 284.5261pt x 197.48598pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 328.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[11
+
+ <./sigma_matrix.png>]
+<eigen.png, id=104, 674.52pt x 542.025pt>
+File: eigen.png Graphic file (type png)
+<use eigen.png>
+Package pdftex.def Info: eigen.png  used on input line 339.
+(pdftex.def)             Requested size: 199.16693pt x 160.04485pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 339.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[12
+
+ <./eigen.png>]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 357.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[13
 
 ]
 \openout4 = `Factoring.vrb'.
 
 (./Factoring.vrb
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3
 .
 (/usr/local/texlive/2020/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 8.
-)
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 7.
+
+LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 7.
+
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+21.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+))
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 294.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[9
+Package pdftex.def Info: logo-ITAM.png  used on input line 382.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[14
 
 ]
-<prcomp.png, id=93, 1798.72pt x 904.37875pt>
+<prcomp.png, id=130, 1798.72pt x 904.37875pt>
 File: prcomp.png Graphic file (type png)
 <use prcomp.png>
-Package pdftex.def Info: prcomp.png  used on input line 303.
-(pdftex.def)             Requested size: 312.9803pt x 157.35786pt.
+Package pdftex.def Info: prcomp.png  used on input line 389.
+(pdftex.def)             Requested size: 312.96927pt x 157.35786pt.
 
-Overfull \hbox (5.69043pt too wide) in paragraph at lines 303--303
+Overfull \hbox (5.6794pt too wide) in paragraph at lines 389--389
  [] 
  []
 
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 303.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[10
+Package pdftex.def Info: logo-ITAM.png  used on input line 389.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[15
 
  <./prcomp.png>]
 \openout4 = `Factoring.vrb'.
@@ -1109,168 +1158,133 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 303.
 (./Factoring.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 311.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[11
+Package pdftex.def Info: logo-ITAM.png  used on input line 421.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[16
+
+]
+\openout4 = `Factoring.vrb'.
+
+(./Factoring.vrb
+<Factoring_files/figure-beamer/unnamed-chunk-4-1.pdf, id=144, 208.78pt x 134.50
+25pt>
+File: Factoring_files/figure-beamer/unnamed-chunk-4-1.pdf Graphic file (type pd
+f)
+<use Factoring_files/figure-beamer/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: Factoring_files/figure-beamer/unnamed-chunk-4-1.pdf  u
+sed on input line 16.
+(pdftex.def)             Requested size: 208.78264pt x 134.5042pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 439.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[17
+
+ <./Factoring_files/figure-beamer/unnamed-chunk-4-1.pdf>]
+\openout4 = `Factoring.vrb'.
+
+(./Factoring.vrb
+<Factoring_files/figure-beamer/unnamed-chunk-5-1.pdf, id=158, 208.78pt x 134.50
+25pt>
+File: Factoring_files/figure-beamer/unnamed-chunk-5-1.pdf Graphic file (type pd
+f)
+<use Factoring_files/figure-beamer/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: Factoring_files/figure-beamer/unnamed-chunk-5-1.pdf  u
+sed on input line 10.
+(pdftex.def)             Requested size: 208.78264pt x 134.5042pt.
+)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 451.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[18
+
+ <./Factoring_files/figure-beamer/unnamed-chunk-5-1.pdf>]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 476.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[19
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 338.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[12
+Package pdftex.def Info: logo-ITAM.png  used on input line 495.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[20
 
 ]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 359.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[13
-
-]
-<factor_models.png, id=120, 1008.76875pt x 530.98375pt>
+<factor_models.png, id=186, 1008.76875pt x 530.98375pt>
 File: factor_models.png Graphic file (type png)
 <use factor_models.png>
-Package pdftex.def Info: factor_models.png  used on input line 375.
-(pdftex.def)             Requested size: 227.62204pt x 119.80647pt.
+Package pdftex.def Info: factor_models.png  used on input line 509.
+(pdftex.def)             Requested size: 227.60966pt x 119.80647pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 375.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[14
+Package pdftex.def Info: logo-ITAM.png  used on input line 509.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[21
 
  <./factor_models.png>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 398.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[15
+Package pdftex.def Info: logo-ITAM.png  used on input line 530.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[22
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 421.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[16
+Package pdftex.def Info: logo-ITAM.png  used on input line 551.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[23
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 449.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[17
+Package pdftex.def Info: logo-ITAM.png  used on input line 577.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[24
 
 ]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 480.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[18
+Package pdftex.def Info: logo-ITAM.png  used on input line 606.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[25
 
 ]
-<NLP.png, id=152, 371.9496pt x 182.6022pt>
+<NLP.png, id=219, 371.9496pt x 182.6022pt>
 File: NLP.png Graphic file (type png)
 <use NLP.png>
-Package pdftex.def Info: NLP.png  used on input line 496.
-(pdftex.def)             Requested size: 227.62204pt x 111.74939pt.
+Package pdftex.def Info: NLP.png  used on input line 620.
+(pdftex.def)             Requested size: 227.62672pt x 111.74939pt.
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 496.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[19
+Package pdftex.def Info: logo-ITAM.png  used on input line 620.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[26
 
  <./NLP.png>]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 520.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[20
-
-]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 542.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[21
-
-]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 574.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[22
-
-]
-\openout4 = `Factoring.vrb'.
-
-(./Factoring.vrb)
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 593.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[23
-
-]
-\openout4 = `Factoring.vrb'.
-
-(./Factoring.vrb)
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 617.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[24
-
-]
-\openout4 = `Factoring.vrb'.
-
-(./Factoring.vrb)
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 634.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[25
-
-]
-<conteos.png, id=200, 578.16pt x 433.62pt>
-File: conteos.png Graphic file (type png)
-<use conteos.png>
-Package pdftex.def Info: conteos.png  used on input line 643.
-(pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 643.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[26
-
- <./conteos.png>]
-<palabra_freq_rel.png, id=208, 578.16pt x 433.62pt>
-File: palabra_freq_rel.png Graphic file (type png)
-<use palabra_freq_rel.png>
-Package pdftex.def Info: palabra_freq_rel.png  used on input line 652.
-(pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 652.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 642.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [27
 
- <./palabra_freq_rel.png>]
-<prob_07_08.png, id=216, 578.16pt x 433.62pt>
-File: prob_07_08.png Graphic file (type png)
-<use prob_07_08.png>
-Package pdftex.def Info: prob_07_08.png  used on input line 661.
-(pdftex.def)             Requested size: 227.62204pt x 170.71231pt.
+]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 661.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 662.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [28
 
- <./prob_07_08.png (PNG copy)>]
+]
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 685.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 692.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [29
 
 ]
@@ -1279,35 +1293,9 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 685.
 (./Factoring.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 708.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 709.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [30
-
-]
-<sentimiento_media_movil.png, id=235, 722.7pt x 505.89pt>
-File: sentimiento_media_movil.png Graphic file (type png)
-<use sentimiento_media_movil.png>
-Package pdftex.def Info: sentimiento_media_movil.png  used on input line 717.
-(pdftex.def)             Requested size: 227.62204pt x 159.33302pt.
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 717.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[31
-
- <./sentimiento_media_movil.png>]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 746.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[32
-
-]
-File: logo-ITAM.png Graphic file (type png)
-<use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 761.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
-[33
 
 ]
 \openout4 = `Factoring.vrb'.
@@ -1315,9 +1303,108 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 761.
 (./Factoring.vrb)
 File: logo-ITAM.png Graphic file (type png)
 <use logo-ITAM.png>
-Package pdftex.def Info: logo-ITAM.png  used on input line 778.
-(pdftex.def)             Requested size: 56.9055pt x 21.50197pt.
+Package pdftex.def Info: logo-ITAM.png  used on input line 731.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[31
+
+]
+\openout4 = `Factoring.vrb'.
+
+(./Factoring.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 746.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[32
+
+]
+<conteos.png, id=264, 578.16pt x 433.62pt>
+File: conteos.png Graphic file (type png)
+<use conteos.png>
+Package pdftex.def Info: conteos.png  used on input line 753.
+(pdftex.def)             Requested size: 227.61641pt x 170.71231pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 753.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[33
+
+ <./conteos.png>]
+<palabra_freq_rel.png, id=272, 578.16pt x 433.62pt>
+File: palabra_freq_rel.png Graphic file (type png)
+<use palabra_freq_rel.png>
+Package pdftex.def Info: palabra_freq_rel.png  used on input line 760.
+(pdftex.def)             Requested size: 227.61641pt x 170.71231pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 760.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
 [34
+
+ <./palabra_freq_rel.png>]
+<prob_07_08.png, id=280, 578.16pt x 433.62pt>
+File: prob_07_08.png Graphic file (type png)
+<use prob_07_08.png>
+Package pdftex.def Info: prob_07_08.png  used on input line 767.
+(pdftex.def)             Requested size: 227.61641pt x 170.71231pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 767.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[35
+
+ <./prob_07_08.png (PNG copy)>]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 789.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[36
+
+]
+\openout4 = `Factoring.vrb'.
+
+(./Factoring.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 810.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[37
+
+]
+<sentimiento_media_movil.png, id=300, 722.7pt x 505.89pt>
+File: sentimiento_media_movil.png Graphic file (type png)
+<use sentimiento_media_movil.png>
+Package pdftex.def Info: sentimiento_media_movil.png  used on input line 817.
+(pdftex.def)             Requested size: 227.61862pt x 159.33302pt.
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 817.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[38
+
+ <./sentimiento_media_movil.png>]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 844.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[39
+
+]
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 857.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[40
+
+]
+\openout4 = `Factoring.vrb'.
+
+(./Factoring.vrb)
+File: logo-ITAM.png Graphic file (type png)
+<use logo-ITAM.png>
+Package pdftex.def Info: logo-ITAM.png  used on input line 872.
+(pdftex.def)             Requested size: 56.88351pt x 21.50197pt.
+[41
 
 ]
 \tf@nav=\write6
@@ -1329,44 +1416,45 @@ Package pdftex.def Info: logo-ITAM.png  used on input line 778.
 \tf@snm=\write8
 \openout8 = `Factoring.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 780.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 780.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 874.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 874.
 (./Factoring.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 780.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 780.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 874.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 874.
  ) 
 Here is how much of TeX's memory you used:
- 24153 strings out of 480608
- 436042 string characters out of 5903631
- 696836 words of memory out of 5000000
- 39334 multiletter control sequences out of 15000+600000
- 578916 words of font info for 80 fonts, out of 8000000 for 9000
+ 24247 strings out of 480608
+ 437618 string characters out of 5903631
+ 696775 words of memory out of 5000000
+ 39395 multiletter control sequences out of 15000+600000
+ 579642 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 58i,15n,67p,797b,393s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
-texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/20
-20/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2020/texmf-dist/
-fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/
-dvips/lm/lm-mathex.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/l
-m/lmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi10.p
-fb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/lo
-cal/texlive/2020/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive
-/2020/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2020/texm
-f-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2020/texmf-dist/fon
-ts/type1/public/lm/lmss8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/pu
-blic/lm/lmssbx10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/
-lmsso10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso8.pf
-b></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/lo
-cal/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive
-/2020/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2020/texm
-f-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2020/texmf-dist/fon
-ts/type1/public/lm/lmtt12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/p
-ublic/lm/lmtti10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/ams
-fonts/symbols/msam10.pfb>
-Output written on Factoring.pdf (34 pages, 2114689 bytes).
+ 58i,15n,67p,797b,419s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
+/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2020/
+texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2020/texmf-dist
+/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvi
+ps/lm/lm-mathex.enc}{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-m
+athit.enc}</usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmex10.pfb>
+</usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/loca
+l/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2
+020/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2020/texmf-d
+ist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2020/texmf-dist/fonts/
+type1/public/lm/lmss12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/publ
+ic/lm/lmss8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmssb
+x10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><
+/usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr/local
+/texlive/2020/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2
+020/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2020/texmf-d
+ist/fonts/type1/public/lm/lmtko10.pfb></usr/local/texlive/2020/texmf-dist/fonts
+/type1/public/lm/lmtt10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/pub
+lic/lm/lmtt12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmt
+ti10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbol
+s/msam10.pfb>
+Output written on Factoring.pdf (41 pages, 2173241 bytes).
 PDF statistics:
- 346 PDF objects out of 1000 (max. 8388607)
- 265 compressed objects within 3 object streams
- 102 named destinations out of 1000 (max. 500000)
- 12381 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 420 PDF objects out of 1000 (max. 8388607)
+ 321 compressed objects within 4 object streams
+ 123 named destinations out of 1000 (max. 500000)
+ 12401 words of extra memory for PDF output out of 14400 (max. 10000000)
 

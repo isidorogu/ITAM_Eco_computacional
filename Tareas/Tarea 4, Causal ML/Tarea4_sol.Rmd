@@ -352,13 +352,34 @@ kable(
 10 (2 pts). Predice el CATE en la base de entrenamiento y en la base de validación. Como se ve la distribución del impacto de tratamiento en ambas? 
 
 ```{r }
+###########
+# Training 
+###########
+# Empecemos por la base con treat=0 
+crm_training<-
+  bind_cols(crm_training, scores %>% select(treat_hat))
+
+crm_training_0<-
+  crm_training %>% 
+  mutate(treat_resid = 0 - treat_hat)
+
+X<-
+  crm_training_0 %>% 
+  select(-c(customer_id, outcome_spend, training_sample, mailing_indicator))
+
+X<-sparse.model.matrix(~. + 0+ . *treat_resid, data = X)
+
+
 # Prediciendo en la base de entrenamiento
 crm_training<-
   crm_training %>% 
-  mutate(ddml_impact = as.numeric(predict(ddml_hte, newdata = X , type = "response")))
+  mutate(ddml_impact_0 = as.numeric(predict(ddml_hte, newdata = X , type = "response")))
 
+## Treat =1 
 
+##############
 # Validation 
+#############
 # Construyendo la primera X 
 X<-
   crm_validation %>% 

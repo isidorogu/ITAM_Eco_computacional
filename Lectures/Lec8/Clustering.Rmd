@@ -1,7 +1,7 @@
 ---
 title: 'Lec8: Unsupervised Learning I'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -41,13 +41,13 @@ $$Y = f(X) + \epsilon$$
 
 Donde $X: X_1,...,X_p$ son todas las variables explicativas que se nos ocurran, $Y$ es la variable supervisora y $\epsilon$ es un error aleatorio. 
 
-2) **Aprendizaje No Supervisado**: No existe una variable objectivo. Tenemos $X$ y queremos entender como se relacionan entre ellas. Típicamente relacionado a método de reducción de dimensionalidad. 
+2) **Aprendizaje No Supervisado**: No existe una variable objectivo. Tenemos $X$ y queremos entender como se relacionan entre ellas. Típicamente relacionado a método de reducción de dimensionalidad o segmentación. 
 
 ### Aprendizaje No supervisado
 
 Existen dos tipos de objetivos en el aprendizaje no supervisado: 
 
-1. **Clustering**: Se trata de dividir a las observaciones en grupos (clusteres) tal que los observaciones dentro de cada grupo sean muy similares y disimilares a observaciones en otros grupos. 
+1. **Clustering**: Se trata de segmentar a las observaciones en grupos (clusteres) tal que los observaciones dentro de cada grupo sean muy similares y disimilares a observaciones en otros grupos. 
 
 2. **Factor Models**: Se trata de *reducir dimensionalidad* a partir de una $X$ para entender los factores principales. 
 
@@ -79,67 +79,110 @@ Noten como esto hace que el unsupervised learning sea un reto y con algunos toqu
 - User personas (Arquetipos): Encontrar grupos de usuarios similares que ayuden a generar entendimiento más profundo de los usuarios. 
 
 
+### Medidas de disimilarity
+
+Como el clustering busca grupos de observaciones que sean muy similares dentro del grupo y muy disimilares a otros grupos, tenemos que definir las distancias! 
+
+Cómo medimos la distancia entre dos observaciones? Imaginen tenemos filas $i \in \{1,N \}$ y variables $X_p$, $p \in \{1, P\}$. 
+
+
+La distancia entre dos observaciones $i$ y $j$ es:
+
+Para variables continuas: Distancia euclidiana 
+
+$$d(i,j)= [\Sigma_{p=1}^P(x_{ip} - x_{jp})^2]^{0.5}$$
+Noten dos cosas:
+
+- Estamos midiendo la dsitancia entre dos observaciones (filas!)
+
+- Lo hacemos para cada columa $p$ y luego agregamos la distancia entre todas las columnas!
+
+
+### Matriz de Disimilarity $D$
+
+Que resulta de aplicar la función de distancia entre cada punto $i$ vs todos los otros? Un Matriz! 
+
+Características de la matriz *$D$*:
+
+- Tiene dimensiones $NxN$: Es decir, N filas y N columnas
+
+- Es simétrica! 
+
+- La diagonal es cero: La distancia entre cualquier punto y sí mismo es cero
+
+
+### Ejemplo 
+
+```{r, error=FALSE, warning=F, message=F, echo=T}
+library(tidyverse)
+set.seed(1990)
+data<-tibble(x=rnorm(n = 5, 5, 2),
+             y=runif(5, 0, 100),
+             z=rnorm(5, 15, 3))
+
+
+(matriz_D<-dist(data, diag = T))
+
+```
+
+### Ejemplo 
+
+```{r, error=FALSE, warning=F, message=F, echo=T}
+data<-
+  data %>% 
+  mutate_all(function(x) (x - mean(x))/sd(x))
+
+(matriz_D<-dist(data, diag = T))
+```
+
+
+
 ### Tipos de Clustering 
 
 1. **Métodos basados en modelos mixture (Mixture models)**: Se asume que cada $x_{ip}$ viene de 1 de los K mixture components. Donde definimos la probabilidad de pertenecer a este grupo como $p_k(x)$ para $k \in \{1,..,K \}$. 
 
 2. **Métodos basados en heurísticas**: Son modelos agnosticos a K, se construyen modelos jerárquicos que dividan mejor a las observaciones. 
-
-
 Empecemos con 1) K-means 
 
 ### K-means 
 
 K-mean es un método de clusterización no paramétrico que, dandole el número de grupos $K$ deseado, asigna a cada observación a **un** grupo en particular. El algoritmo crea grupos mutuamente excluyentes: 
 
-1. $k_1 \cup \ \ k_2  \ \ \cup ...\cup \ \ k_k=\{1,...,n\}$
+1. $C_1 \cup \ \ C_2  \ \ \cup ...\cup \ \ C_k=\{1,...,n\}$
 
-2. $k_k \cap \ \ k_k' = \emptyset$ para $k_k \neq k'_k$
+2. $C_k \cap \ \ C_{k'} = \emptyset$ para $C_k \neq C_{k'}$
 
-Sea la base $x_{ip}$ y $k$ grupos $k \in \{1,..,K \}$. Para cada $k$ buscamos $p(k)$: 
 
-$$p(k)=\pi_1p_1(x)+...+\pi_kp_k(x)$$
-Donde $\pi_k$ es la probabilidad incondicional de pertenecer al grupo $k$. Es decir, estamos buscando la probabilidad de que una observación pertenezca a $k$ condicional en sus características $x$
+Por ejemplo, si la observación i cae en el cluster k, decimos $i \in C_k$. La idea de Kmeans es encontrar clusters en las que las observaciones **dentro** del cluster sean muy parecidas. Esto es, la variación intra-cluster sea lo más baja posible.
+
+Que creen que va a intentar minimizar???
+
 
 ### K-means 
 
-Adicionalmente, definimos la media de cada grupo $k$ como $\mu_{k_j}=E[x_i |k_j]$.
+Formalmente, buscamos minimizar el *within* variation:
 
-Así, para cada nueva x con pertenencia a los grupos k desconocida calculamos: 
+$$min_{\{C_1, C_2, ..., C_k \}}\Sigma_{k=1}^KW(C_k)$$
 
-$$E[x]=p_1(x)\mu_1+...+p_k(x)\mu_k$$
+Intuitivamente, queremos clusterizar a las observaciones en k grupos tal que la *suma* de las variaciones intra-cluster sean lo más bajo posible. 
 
-### Función objetivo
-
-Hasta ahora dijimos que queremos estimar probabilidad de pertenecer a cada grupo $k$ **desconocido** condicional en las características $x$. Con eso, podemos calcular la media de cada grupo con $\mu_k$ (centroides). 
-
-Pero, que buscamos? Partir los datos en $k$ clusters tal que la intravarianza, sumada para todos los clusteres, sea mínima: 
-
-$$\min_{\{ k_1, ...k_k \}} \ \ \frac{1}{N_k} \Sigma_{i \in k}\Sigma_{j=1}^p(x_{ij}-\hat\mu_k)^2$$
-
-Eso no parece tan díficil. El problema es que aún tenemos que encontrar $k$. Para una base de tamaño $n$, tenemos $K^n$ formas de partir los datos!!! 
+Si usamos $W(C_k) = d(i,j)$ Tenemos que $W(C_k)=\frac{1}{N_k}\Sigma_{i \in C_k}\Sigma_{p=1}^P(x_{ip} - x_{jp})^2$
 
 
-### Ejemplo 
 
-\begin{center}
-\includegraphics[width = 8cm]{density.png}
-\end{center}
-
-
-### Ejemplo
-
-\begin{center}
-\includegraphics[width = 8cm]{density2.png}
-\end{center}
+Tenemos encontrar que minimiza la distancia entre las filas dentro de cada cluster, para todas las variables p y para todos los clusters k. 
 
 ### K-means algoritmo 
 
 Pasos: 
 
-1. Asigna aleatoriamente cada observación 
+Escoge un número $K$
+
+1. Asigna aleatoriamente cada observación a un cluster $C_k, \ \ k \in \{1.K\}$
 
 2. Calcula los centroides $\hat\mu_k$ para las $p$ variables en la base
+
+$$\mu_p = \frac{1}{N_k}\Sigma_i^{N_k}x_{ip}$$
 
 3. Asigna a cada observación al centroide al que este más cercano. 
 
@@ -147,6 +190,14 @@ Pasos:
 
 
 Problema: La solución depende de la iniciación aleatoria. Es decir, el algoritmo encuentra un óptimo local en lugar de un óptimo global. Por ello, es mejor estimar K-means varias veces con inicios aleatorios distintos. 
+
+
+### Ejemplo 
+
+\begin{center}
+\includegraphics[width = 8cm]{algorithm.png}
+\end{center}
+
 
 
 ### Ejemplo 
@@ -192,6 +243,72 @@ No obstante, podemos hacer un algoritmo parecido a los modelos predictivos:
 2. Utiliza AICc/BIC para decidir el mejor approach. 
 
 En el caso de K-means. Los parámetros estimados son $K \times p$. Dado que el BIC no asume distribuciones, es normalmente preferido. No obstante, no son una regla fija para elegir $K$.
+
+
+
+
+### Problemas con K-means 
+
+Hay dos problemas muy reconocidos sobre K-means
+
+- Como iniciamos asignando las observaciones de manera aleatoria, K-means puede encontrar un mínimo local, no global
+
+- La media de los variables (centroides) es muy sensible a outliers. Esto puede hacer que no se llegue a la segmentación adecuada 
+
+
+### K-mediods 
+
+El algoritmo de K-mediods busca solucionar este problema mediante un cambio: En lugar de enfocarse en los centroides, se enfoca en la **observación central** de cada cluster 
+
+Escoge un número $K$
+
+1. Asigna aleatoriamente cada observación a un cluster $C_k, \ \ k \in \{1.K\}$
+
+2. Calcula la centroides de cada $C_k$ como la observación que tiene una distancia total más pequeña:
+
+$$i_k*= argmin_{\{i: C(i)=k \}} \Sigma_{i \in C_k}D(x_i,x_j) $$
+
+
+3. Asigna a cada observación al centroide al que este más cercano. 
+
+4. Repite hasta que la asignación de cada observación deje de cambiar. 
+
+
+### K-mediods vs K-means
+
+Pros K-means:
+
+- Es mucho más rápido calcular medias que distancias 
+
+
+Pros K-mediods:
+
+- Es más robusto a outliers
+
+Alternativa: K-medianas. Rápido y robusto
+
+
+### K-mediods en `R`
+
+```{r, echo=T }
+library(cluster)
+x <- rbind(cbind(rnorm(10,0,0.5), rnorm(10,0,0.5)),
+           cbind(rnorm(15,5,0.5), rnorm(15,5,0.5)))
+pamx <- pam(x, 2)
+pamx # Medoids: '7' and '25' ...
+summary(pamx)
+
+
+
+```
+
+### K-mediods
+
+```{r}
+clusplot(pamx)
+
+```
+
 
 
 ### Hierarchical Clustering

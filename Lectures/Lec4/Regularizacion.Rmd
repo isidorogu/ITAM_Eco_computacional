@@ -1,7 +1,7 @@
 ---
 title: 'Lec4: Regularización'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -34,6 +34,8 @@ knitr::opts_chunk$set(echo = FALSE)
  
  - Least Absolute Selection and Shrinkage Operator (LASSO)
  
+ - Ridge Regression
+ 
  - Elastic Nets
  
 ### Estadística moderna
@@ -47,7 +49,7 @@ En la estadística moderna se reconocen 2 variaciones a la mirada clásica de BL
 
 - Las predicciones importantes son **fuera de la muestra**. Esto genera la necesidad de encontrar algoritmos de re-muestreo para simular el comportamiento del modelo con datos no vistos.
 
-- Podemos sacrificar un poco de riesgo por (ojalá) poca varianza. Así terminaremos con un mejor estimador.
+- Podemos sacrificar un poco de sesgo por (ojalá) poca varianza. Así terminaremos con un mejor estimador.
 
 ### Bias Variance Tradeoff
 
@@ -90,7 +92,7 @@ La variable a predecir es **continua**
 
 Noten como minimizar deviance es equivalente a Maximizar la Máxima Verosimilitud: 
 
-Verosimilitud: $\max \Sigma_{i=1}^{N} ln(f(x_i|\beta) \iff \min dev(\hat\beta)=-2\Sigma_{i=1}^{N} ln(f(x_i|\beta)$
+Verosimilitud: $\max \Sigma_{i=1}^{N} ln(f(x_i|\beta) \iff \min dev(\hat\beta)=-2\Sigma_{i=1}^{N} ln(f(x_i|\beta))$
 
 Noten como en el caso de una regresión, $R^2 = 1-\frac{dev(\hat{y})}{dev(\beta=0)}$. 
 
@@ -100,7 +102,7 @@ Como dijimos, sólo nos va a importar el $R^2, dev(\hat{y}), ECM(\hat{y)}$ FUERA
 
 Cuando el problema es de **clasificación** o $y$ es categórica:
 
-- Binomial Deviance: $\Sigma_{i=1}^N-2[y_iln(\hat{p_i}+(1-y_i)ln(1-\hat{p_i}))]$
+- Binomial Deviance: $\Sigma_{i=1}^N-2[y_iln(\hat{p_i})+(1-y_i)ln(1-\hat{p_i}))]$
 
 - Matriz de confusion: En la siguiente clase! 
 

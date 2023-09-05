@@ -1,7 +1,7 @@
 ---
 title: 'Lec8: Unsupervised Learning II'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - Principios de Natural Language Processing 
 
-- Topic Modelling
+- Topic Modeling
 
 ### Reducción de Dimensionalidad 
 
@@ -45,6 +45,26 @@ La clase de hoy se trata de **reducción de dimensionalidad**. En el contexto de
 - Para lograr esto, veremos algunos algoritmos muy interesantes que reducen el espacio de $X$. 
 
 - Los modelos de Factores son muy importantes en el mundo de Data Science. Tienen aplicaciones muy variadas. 
+
+
+### Factor Analysis
+
+Tenemos una base de datos con $n$ filas y $p$ columnas. $X_{n,p}$
+
+Factores: 
+
+$$F=X\phi$$
+
+Los loadings: cuánto importa cada variable en el factor 
+
+$$\phi \in \Re^p$$
+
+
+Los factores son 1 variable 
+
+$$F \in \Re^n$$
+
+Cuántos factores? Depende! No necesita ser 1. Necesita ser menos que la cantidad de columnas $p$
 
 
 ### Principal Component Analysis 
@@ -91,6 +111,59 @@ La interpretación es genial. Los loadings del primer componente $\phi_1$ define
 \end{center}
 
 
+### PCA como Eigenvectores 
+
+Recordemos que son los eigenvectores y el eigenvalor: 
+
+Tenemos una matriz $A_{\{m,m \}}$ 
+
+Tenemos que si multiplicamos la matriz $A$ por un **eigenvector** $v$, nos resulta el mismo vector $v$ multiplicado por una **eigenvalor** $\lambda$
+
+$$Av=\lambda v$$
+
+Esto es genial! Existe un vector eigen que, multiplicado por cualquier matriz, reduce su dimensión en gran medida. 
+
+$$(A-\lambda)v=0$$
+
+Como lo podríamos aplicar a análisis de factores? Noten como A es una matriz de dimensiones simétricas
+
+Finalmente, noten como una matriz A de 4x4 tiene exactamente 4 eigenvectores!!! 
+
+### PCA como Eigenvectores
+
+Partamos de la base $X_{n,p}$. 
+
+Si calculamos la matriz de varianza covarianza $\Sigma$
+
+
+$$ \Sigma= 
+\left[\begin{array}{cc} var(x_1) & cov(x_1,x_2) \\ cov(x_1, x_2) & var(x_2) \end{array}\right]$$ 
+
+$\Sigma$ es una matriz simétrica! 
+
+Los eigenvectores y eigenvalores son: 
+
+$$\Sigma F= \lambda F$$
+
+
+### PCA como Eigenvectores 
+
+La matriz de varianza covarianza es una forma de ver la dispersión (varianza) y orientación (covarianza) de los datos.
+
+\begin{center}
+\includegraphics[width = 10cm]{sigma_matrix.png}
+\end{center}
+
+
+### PCA como Eigenvectores
+
+La dirección del vector es en donde hay mas dispersión. La magnitud (eigenvalor) marca el tamaño del vector. El PCA es una manera de hacer eigenvectores e eigenvalores  
+
+
+\begin{center}
+\includegraphics[width = 7cm]{eigen.png}
+\end{center}
+
 ### Varianza explicada 
 
 Con el PCA, podemos calcular cuanta varianza estamos explicando con los $k$ componentes? 
@@ -101,24 +174,35 @@ $$\Sigma_{j=1}^pVar(X_j)=\Sigma_{j=1}^p\frac{1}{N}\Sigma_{i=1}^Nx_{ij}^2$$
 
 La varianza explicada de cada componente es: 
 
-$$\frac{1}{n}\Sigma_{i=1}^nz_{ik}^2$$
+$$d_k^2=\frac{1}{n}\Sigma_{i=1}^nz_{ik}^2$$
+
+La proporción de varianza explicada (PEV): 
+
+$$PEV=\frac{\Sigma_{j=1}^pVar(X_j)}{d_k^2}$$
 
 ### PCA en `R`
 
 La librería más común para correr PCA en R es `prcomp`. 
 
 ```{r echo=TRUE, eval = FALSE}
-pcfood<-prcomp(food, 
-               scale = TRUE,
-               center = TRUE)
+################################
+# Variables to stratify by:
+# PCA: Will allow nice stratification to build representative samples of buy_currency_i == 0
+################################
+# Build X matrix
+X<-
+  universo_training %>% 
+  ungroup() %>% 
+  select(referred:days_to_trade, trades_btc_1:register_web)
+
+X<-sparse.model.matrix(~. + 0, data = X)
+
+pca<-prcomp(X, scale = T)
+
+save(pca, file = 'PCA_undersampling.Rdata')
 
 ```
 
-- `food` es la base de datos
-
-- `scale` asegura que la varianza sea 1
-
-- `center` asegura que la media sea cero. 
 
 ### PCA en `R`
 
@@ -128,7 +212,46 @@ pcfood<-prcomp(food,
 
 ### PCA en `R`
 
-`predict(pcfood)` te arroja una matriz de $n,k$. A partir de ahí puede uno extraer cada componente principal. 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+load('PCA_undersampling.Rdata')
+
+# How many principal components. Up to 1% of explained additional variance.
+# 22 components. 51.1% of explained variance 
+
+# Extracting the TPV
+sum_pca<-summary(pca)$importance
+dim(sum_pca)
+
+# Extracting the scores
+pca_scores<-as_tibble(predict(pca)[, 1:10])
+dim(pca_scores)
+```
+
+
+### PCA en `R`
+```{r echo=TRUE, warning=FALSE, message=FALSE, fig.height=2, fig.width=3}
+row.names(sum_pca)<-c("std_k", "share_variance", "cum_share")
+sum_pca1<-t(sum_pca)
+
+sum_pca1<-as_tibble(sum_pca1)
+sum_pca1$component<-seq(1:246)
+
+ggplot(sum_pca1, aes(component,cum_share))+
+  geom_point()+geom_path()+theme_bw()
+
+```
+
+### PCA en `R`
+
+```{r echo=TRUE, warning=FALSE, message=FALSE, fig.height=2, fig.width=3}
+ggplot(sum_pca1, aes(component,std_k))+
+  geom_point()+geom_path()+theme_bw()
+```
 
 ### Interpretación inversa 
 
@@ -144,14 +267,14 @@ Por ende, provee un buen resumen de los datos.
 
 Por ende, se puede expresar el modelo de factores así: 
 
-$$x_ij=\Sigma_{k=1}^Kz_{ik}\phi_{jk}$$
+$$x_{ij}=\Sigma_{k=1}^Kz_{ik}\phi_{jk}$$
 En otras palabras, los K componentes principales pueden aproximar muy bien los datos reales. 
 
 ### Modelos de Factores 
 
 El modelo de factores estima la siguiente ecuación:
 
-$$E[x_ik]=\phi_{j1} z_{i1}+...+\phi_{jK} z_{iK}$$
+$$E[x_{ik}]=\phi_{j1} z_{i1}+...+\phi_{jK} z_{iK}$$
 
 Donde $i \in \{1,..n\}$, $j \in \{1,..p\}$ $X$ y $\phi$ son vectores de tamaño $p$ (uno para cada variable de la base de datos). $v_{iK}$ son scores que indican como afecta (carga) esa observación al factor $k$. 
 

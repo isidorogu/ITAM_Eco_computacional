@@ -1,7 +1,7 @@
 ---
 title: 'Lec5: Clasificacion'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -17,7 +17,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = T)
 ```
 
 ### Agenda
@@ -95,13 +95,13 @@ La forma más directa de evaluar el poder predictivo de un modelo de clasificaci
 
 A partir de ahí, hay varias métricas de éxito: 
 
-- **Sensibilidad** ($\frac{D}{C+D}$): De los $1's$ reales, cuál es la probabilidad de que los encontremos
+- **Sensibilidad/Recall** ($\frac{D}{C+D}$): De los $1's$ reales, cuál es la probabilidad de que los encontremos
 
 - **Especificidad** ($\frac{A}{A+B}$): De los $0's$ reales, que tan probable es que los encuentre 
 
 ### Desempeño OOS de un modelo de clasificación 
 
-- **Positivos Acertados** ($\frac{B}{B+D}$): Que porcentaje de mis $1's$ predecidos son aciertos
+- **Positivos Acertados/Precisión** ($\frac{D}{B+D}$): Que porcentaje de mis $1's$ predecidos son aciertos
 
 - **Negativos Acertados** ($\frac{A}{A+C}$): Qué porcentaje de mis $0's$ predecidos son aciertos
 
@@ -133,7 +133,117 @@ Pasos:
 
 5. Repite el ejercicio para $p^* \in [0,1]$
 
-### Curva ROC 
+
+### Ejemplo: Calculando una ROC 
+
+Imaginen que estimamos un Logit LASSO. 
+
+```{r, echo = T, message=FALSE, warning=F}
+library(tidyverse)
+library(gamlr)
+
+diamonds<-diamonds
+
+table(diamonds$cut)
+
+# Creamos categorias de premium
+diamonds<-
+  diamonds %>% 
+  mutate(premium = if_else(cut == 'Premium', 1, 0),
+         id = seq(1,nrow(diamonds)))
+  
+
+diamonds_training<-
+  diamonds %>%
+  slice_sample(prop = 0.7)
+
+
+diamonds_test<-
+  diamonds %>% 
+  filter(!(id %in% diamonds_training$id))
+
+```
+
+
+### Ejemplo
+
+Separamos la base en training y validation
+
+```{r, echo = T, message=FALSE, warning=F}
+
+diamonds_training<-
+  diamonds %>%
+  slice_sample(prop = 0.7)
+
+
+diamonds_test<-
+  diamonds %>% 
+  filter(!(id %in% diamonds_training$id))
+
+```
+
+
+### Ejemplo 
+
+```{r, message = F, warning=F }
+X<-diamonds_training %>% select(carat, depth, price, x,y,z)
+y<-diamonds_training$premium
+
+modelo<-gamlr(x = X, y = y, family = 'binomial')
+
+# Pronostico OOS
+X_test<-diamonds_test %>% select(carat, depth, price, x,y,z)
+diamonds_test$premium_pred <- predict(modelo, newdata = X_test, 
+                                      type = 'response')[,1]
+head(diamonds_test %>% select(id, premium, premium_pred), n = 4)
+```
+
+
+### Calculo ROC 
+
+```{r, message = F, warning=F}
+
+curva_roc<-map_dfr(seq(0,1,0.01), function(x) {
+      a<-diamonds_test  
+      a$pred_cat<-NA
+      a$pred_cat[a$premium_pred>= x]<-1
+      a$pred_cat[a$premium_pred<x]<-0
+      a<-
+        a %>% 
+        count(premium, pred_cat)
+
+ num_sensitivity <- a$n[a$premium==1 & a$pred_cat==1]
+ den_sensitivity<- num_sensitivity + a$n[a$premium==1 & a$pred_cat ==0]
+ sensitivity<-num_sensitivity/den_sensitivity
+ num_specificity <-a$n[a$premium==0 & a$pred_cat==0]
+ den_specificity<- num_specificity + a$n[a$premium==0 & a$pred_cat ==1]
+ specificity<-num_specificity/den_specificity
+ 
+ roc_table<-tibble("p" = x,
+                   "sensitivity" = sensitivity,
+                   "specificity" = specificity)
+}
+)
+
+
+
+```
+
+
+
+### Veamos el resultado
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+
+ggplot(curva_roc, aes(specificity, sensitivity))+
+  geom_line()+
+  geom_abline(intercept = 1, slope = -1, 
+              linetype = 'dashed')+theme_bw()
+
+```
+
+
+### Como se ve una buena curva ROC 
 
 Al final de este procedimiento tendras una curva que se verá (ojalá) así: 
 
@@ -171,6 +281,42 @@ La Curva ROC nos ayuda a balancear ambos errores según creamos conveniente. Est
 
 Finalmente, noten como AUC ROC es mucho mejor indicador que el accuracy. Si tenemos una base donde alguna de las clases es muy común (i.e. 95% $0's$ y 5% $1's$), el accuracy puede dar una señal falsa de un buen modelo. 
 
+
+### Calculemos la Matriz de Confusión
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+library(pracma)
+trapz(curva_roc$specificity, curva_roc$sensitivity)
+
+# Matriz de confusion
+curva_roc %>% filter(specificity>=0.74, sensitivity>=0.74)
+
+#Escogemos 0.26
+diamonds_test<-
+  diamonds_test %>%
+  mutate(pred_cat = if_else(premium_pred>=0.26, 1,0)) 
+
+table(diamonds_test$pred_cat, diamonds_test$premium)
+
+```
+
+
+### Calculemos la AUC ROC en nuestro ejemplo II
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+table(diamonds_test$pred_cat, diamonds_test$premium)
+```
+
+- Sensitivity/Recall = 3074/(3074+1048) = 0.746
+
+- Specificity = 9001/(9001+2059) = 0.7463
+
+- Precission = 3074/(3074+3059) = 0.50
+
+- Accuracy = (3074+9001)/16182 = 0.746
+
+
+
 ### Balanceo de errores 
 
 Por ejemplo, ante (i.e. 95% $0's$ y 5% $1's$) un modelo podría decir 'Todos son 0'. Esto haría que 95% de las veces el modelo sea correcto!!!!!
@@ -180,6 +326,127 @@ Por ejemplo, ante (i.e. 95% $0's$ y 5% $1's$) un modelo podría decir 'Todos son
 - La curva ROC ayudaría a entender el desempeño del modelo de una manea mucho más balanceada. 
 
 - No obstante, aún tenemos que ver cómo entrenar modelo que no 'tomen' la decisión descrita en el primer párrafo de esta slide. 
+
+
+### Precission-Recall curve
+
+La curva PR es otra manera de evaluar el poder predictivo. Vive en el espacio $\{Recall, Precission \}$
+
+- Es muy útil cuando el modelo de predicción tiene mucho imbalance de clases
+
+- Porqué? Imagen que tenemos un problema donde en la base hay muchos 0's. Es muy probable que el modelo tenga buena specificity. Sin embargo, tenemos que ver si es sensible y preciso. 
+
+- La PR es muy buena para evaluar esta clase de casos 
+
+- Existen 2 métricas adicionales que resumen la PR curve: 
+
+- $F1=2\frac{precission * recall}{precission + recall}$. El dominio es 0 a 1. 0 indica un modelo aleatorio; 1 indica un modelo perfecto. Le damos igual valor a precission and recall. 
+
+- $F2=5\frac{precission * recall}{4precission + recall}$. Esta le da un poco de más peso a recall que a la precission.
+
+
+
+### Precission-Recall curve
+
+\begin{center}
+\includegraphics[width = 7cm]{PR_curve.png}
+\end{center}
+
+
+### Veamos el PR curve en nuestro ejemplo
+
+```{r, message = F, warning=F}
+
+curva_pr<-map_dfr(seq(0,1,0.01), function(x) {
+      a<-diamonds_test  
+      a$pred_cat<-NA
+      a$pred_cat[a$premium_pred>= x]<-1
+      a$pred_cat[a$premium_pred<x]<-0
+      a<-
+        a %>% 
+        count(premium, pred_cat)
+
+ num_sensitivity <- a$n[a$premium==1 & a$pred_cat==1]
+ den_sensitivity<- num_sensitivity + a$n[a$premium==1 & a$pred_cat ==0]
+ sensitivity<-num_sensitivity/den_sensitivity
+ den_precission<- num_sensitivity + a$n[a$premium==0 & a$pred_cat ==1]
+ precission<-num_sensitivity/den_precission
+ 
+ roc_table<-tibble("p" = x,
+                   "recall" = sensitivity,
+                   "precission" = precission)
+}
+)
+
+```
+
+
+### Veamos el PR curve en nuestro ejemplo
+
+```{r, echo=FALSE, warning=F, message=F}
+
+curvas<-
+  curva_roc %>% 
+  left_join(curva_pr)
+
+
+p<-
+  diamonds_test %>% 
+  count(premium)
+
+p<-p$n[p$premium==1]/sum(p$n)
+
+```
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+
+ggplot(curvas, aes(recall, precission))+
+  geom_line()+
+  geom_hline(yintercept = p, 
+              linetype = 'dashed')+theme_bw()
+
+```
+
+
+### Escojamos de vuelta el punto de corte 
+
+p=0.28 parece un mejor corte ahora! 
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+curvas<-
+  curvas %>% 
+  mutate(f1 = 2*(precission*recall)/(precission+recall),
+         f2 = 5*(precission*recall)/(4*precission+recall))
+
+curvas %>% filter(p>=0.25, p<=0.3)
+```
+
+### F1 graficamente 
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+ggplot(curvas, aes(p, f1))+
+  geom_line()+theme_bw()+
+  scale_x_continuous(breaks = c(seq(0,0.2,0.1), seq(0.21, 0.28, 0.01), seq(0.28,1,0.1)))
+
+```
+
+
+### F2 graficamente 
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+ggplot(curvas, aes(p, f2))+
+  geom_line()+theme_bw()+
+  scale_x_continuous(breaks = c(seq(0,0.2,0.1), seq(0.21, 0.28, 0.01), seq(0.28,1,0.1)))
+
+```
+
+
+### AUC PR curve 
+
+```{r, message = F, warning=F, fig.height=3, fig.width=6}
+trapz(-curvas$sensitivity, curvas$precission)
+
+```
+
 
 ### Desbalance en las clases 
 
