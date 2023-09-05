@@ -1,7 +1,7 @@
 ---
 title: 'Lec12: Causal Machine Learning I'
 author: "Isidoro Garcia Urquieta"
-date: "2021"
+date: "2023"
 output: beamer_presentation
 slide_level: 3
 fontsize: 10pt
@@ -171,7 +171,8 @@ $$Y_i^{obs}=Y_i(1)T_i+Y_i(0)(1-T_i)$$
 $$E \Big[ \frac{Y_i^{obs}T_i}{e(X_i)} \Big]=E[Y(1)]$$
 $$E \Big[ \frac{Y_i^{obs}(1-T_i)}{1-e(X_i)} \Big]=E[Y(0)]$$
 Con estas podemos estimar $\hat{\tau}$ como:
-$$\hat \tau=\frac{1}{N}\Sigma_{i=1}^N \Big(\frac{T_i*Y_i}{e(X_i)} - \frac{(1-T_i)*Y_i}{1-e(X_i)} \Big)$$
+$$\hat \tau^{IPW}=\frac{1}{N}\Sigma_{i=1}^N \Big(\frac{T_i*Y_i}{e(X_i)} - \frac{(1-T_i)*Y_i}{1-e(X_i)} \Big)$$
+
 
 ### IPW Prueba 
 
@@ -201,19 +202,41 @@ Algunos problemas con estos estimadores:
 - Requieren una estimación casi perfecta de $e(X_i)$
 
 
+### IPW interpretación
+
+Inspeccionemos el estimador IPW: 
+
+$$\hat \tau^{IPW}=\frac{1}{N}\Sigma_{i=1}^N \Big(\frac{T_i*Y_i}{e(X_i)} - \frac{(1-T_i)*Y_i}{1-e(X_i)} \Big)$$
+Para las observaciones tratadas, pondero por $\frac{1}{e(X_i)}$. Observaciones que no fueron tratadas, pondero por $\frac{1}{1-e(X_i)}$. 
+
+Al ponderar, estoy "controlando" por todas los imbalances que existían en la base de datos. 
+
+Pro: 
+
+- No pierdo grados de libertad al intentar balancear por todas las X's. 
+
+Cons: 
+
+- Si $e(X_i)$ está muy cerca de 0 o de 1 (Overlap), el estimador explota! 
+
+- Nuestra estimación de $e(X_i)$ debe ser consistente. De otra manera estamos dandole peso extra/sub pesando algunas observaciones. Esto introduciría sesgo
+
+
+
 ### Augmented Inverse Probability Weightening (AIPW)
 
-Los estimadores doble robustos son muy parecidos a los estimadores IPW, pero ajustan por $\bar Y, \bar{e(X_i)}$. 
+El estimador AIPW es un estimador doble robuesto. Ajusta el IPW con los modelos del outcome $\hat{Y}=f(X_i,T)$ para mejorar el estimador
 
 Esto genera que:
 
 1. Son menos inestables que IPW 
 
-2. No requieren una estimación 
+2. No requieren una estimación perfecta ni de $e$ ni $\hat{Y}$. 
 
-Un ejemplo importante es el AIPW:
+Así de se ve el AIPW
 
-$$\tau_{AIPW}=\frac{1}{N}=\Sigma_{i=1}^N \Big(\hat{IPW} - \bar{IPW}*[\hat{e(X_i)}*\hat Y_{|T_i=0}-(1-\hat{e(X_i)})*\hat{Y}_{|T_i=1}] \Big)$$
+
+$$\tau_{AIPW}=\hat{Y}_{T=1}-\hat{Y}_{T=0}+\frac{T_i}{e(X_i)}(Y_i-\hat{Y}_{T=1})-\frac{1-T_i}{1-e(X_i)}(Y_i-\hat{Y}_{T=0})$$
 
 ### Resumen de $e(X_i)$
 
@@ -262,6 +285,27 @@ Algunas notas sobre este método:
 - El Two-Stage Post LASSO es un **estimador doble robusto**. Estimas $\hat{m(X_i)}$ y $\hat{g(X_i)}$, pero no necesitas una estimación perfecta de ninguna para que el Omitted Variable Bias ($\beta*\delta$) si hacemos un trabajo decente en ambas
 
 - $X$ puede ser una matriz de alta dimensionalidad por dos razones: 1) Ahora tenemos mucha información (Big data!) y 2) La estimación de las funciones. Esto hace que estas matrices sean `sparse`
+
+
+### Meta Learners 
+
+Otra manera sencilla es pensar en replicar el AIPW mediante modelos separados para $Y$ y $T$
+
+- S-Learner: Estima un modelo para $Y$  $Y=m(X_i,T_i)$. Estima $\tau=m(X_i,T=1)-m(X_i,T=0)$
+
+- T-Learner: Estima un modelo para $Y$ para cada grupo. $\tau=m_1(X_i)-m_0(X_i)$
+
+X-learner
+
+- Estimas un modelo propensity por grupo de tratamiento $g_1, g_0$
+
+- Calculas el impacto de tratamiento por grupo usando las predicciones y los observados (por grupo)
+
+$\tau_{T=1}=Y_{i,T=1}-m_0(X_i,T=1)$, $\tau_{T=0}=m_1(X_i,T=0)-Y_{i,T=0}$
+
+- Estimas modelos sobre ambas tau's 
+
+- Construyes el ATE como el promedio ponderado de cada modelo, ponderando por probabilidad de tratamiento
 
 
 ### Double Debiased Machine Learning 

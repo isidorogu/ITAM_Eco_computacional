@@ -85,7 +85,10 @@ grupos<-
   group_by(population) %>% 
   tally()
 
+
 grupos$tasa<-c(0.0794,0)
+
+prior <- weighted.mean(grupos$tasa, grupos$n)
 
 # Prueba de poder sobre tasa de transacción
 power_test<-

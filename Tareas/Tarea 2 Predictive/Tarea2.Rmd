@@ -80,6 +80,9 @@ Pondremos a competir 3 modelos:
 
 3. Random Forest
 
+4. Gradient Boosting Machine 
+
+
 ### 4 (2 pts). Estima un cross validated LASSO. Muestra el la gráfica de CV Binomial Deviance vs Complejidad
 
 
@@ -117,6 +120,7 @@ Pondremos a competir 3 modelos:
 
 - En cada caso, guarda únicamente el `prediction.error`
 
+- Recuerda fijar el parámetro `probability-T` para que el RF genere predicciones categoricas y sus probabilidades
 
 ### 14. Escoge un random forest para hacer las predicciones. Grafica la importancia de las variables. Interpreta 
 
@@ -125,24 +129,53 @@ Pondremos a competir 3 modelos:
 ### 15. Genera las predicciones OOS para el random forest. Guardalas en la misma data.frame que los otros modelos 
 
 
+### 16. Estima un GBM. 
 
-### 16 (2pts). Corre el mismo forest pero ahora con `probability = T`. Esto generará predicciones númericas en lugar de categóricas. Genera las predicciones continuas y guardalas en el mismo data frame
+- Encuenta el número de boosting rounds ideal $B$
+
+- Encuentra la profundidad de los árboles $d$
+
+- Estima un grid de modelos para calibrar los dos hiperparametros
+
+### 17. Gráfica el variable importance para el GBM. en que se parece al de RF, en que difiere?
 
 
-### 17 (4 pts). Genera graficas de las curvas ROC para los tres modelos. Cual parece ser mejor?
+### 17 (4 pts). Genera graficas de las curvas ROC para los 4 modelos. Cual parece ser mejor?
 
 
 
 ### 18. Genera una tabla con el AUC ROC. Cuál es el mejor modelo ? 
 
 
-### 19 (2pts). Escoge un punto de corte para generar predicciones categoricas para el LASSO basado en la Curva ROC. Genera las matrices de confusión para cada modelo. Compáralas. Qué tipo de error es mas pernicioso? 
+
+### 19 (2 pts). Genera las gráficas de las curvas precission recall para los 4 modelos. Cuál parece ser mejor ahora?
+
+### 20 (2pts). Escoge un punto de corte para generar predicciones categoricas para el LASSO basado en la Curva ROC. Genera las matrices de confusión para cada modelo. Compáralas. Qué tipo de error es mas pernicioso? 
 
 
-### 20 (2pts). Finalmente, construye una lift table. Esto es, para 20 grupos del score predecido, genera 1) El promedio de las predicciones, 2) el promedio del churn observado. Existe monotonía? El mejor algoritmo es monotónico? (Tip: usa `ntile` para generar los grupos a partir de las predicciones)
+### 21 (4pts). Construye una lift table. Esto es, para 20 grupos del score predecido de manera decreciente, genera 1) El promedio de las predicciones, 2) el promedio del churn rate observado. Estima el lift: 
+
+$$lift_k = \frac{churn \ \ rate_k}{churn \ \ rate \ \ promedio}$$
+
+Done churn rate promedio es el promedio global. Muesta la tabla. Que te dice el lift intuitivamente
+
+### 22 (4pts). Construye un Gain table. Esto es: Cuántas personas detectarías con el modelo del total de churned users al buscar al x% de la población? Como se compara esto para una selección aleatoria? 
+
+Ejemplo: Si tengo 10% de churn y tengo 10 grupos:
+
+- Si focalizo al 10% aleatoriamente, voy a obtener el 10% de la población churned. 
+
+- Si focalizo al 20% aleatoriamente, voy a obtener el 20% de la población churned. 
+
+- Si focalizo al 10% usando al 10% de la población con score predecido mas alto, que porcentaje obtengo? 
+
+- Como se compara tu modelo vs el modelo aleatorio
+
+
+### 23 (2pts). Calcula el AUC Gain del mejor modelo. Interpreta
 
 
 
-### 21. Concluye. Que estrategia harías con este modelo? Cómo generarías valor a partir de el?
+### 24. Concluye. Que estrategia harías con este modelo? Cómo generarías valor a partir de el?
 
 
